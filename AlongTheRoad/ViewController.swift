@@ -14,14 +14,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var destination: UITextField!
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField
-.resignFirstResponder()
+        textField.resignFirstResponder()
 
         return false
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-            println(segue.destinationViewController)
         if var mapScene = segue.destinationViewController as? GoogleMapViewController {
             mapScene.destination = self.destination.text
             mapScene.startingPoint = self.startingPoint.text
@@ -33,6 +31,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         self.view.endEditing(true)
     }
+    
     @IBAction func submitRoute(sender: AnyObject) {
         println(self.startingPoint.text)
         println(self.destination.text)
