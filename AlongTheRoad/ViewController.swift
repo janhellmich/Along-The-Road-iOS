@@ -20,7 +20,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if var mapScene = segue.destinationViewController as? GoogleMapViewController {
+        if var mapScene = segue.destinationViewController as? MapViewController {
             mapScene.destination = self.destination.text
             mapScene.startingPoint = self.startingPoint.text
         }
