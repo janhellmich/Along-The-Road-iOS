@@ -24,7 +24,7 @@
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="AlongTheRoad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="AlongTheRoad" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
@@ -108,10 +108,10 @@
             </objects>
             <point key="canvasLocation" x="250" y="280"/>
         </scene>
-        <!--Google Map View Controller-->
+        <!--Map View Controller-->
         <scene sceneID="iz7-Pi-Bu8">
             <objects>
-                <viewController id="OcZ-lP-89x" customClass="GoogleMapViewController" customModule="AlongTheRoad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="OcZ-lP-89x" customClass="MapViewController" customModule="AlongTheRoad" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NKR-bf-OWK"/>
                         <viewControllerLayoutGuide type="bottom" id="N7Q-tA-QsU"/>
@@ -132,12 +132,16 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="6v2-ZU-h43">
+                                <rect key="frame" x="0.0" y="139" width="600" height="461"/>
+                            </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="destLabel" destination="m9Z-sh-KQv" id="xsD-eY-tud"/>
-                        <outlet property="startLabel" destination="EGx-wr-Auv" id="597-ZT-L4a"/>
+                        <outlet property="destLabel" destination="EGx-wr-Auv" id="xmU-xr-qHv"/>
+                        <outlet property="map" destination="6v2-ZU-h43" id="xx7-lS-1OD"/>
+                        <outlet property="startLabel" destination="m9Z-sh-KQv" id="dV3-nU-B0j"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rgY-PA-Fbe" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>ED6FD766-BE15-448B-B044-AE56991C622F</string>
+	<key>IDESourceControlProjectName</key>
+	<string>AlongTheRoad</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>37CCE70BCD6F1EB423CEA237EAA47721619FC049</key>
+		<string>https://github.com/Linusmt/Along-The-Road-iOS.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>AlongTheRoad.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>37CCE70BCD6F1EB423CEA237EAA47721619FC049</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/Linusmt/Along-The-Road-iOS.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>37CCE70BCD6F1EB423CEA237EAA47721619FC049</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>37CCE70BCD6F1EB423CEA237EAA47721619FC049</string>
+			<key>IDESourceControlWCCName</key>
+			<string>Along-The-Road-iOS</string>
+		</dict>
+	</array>
+</dict>
+</plist>
