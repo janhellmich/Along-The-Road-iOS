@@ -27,7 +27,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
      *
     */
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if var mapScene = segue.destinationViewController as? MapViewController {
+        if let mapScene = segue.destinationViewController as? MapViewController {
             
             mapScene.destination =  "350 5th Avenue New York NY 10118" //self.destination.text
             mapScene.startingPoint = "55 East 52nd Street New York NY 10022"// self.startingPoint.text
