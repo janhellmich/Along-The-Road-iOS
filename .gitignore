@@ -1,0 +1,6 @@
+#Build Files
+## Other
+*.xccheckout
+*.moved-aside
+*.xcuserstate
+*.xcscmblueprint
