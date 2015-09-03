@@ -19,10 +19,18 @@ class ViewController: UIViewController, UITextFieldDelegate {
         return false
     }
     
+    
+    /* function: prepareForSegue
+     * --------------------------
+     * This function prepares the next viewcontroller for the segue. It does this by setting the d
+     *
+     *
+    */
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if var mapScene = segue.destinationViewController as? MapViewController {
-            mapScene.destination = self.destination.text
-            mapScene.startingPoint = self.startingPoint.text
+            
+            mapScene.destination =  "350 5th Avenue New York NY 10118" //self.destination.text
+            mapScene.startingPoint = "55 East 52nd Street New York NY 10022"// self.startingPoint.text
         }
         
     }

@@ -9,6 +9,7 @@
 import UIKit
 import MapKit
 import CoreLocation
+import AddressBook
 
 class MapViewController: UIViewController, CLLocationManagerDelegate {
 
@@ -16,12 +17,20 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     var startingPoint: String?
     
     var coreLocationManager = CLLocationManager()
-    
     var locationManager:LocationManager!
+    var startItem: MKMapItem?
+    var destinationItem: MKMapItem?
+    var annotations:[MKPointAnnotation]?
+    var coords: CLLocationCoordinate2D?
+    var userLocation: CLLocationCoordinate2D?
     
+    var CLIENT_ID=""
+    var CLIENT_SECRET=""
+    
+    
+    //These three outlets correspond to the view itself. They permit the controller to access these components
     @IBOutlet weak var destLabel: UILabel!
     @IBOutlet weak var startLabel: UILabel!
-    
     @IBOutlet weak var map: MKMapView!
     
     override func viewDidLoad() {
@@ -38,36 +47,186 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
                 getLocation()
             }
         }
-
-        // Do any additional setup after loading the view.
     }
 
+    /* function: locationManager
+    * ---------------------------------------
+    * The locationManager is a function that is automatically invoked when current location
+    * is searched for
+    *
+    */
     func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
         if status != CLAuthorizationStatus.NotDetermined || status != CLAuthorizationStatus.Denied || status != CLAuthorizationStatus.Restricted {
             getLocation()
         }
     }
     
+    /* function: getLocation
+    * ---------------------------------------
+    * This function beggins checking for the users current location. It starts updating the
+    * users movements, which can be modified to allow for the users location to be allowed
+    * as a starting point
+    */
     func getLocation(){
         locationManager.startUpdatingLocationWithCompletionHandler { (latitude, longitude, status, verboseMessage, error) -> () in
             self.displayLocation(CLLocation(latitude: latitude, longitude: longitude))
+            self.userLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            print(self.userLocation!)
+        
         }
     }
     
+    /* function: displayLocation
+     * ---------------------------------------
+     * This function is called once the current location has been established. It creates and adds
+     * the map items to the map and then uses the two to find the directions between
+     * the two addresses
+    */
     func displayLocation(location:CLLocation){
-        map.setRegion(MKCoordinateRegion(center: CLLocationCoordinate2DMake(location.coordinate.latitude, location.coordinate.longitude), span: MKCoordinateSpanMake(0.05, 0.05)), animated: true)
-        let locationPinCoord = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-        let annotation = MKPointAnnotation()
-        annotation.coordinate = locationPinCoord
-        map.addAnnotation(annotation)
-        map.showAnnotations([annotation], animated: true)
-        
-        locationManager.reverseGeocodeLocationUsingGoogleWithCoordinates(location, onReverseGeocodingCompletionHandler: { (reverseGecodeInfo, placemark, error) -> Void in
-            let address = reverseGecodeInfo?.objectForKey("formattedAddress") as! String
-//            self.myLocation.text = address
-            print(address)
-        })
-
+        let destination = self.destination!
+        let start = self.startingPoint!
+        self.addMapItem( "startItem", address: start)
+        self.addMapItem( "end", address: destination)
     }
+    
+    /* function: addMapItem
+    * ---------------------------------------
+    * This function geocodes the address string. This means that it querries the apple database
+    * for where that address is located geographically. It then selects the most likely result
+    * and uses it to create a map item. If the map item is the destination, then it will invoke
+    * the getDirections method which will find the directions and update the map
+    */
+    func addMapItem (type: String, address: String){
+        let geoCoder = CLGeocoder()
 
+        geoCoder.geocodeAddressString(address, completionHandler: { (placemarks: [AnyObject]!, error: NSError!) -> Void in
+            if error != nil {
+                println("Geocode failed with error: \(error.localizedDescription)")
+            } else if placemarks.count > 0 {
+                let place = placemarks[0] as! CLPlacemark
+                let location = place.location
+                self.coords = location.coordinate
+                
+                
+                var mkplace = MKPlacemark(placemark: place)
+                
+                
+                let annotation = MKPointAnnotation()
+                annotation.coordinate = mkplace.coordinate
+                self.coords = mkplace.coordinate
+                self.annotations?.append(annotation)
+                self.map.addAnnotation(annotation)
+                
+                if type == "startItem" {
+                    self.startItem = MKMapItem(placemark: mkplace)
+                } else {
+                    self.destinationItem = MKMapItem(placemark: mkplace)
+                    self.getDirections()
+                }
+            }
+        })
+    }
+    
+    /* function: getDirections
+    * ---------------------------------------
+    * This function uses the two location mapItems to determine the best route.
+    * If there is an error in searching for the directions, then it will recursively call itself.
+    * This is meant to deal with the way apple maps sends error messages for correct routes about
+    * Half the time. However, for invaldid addresses
+    */
+    func getDirections() {
+        var req = MKDirectionsRequest()
+        
+        req.setDestination(self.destinationItem)
+        req.setSource(self.startItem)
+        req.transportType = MKDirectionsTransportType.Automobile
+        self.map.showAnnotations(self.annotations, animated: true)
+        
+        var directions = MKDirections(request: req)
+        
+        directions.calculateDirectionsWithCompletionHandler({ (response: MKDirectionsResponse!, error: NSError!) -> Void in
+            if error != nil {
+                println("Directions failed with error: \(error.localizedDescription), trying again")
+                self.getDirections()
+            } else {
+                var route = response.routes[0] as! MKRoute
+                var steps = route.steps
+                
+                for(var i = 0 ; i < steps.count ; i++ ) {
+                    println(steps[i].distance)
+                }
+                print(route.polyline)
+                 self.setNewRegion()
+                          //This portion is meant to display the polyline object. It currently does not work
+//                self.map.rendererForOverlay(route.polyline)
+                self.map.addOverlay(route.polyline, level: MKOverlayLevel.AboveRoads)
+            }
+        });
+    }
+    
+    /* function: setNewRegion
+     * ----------------------
+     * This function will reorient the view so that it fits both the starting point and the end
+     * of the given route. It will work by finding the furthest out longitude and latitude and then
+     * set the map to fit around all of these. It should also include annotations later on.
+    */
+    func setNewRegion () {
+        var startCoord = self.startItem?.placemark.coordinate
+        var destCoord = self.destinationItem?.placemark.coordinate
+        var locations = [startCoord!, destCoord!] //First place all needed coordinates into this array
+        
+        var upperLimit = CLLocationCoordinate2D(latitude: -90, longitude: -90)
+        var lowerLimit = CLLocationCoordinate2D(latitude: 90, longitude: 90)
+        
+        for(var i = 0 ; i < locations.count ; i++ ) {
+            if(locations[i].latitude > upperLimit.latitude) {
+                upperLimit.latitude = locations[i].latitude
+            }
+            if(locations[i].latitude < lowerLimit.latitude) {
+                lowerLimit.latitude = locations[i].latitude
+            }
+            if(locations[i].longitude > upperLimit.longitude) {
+                upperLimit.longitude = locations[i].longitude
+            }
+            if(locations[i].longitude < lowerLimit.longitude) {
+                lowerLimit.longitude = locations[i].longitude
+            }
+        }
+        
+        
+        var locationSpan = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1 )
+        locationSpan.longitudeDelta = (upperLimit.longitude - lowerLimit.longitude)
+        locationSpan.latitudeDelta = (upperLimit.latitude - lowerLimit.latitude)
+        
+        var center = CLLocationCoordinate2D()
+        center.latitude = (upperLimit.latitude + lowerLimit.latitude)/2
+        center.longitude = (upperLimit.longitude + lowerLimit.longitude)/2
+        
+        var region = MKCoordinateRegion(center: center, span: locationSpan)
+        
+        //Currently calls sendFourSquare request on
+//        sendFourSquareRequest(center.latitude, long: center.longitude)
+        self.map.setRegion(region, animated: true)
+    }
+    
+    
+    /* function: sendFourSquareRequest
+     * -------------------------------
+     * This is a sample request to the four square api. It currently just prints a list of results 
+     * for the passed in latitude and longitude.
+     *
+    */
+//    func sendFourSquareRequest (lat: Double, long: Double) {
+//        
+//        var url = NSURL(string: "https://api.foursquare.com/v2/venues/explore?client_id=\(self.CLIENT_ID)&client_secret=\(self.CLIENT_SECRET)&v=20130815&ll=\(lat),\(long)")
+//        var req = NSURLRequest(URL: url!)
+//        
+//        NSURLConnection.sendAsynchronousRequest(req, queue: NSOperationQueue.mainQueue()) {(response, data, error) in
+//            var parseError: NSError?
+//            let parsedObject = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error:&parseError)
+//            println(parsedObject!.objectForKey("response"))
+//            
+//        }
+//    }
+    
 }
