@@ -63,11 +63,9 @@ class DataFilter: NSObject {
             var totalChange = sqrt(latChange*latChange + longChange*longChange)
             if totalChange >= 3.0  {
                 querySections.append(points[i])
-                println(querySections[querySections.count-1])
             }
         }
         
-        print(querySections.count)
         
         return querySections
     }
@@ -101,16 +99,19 @@ class DataFilter: NSObject {
         
         //Creates and sets the span object for the
         var locationSpan = MKCoordinateSpan()
-        locationSpan.longitudeDelta = (upperLimit.longitude - lowerLimit.longitude)
-        locationSpan.latitudeDelta = (upperLimit.latitude - lowerLimit.latitude)
+        locationSpan.longitudeDelta = (upperLimit.longitude - lowerLimit.longitude)*2
+        locationSpan.latitudeDelta = (upperLimit.latitude - lowerLimit.latitude)*2
         
         var center = CLLocationCoordinate2D()
         center.latitude = (upperLimit.latitude + lowerLimit.latitude)/2
         center.longitude = (upperLimit.longitude + lowerLimit.longitude)/2
         
         
+
         var region = MKCoordinateRegion(center: center, span: locationSpan)
         return region
     }
+    
+    
     
 }
