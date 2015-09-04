@@ -120,37 +120,40 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Starting Point: Current Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m9Z-sh-KQv">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Starting Point: Current Location" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m9Z-sh-KQv">
                                 <rect key="frame" x="16" y="72" width="568" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="Wcm-YO-Qmz"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EGx-wr-Auv">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EGx-wr-Auv">
                                 <rect key="frame" x="16" y="101" width="568" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="1IJ-3T-BHo"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="6v2-ZU-h43">
-                                <rect key="frame" x="0.0" y="130" width="600" height="470"/>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="6v2-ZU-h43">
+                                <rect key="frame" x="0.0" y="122" width="600" height="478"/>
                             </mapView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uaW-bL-8gX">
-                                <rect key="frame" x="502" y="562" width="82" height="30"/>
-                                <state key="normal" title="See Results">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <segue destination="Tfo-n2-fYq" kind="show" id="5M9-ic-Pk6"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="N7Q-tA-QsU" firstAttribute="top" secondItem="uaW-bL-8gX" secondAttribute="bottom" constant="8" symbolic="YES" id="GVS-cP-GUY"/>
-                            <constraint firstItem="uaW-bL-8gX" firstAttribute="trailing" secondItem="OA8-Iu-TKi" secondAttribute="trailingMargin" id="M8N-u0-qHs"/>
-                            <constraint firstItem="uaW-bL-8gX" firstAttribute="trailing" secondItem="EGx-wr-Auv" secondAttribute="trailing" id="oJq-IA-4fl"/>
-                            <constraint firstItem="uaW-bL-8gX" firstAttribute="trailing" secondItem="m9Z-sh-KQv" secondAttribute="trailing" id="oQz-Fx-Wh1"/>
+                            <constraint firstItem="6v2-ZU-h43" firstAttribute="bottom" secondItem="N7Q-tA-QsU" secondAttribute="top" id="49b-tV-Uz3"/>
+                            <constraint firstItem="m9Z-sh-KQv" firstAttribute="trailing" secondItem="EGx-wr-Auv" secondAttribute="trailing" id="4EE-YZ-6OT"/>
+                            <constraint firstItem="EGx-wr-Auv" firstAttribute="leading" secondItem="m9Z-sh-KQv" secondAttribute="leading" id="4la-7K-vHg"/>
+                            <constraint firstItem="6v2-ZU-h43" firstAttribute="leading" secondItem="OA8-Iu-TKi" secondAttribute="leading" id="GRz-Fc-aZJ"/>
+                            <constraint firstItem="6v2-ZU-h43" firstAttribute="top" secondItem="EGx-wr-Auv" secondAttribute="bottom" id="UgW-PB-rEL"/>
+                            <constraint firstItem="EGx-wr-Auv" firstAttribute="leading" secondItem="OA8-Iu-TKi" secondAttribute="leadingMargin" id="XCb-4o-oN1"/>
+                            <constraint firstItem="m9Z-sh-KQv" firstAttribute="top" secondItem="NKR-bf-OWK" secondAttribute="bottom" constant="8" symbolic="YES" id="Zsb-bt-LiG"/>
+                            <constraint firstAttribute="trailing" secondItem="6v2-ZU-h43" secondAttribute="trailing" id="l6e-29-A35"/>
+                            <constraint firstItem="6v2-ZU-h43" firstAttribute="centerX" secondItem="EGx-wr-Auv" secondAttribute="centerX" id="mcq-h5-nVy"/>
+                            <constraint firstItem="EGx-wr-Auv" firstAttribute="top" secondItem="m9Z-sh-KQv" secondAttribute="bottom" constant="8" symbolic="YES" id="zIN-Qv-73P"/>
                         </constraints>
                     </view>
                     <connections>

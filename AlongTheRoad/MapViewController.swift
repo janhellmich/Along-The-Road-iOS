@@ -163,11 +163,15 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
                 
                 self.setNewRegion()
 
+                var renderer = MKPolygonRenderer(overlay:route.polyline)
+                renderer.strokeColor = UIColor.blueColor()
                 
+                self.map.rendererForOverlay(route.polyline)
                 self.map.addOverlay(route.polyline, level: MKOverlayLevel.AboveRoads)
             }
         });
     }
+    
     
 
     
@@ -185,9 +189,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         //All elements to be displayed on the map need to be placed in this array
         var locations = [startCoord!, destCoord!]
         
-        
-        println("Start \(startCoord?.latitude), \(startCoord?.longitude)")
-        println("End \(destCoord?.latitude), \(destCoord?.longitude)")
+
 
         var region = self.dataProcessor.findRegion(locations)
         
@@ -221,7 +223,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     func sendFourSquareRequest (lat: Double, long: Double) {
         
        
-        var url = NSURL(string: "https://api.foursquare.com/v2/venues/explore?client_id=\(self.CLIENT_ID)&client_secret=\(self.CLIENT_SECRET)&v=20130815&ll=\(lat),\(long)")//)&&radius=\(routeData.searchRadius)&&section=\(routeData.searchSection)")
+        var url = NSURL(string: "https://api.foursquare.com/v2/venues/explore?client_id=\(self.CLIENT_ID)&client_secret=\(self.CLIENT_SECRET)&v=20130815&ll=\(lat),\(long)&&venuePhotos=1")//)&&radius=\(routeData.searchRadius)&&section=\(routeData.searchSection)")
         var req = NSURLRequest(URL: url!)
         
         NSURLConnection.sendAsynchronousRequest(req, queue: NSOperationQueue.mainQueue()) {(response, data, error) in
