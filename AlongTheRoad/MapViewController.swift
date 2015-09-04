@@ -15,6 +15,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
 
     //This represent the shared data model
     let routeData = RouteDataModel.sharedInstance
+    let dataProcessor = DataFilter.sharedInstance
 
     //These represent the location and map based variables
     var coreLocationManager = CLLocationManager()
@@ -23,6 +24,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     var destinationItem: MKMapItem?
     var annotations:[MKPointAnnotation]? //This is an array of the annotations on the map
     var userLocation: CLLocationCoordinate2D? //This will later be instantiated with the user's current location
+    
     
     //API Keys for FourSquare
     let CLIENT_ID="ELLZUH013LMEXWRWGBOSNBTXE3NV02IUUO3ZFPVFFSZYLA30"
@@ -34,6 +36,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var startLabel: UILabel!
     @IBOutlet weak var map: MKMapView!
     
+    /* function:
+     * ------------------------------------
+     *
+     *
+     *
+    */
     override func viewDidLoad() {
         super.viewDidLoad()
         coreLocationManager.delegate = self
@@ -145,15 +153,23 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
                 var route = response.routes[0] as! MKRoute
                 var steps = route.steps
                 
+                
+                self.routeData.route = route //Add the route to the route data model
+                var querries = self.dataProcessor.getSections(self.routeData.route!)
+                
+                for i in 0..<querries.count {
+                    self.sendFourSquareRequest(querries[i].latitude, long: querries[i].longitude)
+                }
+                
+                self.setNewRegion()
 
-//                routeData.route = route?
-                 self.setNewRegion()
-                //This portion is meant to display the polyline object. It currently does not work
-                // self.map.rendererForOverlay(route.polyline)
+                
                 self.map.addOverlay(route.polyline, level: MKOverlayLevel.AboveRoads)
             }
         });
     }
+    
+
     
     /* function: setNewRegion
      * ----------------------
@@ -162,42 +178,20 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
      * set the map to fit around all of these. It should also include annotations later on.
     */
     func setNewRegion () {
+        
+        //Extract the coord
         var startCoord = self.startItem?.placemark.coordinate
         var destCoord = self.destinationItem?.placemark.coordinate
-        var locations = [startCoord!, destCoord!] //First place all needed coordinates into this array
-        
-        var upperLimit = CLLocationCoordinate2D(latitude: -90, longitude: -90)
-        var lowerLimit = CLLocationCoordinate2D(latitude: 90, longitude: 90)
-        
-        for(var i = 0 ; i < locations.count ; i++ ) {
-            if(locations[i].latitude > upperLimit.latitude) {
-                upperLimit.latitude = locations[i].latitude
-            }
-            if(locations[i].latitude < lowerLimit.latitude) {
-                lowerLimit.latitude = locations[i].latitude
-            }
-            if(locations[i].longitude > upperLimit.longitude) {
-                upperLimit.longitude = locations[i].longitude
-            }
-            if(locations[i].longitude < lowerLimit.longitude) {
-                lowerLimit.longitude = locations[i].longitude
-            }
-        }
+        //All elements to be displayed on the map need to be placed in this array
+        var locations = [startCoord!, destCoord!]
         
         
-        var locationSpan = MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1 )
-        locationSpan.longitudeDelta = (upperLimit.longitude - lowerLimit.longitude)
-        locationSpan.latitudeDelta = (upperLimit.latitude - lowerLimit.latitude)
-        
-        var center = CLLocationCoordinate2D()
-        center.latitude = (upperLimit.latitude + lowerLimit.latitude)/2
-        center.longitude = (upperLimit.longitude + lowerLimit.longitude)/2
-        
-        
-        var region = MKCoordinateRegion(center: center, span: locationSpan)
+        println("Start \(startCoord?.latitude), \(startCoord?.longitude)")
+        println("End \(destCoord?.latitude), \(destCoord?.longitude)")
+
+        var region = self.dataProcessor.findRegion(locations)
         
         //Currently calls sendFourSquare request on
-        sendFourSquareRequest(center.latitude, long: center.longitude)
         self.map.setRegion(region, animated: true)
     }
     
@@ -226,31 +220,44 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     */
     func sendFourSquareRequest (lat: Double, long: Double) {
         
-        var url = NSURL(string: "https://api.foursquare.com/v2/venues/explore?client_id=\(self.CLIENT_ID)&client_secret=\(self.CLIENT_SECRET)&v=20130815&ll=\(lat),\(long)")
+       
+        var url = NSURL(string: "https://api.foursquare.com/v2/venues/explore?client_id=\(self.CLIENT_ID)&client_secret=\(self.CLIENT_SECRET)&v=20130815&ll=\(lat),\(long)")//)&&radius=\(routeData.searchRadius)&&section=\(routeData.searchSection)")
         var req = NSURLRequest(URL: url!)
         
         NSURLConnection.sendAsynchronousRequest(req, queue: NSOperationQueue.mainQueue()) {(response, data, error) in
             var parseError: NSError?
             
+            if error != nil {
+                return
+            }
             //Section that extracts the desired data from the responce
             let parsedObject :AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error:&parseError)
-            var dataObj : AnyObject = parsedObject!.objectForKey("response")!.objectForKey("groups")![0].objectForKey("items")!
+            var dataObj : AnyObject? = parsedObject?.objectForKey("response")?.objectForKey("groups")?[0].objectForKey("items")!
             
+            if dataObj == nil {
+                return
+            }
             //Add the restaurants to the restaurants array
             var restaurantArray = [AnyObject]()
-            for i in 0..<dataObj.count {
-                restaurantArray.append(dataObj[i].objectForKey("venue")!)
+            for i in 0..<dataObj!.count {
+                restaurantArray.append(dataObj![i].objectForKey("venue")!)
             }
             
+            self.routeData.restaurants = restaurantArray
             //Create annotations for each restaurant that was found
+            //This section needs to later be modified to deal with possible nil values
             for i in 0..<restaurantArray.count  {
                 var currentVenue : AnyObject = restaurantArray[i]
                 var coord = CLLocationCoordinate2D()
                 coord.latitude = currentVenue.objectForKey("location")!.objectForKey("lat") as!Double
                 coord.longitude = currentVenue.objectForKey("location")!.objectForKey("lng") as! Double
                 var title = currentVenue.objectForKey("name") as! String
-                var rating =  currentVenue.objectForKey("rating") as! Double
                 
+                //Insanely sketchy logic but don't worry about it
+                var rating = 0.0
+                if var otherRating: AnyObject = currentVenue.objectForKey("rating")  {
+                    rating = otherRating as! Double
+                }
                 self.createAnnotation(coord, title: title, subtitle: "Rating: \(rating)")
             }
             
