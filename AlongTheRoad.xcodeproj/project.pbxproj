@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2323083A1B99412100CF748D /* RestaurantTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232308391B99412100CF748D /* RestaurantTableView.swift */; };
+		2323083C1B9A18AD00CF748D /* DataFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2323083B1B9A18AD00CF748D /* DataFilter.swift */; };
 		232819091B926ADF00EBCCE6 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232819081B926ADF00EBCCE6 /* MapViewController.swift */; };
 		233998861B92207A008D7FFC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233998851B92207A008D7FFC /* AppDelegate.swift */; };
 		233998881B92207A008D7FFC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233998871B92207A008D7FFC /* ViewController.swift */; };
@@ -30,6 +32,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		232308391B99412100CF748D /* RestaurantTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantTableView.swift; sourceTree = "<group>"; };
+		2323083B1B9A18AD00CF748D /* DataFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataFilter.swift; sourceTree = "<group>"; };
 		232819081B926ADF00EBCCE6 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		233998801B92207A008D7FFC /* AlongTheRoad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlongTheRoad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		233998841B92207A008D7FFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -96,6 +100,8 @@
 				233998831B92207A008D7FFC /* Supporting Files */,
 				232819081B926ADF00EBCCE6 /* MapViewController.swift */,
 				23EA68F01B94D5AC00EF7EBE /* RouteDataModel.swift */,
+				232308391B99412100CF748D /* RestaurantTableView.swift */,
+				2323083B1B9A18AD00CF748D /* DataFilter.swift */,
 			);
 			path = AlongTheRoad;
 			sourceTree = "<group>";
@@ -233,6 +239,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2323083A1B99412100CF748D /* RestaurantTableView.swift in Sources */,
+				2323083C1B9A18AD00CF748D /* DataFilter.swift in Sources */,
 				233998881B92207A008D7FFC /* ViewController.swift in Sources */,
 				23EA68F11B94D5AC00EF7EBE /* RouteDataModel.swift in Sources */,
 				23C89B081B976BB10014B243 /* LocationManager.swift in Sources */,

@@ -27,10 +27,17 @@ class RouteDataModel: NSObject {
     var destination: String
     var startingPoint: String
     var route: MKRoute?
+    var searchRadius:Int
+    var searchSection: String
+    var restaurants: [AnyObject]
     
     override init(){
         destination = ""
         startingPoint = ""
+        searchRadius = 1600//Default at the beginning
+        searchSection = "food"
+        restaurants = [AnyObject]()
+        
     }
     
 }
