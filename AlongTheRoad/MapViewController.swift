@@ -13,16 +13,16 @@ import AddressBook
 
 class MapViewController: UIViewController, CLLocationManagerDelegate {
 
-    var destination: String?
-    var startingPoint: String?
-    
+    //This represent the shared data model
+    let routeData = RouteDataModel.sharedInstance
+
+    //These represent the location and map based variables
     var coreLocationManager = CLLocationManager()
     var locationManager:LocationManager!
     var startItem: MKMapItem?
     var destinationItem: MKMapItem?
-    var annotations:[MKPointAnnotation]?
-    var coords: CLLocationCoordinate2D?
-    var userLocation: CLLocationCoordinate2D?
+    var annotations:[MKPointAnnotation]? //This is an array of the annotations on the map
+    var userLocation: CLLocationCoordinate2D? //This will later be instantiated with the user's current location
     
     //API Keys for FourSquare
     let CLIENT_ID="ELLZUH013LMEXWRWGBOSNBTXE3NV02IUUO3ZFPVFFSZYLA30"
@@ -37,8 +37,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         coreLocationManager.delegate = self
-        self.destLabel.text = self.destination
-        self.startLabel.text = self.startingPoint
+        self.destLabel.text = routeData.destination
+        self.startLabel.text = routeData.startingPoint
         
         locationManager = LocationManager.sharedInstance
         
@@ -74,8 +74,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.startUpdatingLocationWithCompletionHandler { (latitude, longitude, status, verboseMessage, error) -> () in
             self.displayLocation(CLLocation(latitude: latitude, longitude: longitude))
             self.userLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            print(self.userLocation!)
-        
         }
     }
     
@@ -86,10 +84,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
      * the two addresses
     */
     func displayLocation(location:CLLocation){
-        let destination = self.destination!
-        let start = self.startingPoint!
-        self.addMapItem( "startItem", address: start)
-        self.addMapItem( "end", address: destination)
+        self.addMapItem( "Start", address: routeData.destination)
+        self.addMapItem( "Destination", address: routeData.startingPoint)
     }
     
     /* function: addMapItem
@@ -103,20 +99,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         let geoCoder = CLGeocoder()
 
         geoCoder.geocodeAddressString(address, completionHandler: { (placemarks: [AnyObject]!, error: NSError!) -> Void in
-            print("ran")
             if error != nil {
                 println("Geocode failed with error: \(error.localizedDescription)")
             } else if placemarks.count > 0 {
                 let place = placemarks[0] as! CLPlacemark
             
                 let location = place.location
-                self.coords = location.coordinate
                 
                 var mkplace = MKPlacemark(placemark: place)
                 
-                self.createAnnotation(mkplace.coordinate, title: "", subtitle: "")
+                self.createAnnotation(mkplace.coordinate, title: type, subtitle: "")
                 
-                if type == "startItem" {
+                if type == "Start" {
                     self.startItem = MKMapItem(placemark: mkplace)
                 } else {
                     self.destinationItem = MKMapItem(placemark: mkplace)
@@ -151,10 +145,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
                 var route = response.routes[0] as! MKRoute
                 var steps = route.steps
                 
-                for(var i = 0 ; i < steps.count ; i++ ) {
-                    println(steps[i].instructions)
-                }
-                print(route.polyline)
+
+//                routeData.route = route?
                  self.setNewRegion()
                 //This portion is meant to display the polyline object. It currently does not work
                 // self.map.rendererForOverlay(route.polyline)
@@ -201,6 +193,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         center.latitude = (upperLimit.latitude + lowerLimit.latitude)/2
         center.longitude = (upperLimit.longitude + lowerLimit.longitude)/2
         
+        
         var region = MKCoordinateRegion(center: center, span: locationSpan)
         
         //Currently calls sendFourSquare request on
@@ -227,9 +220,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     
     /* function: sendFourSquareRequest
      * -------------------------------
-     * This is a sample request to the four square api. It currently just prints a list of results 
-     * for the passed in latitude and longitude.
-     *
+     * This is a sample request to the four square api. It takes in a latitude and a longitude and display all the
+     * best restaurants found by the four square api in that area. For now it just displays them as annotations
+     * with the name and ratings but can later be modified for filters and further functionallity
     */
     func sendFourSquareRequest (lat: Double, long: Double) {
         
@@ -238,16 +231,20 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
         
         NSURLConnection.sendAsynchronousRequest(req, queue: NSOperationQueue.mainQueue()) {(response, data, error) in
             var parseError: NSError?
-            let parsedObject = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error:&parseError)
-            var dataObj = parsedObject!.objectForKey("response")!.objectForKey("groups")![0].objectForKey("items")!
-            // println(dataObj)
+            
+            //Section that extracts the desired data from the responce
+            let parsedObject :AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error:&parseError)
+            var dataObj : AnyObject = parsedObject!.objectForKey("response")!.objectForKey("groups")![0].objectForKey("items")!
+            
+            //Add the restaurants to the restaurants array
             var restaurantArray = [AnyObject]()
             for i in 0..<dataObj.count {
                 restaurantArray.append(dataObj[i].objectForKey("venue")!)
             }
             
+            //Create annotations for each restaurant that was found
             for i in 0..<restaurantArray.count  {
-                var currentVenue = restaurantArray[i]
+                var currentVenue : AnyObject = restaurantArray[i]
                 var coord = CLLocationCoordinate2D()
                 coord.latitude = currentVenue.objectForKey("location")!.objectForKey("lat") as!Double
                 coord.longitude = currentVenue.objectForKey("location")!.objectForKey("lng") as! Double
@@ -255,10 +252,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
                 var rating =  currentVenue.objectForKey("rating") as! Double
                 
                 self.createAnnotation(coord, title: title, subtitle: "Rating: \(rating)")
-                
             }
+            
+            //Render the pins on the map
             self.map.showAnnotations(self.annotations, animated: true)
-            print(restaurantArray[0])
         }
     }
     

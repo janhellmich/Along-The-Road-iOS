@@ -13,6 +13,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var startingPoint: UITextField!
     @IBOutlet weak var destination: UITextField!
     
+    let routeData = RouteDataModel.sharedInstance
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
 
@@ -28,9 +30,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     */
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let mapScene = segue.destinationViewController as? MapViewController {
-            
-            mapScene.destination =  "350 5th Avenue New York NY 10118" //self.destination.text
-            mapScene.startingPoint = "55 East 52nd Street New York NY 10022"// self.startingPoint.text
+            routeData.destination = "350 5th Avenue New York NY 10118" //self.destination.text
+            routeData.startingPoint = "55 East 52nd Street New York NY 10022"// self.startingPoint.text
         }
         
     }
