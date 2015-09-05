@@ -27,8 +27,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     
     
     //API Keys for FourSquare
-    let CLIENT_ID="ELLZUH013LMEXWRWGBOSNBTXE3NV02IUUO3ZFPVFFSZYLA30"
-    let CLIENT_SECRET="2DMIIPTIXZHNUR1P1IMY4SPKVE2LEKNZVJWFJYHWZP5GGTZM"
+    let CLIENT_ID="THM343VWNYYUYSO1WHDTDP0GPKWC4Q3Q3UTFGEUJ10OWEUKE"
+    let CLIENT_SECRET="NZWHYIAF5FETD1M3QTIAHELXW5ZFJOWOCCRRGHOPPKBUAXEY"
     
     
     //These three outlets correspond to the view itself. They permit the controller to access these components

@@ -4,3 +4,4 @@
 *.moved-aside
 *.xcuserstate
 *.xcscmblueprint
+Pods/
