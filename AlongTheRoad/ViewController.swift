@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import GoogleMaps
 
 class ViewController: UIViewController, UITextFieldDelegate {
 
@@ -18,8 +19,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
 
-        return false
-    }
+
+    var placesClient: GMSPlacesClient?
     
     
     /* function: prepareForSegue
@@ -36,19 +37,24 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
     }
     
+    @IBAction func goToAutoComplete(sender: UITextField) {
+        performSegueWithIdentifier("autocomplete", sender: nil)
+    }
 
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         self.view.endEditing(true)
     }
     
     @IBAction func submitRoute(sender: AnyObject) {
-        println(self.startingPoint.text)
-        println(self.destination.text)
+        
     }
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        placesClient = GMSPlacesClient()
+        println(placesClient == nil)
+
         // Do any additional setup after loading the view, typically from a nib.
     }
 
