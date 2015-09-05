@@ -27,8 +27,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     
     //API Keys for FourSquare
-    let CLIENT_ID="THM343VWNYYUYSO1WHDTDP0GPKWC4Q3Q3UTFGEUJ10OWEUKE"
-    let CLIENT_SECRET="NZWHYIAF5FETD1M3QTIAHELXW5ZFJOWOCCRRGHOPPKBUAXEY"
+    let CLIENT_ID="ELLZUH013LMEXWRWGBOSNBTXE3NV02IUUO3ZFPVFFSZYLA30"
+    let CLIENT_SECRET="U2EQ1N1J4EAG4XH4QO4HCZTGM3FCWDLXU2WJ0OPTD2Q3YUKF"
+
     
     
     //These three outlets correspond to the view itself. They permit the controller to access these components
@@ -242,6 +243,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         NSURLConnection.sendAsynchronousRequest(req, queue: NSOperationQueue.mainQueue()) {(response, data, error) in
             var parseError: NSError?
             
+            //Early exit for error
             if error != nil {
                 return
             }
@@ -249,16 +251,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             let parsedObject :AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error:&parseError)
             var dataObj : AnyObject? = parsedObject?.objectForKey("response")?.objectForKey("groups")?[0].objectForKey("items")!
             
+            //Early exit if there is not valid data passed back
             if dataObj == nil {
                 return
             }
+            
             //Add the restaurants to the restaurants array
             var restaurantArray = [AnyObject]()
             for i in 0..<dataObj!.count {
                 restaurantArray.append(dataObj![i].objectForKey("venue")!)
             }
             
-            self.routeData.restaurants = restaurantArray
             //Create annotations for each restaurant that was found
             //This section needs to later be modified to deal with possible nil values
             for i in 0..<restaurantArray.count  {
@@ -273,9 +276,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 if var otherRating: AnyObject = currentVenue.objectForKey("rating")  {
                     rating = otherRating as! Double
                 }
+                
+                self.routeData.restaurantDictionary["\(coord.latitude),\(coord.longitude)"] = restaurantArray[i]
                 self.createAnnotation(coord, title: title, subtitle: "Rating: \(rating)")
             }
-            
+           
+            //Add the restaurans to the array
+//            self.routeData.restaurants += restaurantArray;
             //Render the pins on the map
             self.map.showAnnotations(self.annotations, animated: true)
         }
