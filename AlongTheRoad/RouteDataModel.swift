@@ -30,6 +30,7 @@ class RouteDataModel: NSObject {
     var searchRadius:Int
     var searchSection: String
     var restaurants: [AnyObject]
+    var isDestination: Bool
     
     override init(){
         destination = ""
@@ -37,6 +38,7 @@ class RouteDataModel: NSObject {
         searchRadius = 1600//Default at the beginning
         searchSection = "food"
         restaurants = [AnyObject]()
+        isDestination = false
         
     }
     

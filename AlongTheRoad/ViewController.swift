@@ -11,6 +11,7 @@ import GoogleMaps
 
 class ViewController: UIViewController, UITextFieldDelegate {
 
+    
     @IBOutlet weak var startingPoint: UITextField!
     @IBOutlet weak var destination: UITextField!
     
@@ -18,7 +19,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
-
+        return true
+    }
 
     var placesClient: GMSPlacesClient?
     
@@ -31,13 +33,19 @@ class ViewController: UIViewController, UITextFieldDelegate {
     */
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if let mapScene = segue.destinationViewController as? MapViewController {
-            routeData.destination = "944 Market Street, San Francisco, CA 94102" //self.destination.text
-            routeData.startingPoint = "658 Escondido Road, Stanford, CA, 94305"// self.startingPoint.text
+            //routeData.destination = "944 Market Street, San Francisco, CA 94102" //self.destination.text
+            //routeData.startingPoint = "658 Escondido Road, Stanford, CA, 94305"// self.startingPoint.text
         }
         
     }
     
     @IBAction func goToAutoComplete(sender: UITextField) {
+        // specify whether the destination of origin field is clicked
+        if (sender.placeholder == "Destination") {
+            routeData.isDestination = true;
+        } else {
+            routeData.isDestination = false;
+        }
         performSegueWithIdentifier("autocomplete", sender: nil)
     }
 
@@ -49,7 +57,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-
+    override func viewWillAppear(animated: Bool) {
+        startingPoint.text = routeData.startingPoint
+        destination.text = routeData.destination
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         placesClient = GMSPlacesClient()

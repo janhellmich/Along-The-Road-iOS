@@ -13,6 +13,8 @@ class AutocompleteViewController: UIViewController, UITableViewDelegate, UITable
     
     var placesClient: GMSPlacesClient?
     
+    let routeData = RouteDataModel.sharedInstance
+    
     var suggestions: [String] = []
 
     @IBOutlet weak var tableView: UITableView!
@@ -37,7 +39,7 @@ class AutocompleteViewController: UIViewController, UITableViewDelegate, UITable
                 if let error = error {
                     println("Autocomplete error \(error)")
                 } else {
-                    var newSuggestions: [String] = [sender.text!]
+                    var newSuggestions: [String] = []
                     for result in results! {
                         if let result = result as? GMSAutocompletePrediction {
                             newSuggestions.append(result.attributedFullText.string)
@@ -67,7 +69,14 @@ class AutocompleteViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
+        let currentCell = tableView.cellForRowAtIndexPath(indexPath)
+        let location = currentCell?.textLabel?.text
+        if routeData.isDestination {
+            routeData.destination = location!
+        } else {
+            routeData.startingPoint = location!
+        }
+        self.navigationController?.popViewControllerAnimated(true)
     }
 
     /*

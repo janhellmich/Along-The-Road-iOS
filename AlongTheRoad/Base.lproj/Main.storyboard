@@ -70,7 +70,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Origin" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="KqL-wx-oz1">
-                                <rect key="frame" x="0.0" y="187" width="600" height="30"/>
+                                <rect key="frame" x="16" y="187" width="559" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -78,7 +78,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Destination" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="spy-EC-kjQ">
-                                <rect key="frame" x="-1" y="225" width="601" height="30"/>
+                                <rect key="frame" x="16" y="225" width="559" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
@@ -90,26 +90,28 @@
                         <constraints>
                             <constraint firstItem="spy-EC-kjQ" firstAttribute="top" secondItem="KqL-wx-oz1" secondAttribute="bottom" constant="8" symbolic="YES" id="34m-D1-Dp2"/>
                             <constraint firstItem="fIW-Ip-40l" firstAttribute="top" secondItem="spy-EC-kjQ" secondAttribute="bottom" constant="50" id="5iK-16-1Mv"/>
-                            <constraint firstItem="KqL-wx-oz1" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" id="6Rr-9s-xBY"/>
+                            <constraint firstItem="KqL-wx-oz1" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leading" constant="16" id="6Rr-9s-xBY"/>
                             <constraint firstItem="hTJ-8U-TTi" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" constant="17" id="Cn1-c0-hUo"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="fIW-Ip-40l" secondAttribute="bottom" constant="265" id="Dhs-hV-gWt"/>
                             <constraint firstItem="hTJ-8U-TTi" firstAttribute="centerX" secondItem="z2H-zX-DsR" secondAttribute="centerX" id="Q6P-zb-gBV"/>
                             <constraint firstItem="z2H-zX-DsR" firstAttribute="centerX" secondItem="kh9-bI-dsS" secondAttribute="centerX" id="R6p-nx-4TA"/>
                             <constraint firstItem="spy-EC-kjQ" firstAttribute="trailing" secondItem="KqL-wx-oz1" secondAttribute="trailing" id="SLW-wF-YIB"/>
                             <constraint firstItem="z2H-zX-DsR" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="9" id="dhn-4p-9kl"/>
-                            <constraint firstItem="KqL-wx-oz1" firstAttribute="centerX" secondItem="z2H-zX-DsR" secondAttribute="centerX" id="h7S-7F-svb"/>
-                            <constraint firstItem="spy-EC-kjQ" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="-17" id="txZ-VK-p3B"/>
+                            <constraint firstItem="KqL-wx-oz1" firstAttribute="centerX" secondItem="z2H-zX-DsR" secondAttribute="centerX" constant="-4.5" id="h7S-7F-svb"/>
+                            <constraint firstItem="spy-EC-kjQ" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="txZ-VK-p3B"/>
                             <constraint firstItem="z2H-zX-DsR" firstAttribute="top" secondItem="hTJ-8U-TTi" secondAttribute="bottom" constant="1" id="u4d-sP-QsN"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="QBU-Jk-g70"/>
                     <connections>
+                        <outlet property="destination" destination="spy-EC-kjQ" id="fs1-Wu-9kj"/>
+                        <outlet property="startingPoint" destination="KqL-wx-oz1" id="LbT-7A-fBH"/>
                         <segue destination="MET-Bz-AQk" kind="show" identifier="autocomplete" id="S98-z8-ldf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="264" y="302"/>
+            <point key="canvasLocation" x="256" y="286"/>
         </scene>
         <!--Map View Controller-->
         <scene sceneID="iz7-Pi-Bu8">
@@ -227,6 +229,7 @@
                                 </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="MET-Bz-AQk" id="5yy-SS-ZTw"/>
+                                    <outlet property="delegate" destination="MET-Bz-AQk" id="Oc1-GK-AeP"/>
                                 </connections>
                             </tableView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Location" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rXZ-7z-lX4">
@@ -257,7 +260,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XFY-qh-VJH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="256" y="1067"/>
+            <point key="canvasLocation" x="264" y="1093"/>
         </scene>
     </scenes>
 </document>
