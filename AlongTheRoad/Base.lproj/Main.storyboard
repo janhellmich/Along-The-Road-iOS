@@ -145,6 +145,9 @@
                             </label>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="6v2-ZU-h43">
                                 <rect key="frame" x="0.0" y="122" width="600" height="478"/>
+                                <connections>
+                                    <outlet property="delegate" destination="OcZ-lP-89x" id="eX5-rB-3pe"/>
+                                </connections>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

@@ -11,7 +11,7 @@ import MapKit
 import CoreLocation
 import AddressBook
 
-class MapViewController: UIViewController, CLLocationManagerDelegate {
+class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
 
     //This represent the shared data model
     let routeData = RouteDataModel.sharedInstance
@@ -35,6 +35,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var destLabel: UILabel!
     @IBOutlet weak var startLabel: UILabel!
     @IBOutlet weak var map: MKMapView!
+    
     
     /* function:
      * ------------------------------------
@@ -165,13 +166,25 @@ class MapViewController: UIViewController, CLLocationManagerDelegate {
 
                 var renderer = MKPolygonRenderer(overlay:route.polyline)
                 renderer.strokeColor = UIColor.blueColor()
-                
+
                 self.map.rendererForOverlay(route.polyline)
-                self.map.addOverlay(route.polyline, level: MKOverlayLevel.AboveRoads)
+                self.map.addOverlay(route.polyline, level:MKOverlayLevel.AboveLabels)
             }
         });
     }
     
+    // sets the renderForOverlay delegate method
+    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
+        
+        if overlay is MKPolyline {
+            var polylineRenderer = MKPolylineRenderer(overlay: overlay)
+            polylineRenderer.strokeColor = UIColor.blueColor()
+            polylineRenderer.lineWidth = 6
+            return polylineRenderer
+        } 
+        return nil
+    }
+
     
 
     
