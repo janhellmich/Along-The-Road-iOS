@@ -17,6 +17,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     let routeData = RouteDataModel.sharedInstance
     
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -66,6 +67,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         placesClient = GMSPlacesClient()
         println(placesClient == nil)
+        
+        routeData.startingPoint = "San Francisco"
+        routeData.destination = "Palo Alto"
 
         // Do any additional setup after loading the view, typically from a nib.
     }
