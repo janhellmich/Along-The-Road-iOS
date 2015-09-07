@@ -18,6 +18,7 @@
 		233998901B92207A008D7FFC /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2339988E1B92207A008D7FFC /* LaunchScreen.xib */; };
 		2339989C1B92207A008D7FFC /* AlongTheRoadTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2339989B1B92207A008D7FFC /* AlongTheRoadTests.swift */; };
 		23B453A41B9DFF7800EB104C /* RestaurantDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B453A31B9DFF7800EB104C /* RestaurantDataModel.swift */; };
+		23B453A81B9E057400EB104C /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B453A71B9E057400EB104C /* DetailViewController.swift */; };
 		23C89B061B9769910014B243 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23C89B051B9769910014B243 /* MapKit.framework */; };
 		23C89B081B976BB10014B243 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C89B071B976BB10014B243 /* LocationManager.swift */; };
 		23EA68F11B94D5AC00EF7EBE /* RouteDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EA68F01B94D5AC00EF7EBE /* RouteDataModel.swift */; };
@@ -53,6 +54,7 @@
 		2339989A1B92207A008D7FFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2339989B1B92207A008D7FFC /* AlongTheRoadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlongTheRoadTests.swift; sourceTree = "<group>"; };
 		23B453A31B9DFF7800EB104C /* RestaurantDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantDataModel.swift; sourceTree = "<group>"; };
+		23B453A71B9E057400EB104C /* DetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		23C89B051B9769910014B243 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		23C89B071B976BB10014B243 /* LocationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		23EA68F01B94D5AC00EF7EBE /* RouteDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteDataModel.swift; sourceTree = "<group>"; };
@@ -106,19 +108,15 @@
 		233998821B92207A008D7FFC /* AlongTheRoad */ = {
 			isa = PBXGroup;
 			children = (
+				236C8BDB1B9E43BA00E12086 /* Main Files */,
 				23B453A61B9E000300EB104C /* RestaurantTableView */,
 				23B453A51B9DFFBB00EB104C /* Data Models */,
-				23C89B071B976BB10014B243 /* LocationManager.swift */,
-				233998851B92207A008D7FFC /* AppDelegate.swift */,
-				233998871B92207A008D7FFC /* ViewController.swift */,
 				1EA4E2471B9A5DFE0022C81C /* AutocompleteViewController.swift */,
-				233998891B92207A008D7FFC /* Main.storyboard */,
-				2339988C1B92207A008D7FFC /* Images.xcassets */,
-				2339988E1B92207A008D7FFC /* LaunchScreen.xib */,
 				233998831B92207A008D7FFC /* Supporting Files */,
 				232819081B926ADF00EBCCE6 /* MapViewController.swift */,
 				1E3706561B9937C6007C8ACC /* AlongTheRoad-Bridging-Header.h */,
 				23EDA50F1B9B8EB0009FD580 /* RestaurantTableViewCell.swift */,
+				23B453A71B9E057400EB104C /* DetailViewController.swift */,
 			);
 			path = AlongTheRoad;
 			sourceTree = "<group>";
@@ -146,6 +144,20 @@
 				2339989A1B92207A008D7FFC /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		236C8BDB1B9E43BA00E12086 /* Main Files */ = {
+			isa = PBXGroup;
+			children = (
+				2339988C1B92207A008D7FFC /* Images.xcassets */,
+				2339988E1B92207A008D7FFC /* LaunchScreen.xib */,
+				1E3706561B9937C6007C8ACC /* AlongTheRoad-Bridging-Header.h */,
+				233998891B92207A008D7FFC /* Main.storyboard */,
+				23C89B071B976BB10014B243 /* LocationManager.swift */,
+				233998871B92207A008D7FFC /* ViewController.swift */,
+				233998851B92207A008D7FFC /* AppDelegate.swift */,
+			);
+			name = "Main Files";
 			sourceTree = "<group>";
 		};
 		23B453A51B9DFFBB00EB104C /* Data Models */ = {
@@ -320,6 +332,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23B453A81B9E057400EB104C /* DetailViewController.swift in Sources */,
 				2323083A1B99412100CF748D /* RestaurantTableView.swift in Sources */,
 				2323083C1B9A18AD00CF748D /* DataFilter.swift in Sources */,
 				233998881B92207A008D7FFC /* ViewController.swift in Sources */,

@@ -22,16 +22,16 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "AlongTheRoad.RestaurantDataModel.restaurants.getter : Swift.Array&lt;Swift.AnyObject&gt;"
+                  symbolName = "AlongTheRoad.RestaurantDataModel.restaurants.setter : Swift.Array&lt;Swift.AnyObject&gt;"
                   moduleName = "AlongTheRoad"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Linus1/Documents/XCode%20Projects/Along-The-Road-iOS/AlongTheRoad/RestaurantDataModel.swift"
-                  timestampString = "463340729.427414"
+                  timestampString = "463357413.459592"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "0"
                   endingLineNumber = "0"
-                  offsetFromSymbolStart = "12">
+                  offsetFromSymbolStart = "16">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -41,7 +41,7 @@
                   moduleName = "AlongTheRoad"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Linus1/Documents/XCode%20Projects/Along-The-Road-iOS/AlongTheRoad/RestaurantDataModel.swift"
-                  timestampString = "463340729.427646"
+                  timestampString = "463357413.45969"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "27"
@@ -56,7 +56,7 @@
                   moduleName = "AlongTheRoad"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/Linus1/Documents/XCode%20Projects/Along-The-Road-iOS/AlongTheRoad/RestaurantDataModel.swift"
-                  timestampString = "463340729.427733"
+                  timestampString = "463357413.459788"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "0"

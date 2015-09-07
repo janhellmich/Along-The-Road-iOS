@@ -297,6 +297,7 @@
                                     <outlet property="rating" destination="4Vg-qT-vyT" id="jaD-8L-duh"/>
                                     <outlet property="restaurantName" destination="QzK-I9-84l" id="TgB-WV-vHP"/>
                                     <outlet property="restaurantPhoto" destination="xrv-Zw-Opb" id="41y-Jy-yf5"/>
+                                    <segue destination="r8b-3L-obx" kind="show" id="ivg-sc-MpU"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -310,23 +311,33 @@
             </objects>
             <point key="canvasLocation" x="1663" y="278"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="Pz4-Z2-D0a">
+        <!--Restaurant Details-->
+        <scene sceneID="h1z-rn-Vfa">
             <objects>
-                <viewController id="i0R-kD-ofo" sceneMemberID="viewController">
+                <viewController id="r8b-3L-obx" customClass="DetailViewController" customModule="AlongTheRoad" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="0Ih-Vq-Y0g"/>
-                        <viewControllerLayoutGuide type="bottom" id="obU-XS-zbz"/>
+                        <viewControllerLayoutGuide type="top" id="rpV-ye-Ghd"/>
+                        <viewControllerLayoutGuide type="bottom" id="u72-Ll-8HX"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="6dw-SI-UGI">
+                    <view key="view" contentMode="scaleToFill" id="fc8-Np-gyj">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="Restaurant Details" id="YKQ-G2-aEt">
+                        <barButtonItem key="rightBarButtonItem" title="Go To Maps" id="1eQ-xH-ANd">
+                            <connections>
+                                <action selector="getDirections:" destination="r8b-3L-obx" id="e9K-zP-8qd"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="x8D-88-FcA" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bWp-QF-8ra" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <barButtonItem title="Item" id="ZDX-WS-xVh"/>
             </objects>
-            <point key="canvasLocation" x="2358" y="286"/>
+            <point key="canvasLocation" x="2422" y="280"/>
         </scene>
         <!--Autocomplete View Controller-->
         <scene sceneID="eD1-jV-yep">
