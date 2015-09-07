@@ -10,15 +10,15 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class DataFilter: NSObject {
-    class var sharedInstance: DataFilter {
+class RouteDataFilter: NSObject {
+    class var sharedInstance: RouteDataFilter {
         struct Static {
-            static var instance: DataFilter?
+            static var instance: RouteDataFilter?
             static var token: dispatch_once_t = 0
         }
         
         dispatch_once(&Static.token) {
-            Static.instance = DataFilter()
+            Static.instance = RouteDataFilter()
         }
         
         return Static.instance!

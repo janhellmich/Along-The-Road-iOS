@@ -15,7 +15,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     //This represent the shared data model
     let routeData = RouteDataModel.sharedInstance
-    let dataProcessor = DataFilter.sharedInstance
+    let dataProcessor = RouteDataFilter.sharedInstance
 
     //These represent the location and map based variables
     var coreLocationManager = CLLocationManager()

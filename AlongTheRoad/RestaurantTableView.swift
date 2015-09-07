@@ -42,11 +42,15 @@ class RestaurantTableView: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        println(routeData.restaurantDictionary.count)
         
         return routeData.restaurantDictionary.count
     }
 
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        var restaurant:AnyObject = self.routeData.restaurants[indexPath.row]
+        self.routeData.selectedRestaurant = restaurant
+        
+    }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("restaurandID", forIndexPath: indexPath) as! RestaurantTableViewCell
