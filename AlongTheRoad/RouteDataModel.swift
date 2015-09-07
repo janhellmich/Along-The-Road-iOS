@@ -31,6 +31,7 @@ class RouteDataModel: NSObject {
     var searchSection: String
     var restaurants: [AnyObject]
     var isDestination: Bool
+    var restaurantDictionary: [String: AnyObject]
     
     override init(){
         destination = ""
@@ -40,6 +41,7 @@ class RouteDataModel: NSObject {
         restaurants = [AnyObject]()
         isDestination = false
         
+        restaurantDictionary = [String: AnyObject]()
     }
     
 }

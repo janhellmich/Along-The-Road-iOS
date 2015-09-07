@@ -21,6 +21,7 @@
 		23C89B081B976BB10014B243 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C89B071B976BB10014B243 /* LocationManager.swift */; };
 		23EA68F11B94D5AC00EF7EBE /* RouteDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EA68F01B94D5AC00EF7EBE /* RouteDataModel.swift */; };
 		E39B67D19817EDADE6240DF2 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4E73317155D0B2B43ABC568 /* libPods.a */; };
+		23EDA5101B9B8EB0009FD580 /* RestaurantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EDA50F1B9B8EB0009FD580 /* RestaurantTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +56,7 @@
 		77A58EAD708139DB8C248DEC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		A4E73317155D0B2B43ABC568 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF2440DAB0DE1D298F90474B /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		23EDA50F1B9B8EB0009FD580 /* RestaurantTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +115,7 @@
 				232308391B99412100CF748D /* RestaurantTableView.swift */,
 				2323083B1B9A18AD00CF748D /* DataFilter.swift */,
 				1E3706561B9937C6007C8ACC /* AlongTheRoad-Bridging-Header.h */,
+				23EDA50F1B9B8EB0009FD580 /* RestaurantTableViewCell.swift */,
 			);
 			path = AlongTheRoad;
 			sourceTree = "<group>";
@@ -299,6 +302,7 @@
 				2323083C1B9A18AD00CF748D /* DataFilter.swift in Sources */,
 				233998881B92207A008D7FFC /* ViewController.swift in Sources */,
 				23EA68F11B94D5AC00EF7EBE /* RouteDataModel.swift in Sources */,
+				23EDA5101B9B8EB0009FD580 /* RestaurantTableViewCell.swift in Sources */,
 				23C89B081B976BB10014B243 /* LocationManager.swift in Sources */,
 				232819091B926ADF00EBCCE6 /* MapViewController.swift in Sources */,
 				1EA4E2481B9A5DFE0022C81C /* AutocompleteViewController.swift in Sources */,
