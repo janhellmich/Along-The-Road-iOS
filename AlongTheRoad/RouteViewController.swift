@@ -15,7 +15,7 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     //This represent the shared data model
     let routeData = RouteDataModel.sharedInstance
-    let dataProcessor = DataFilter.sharedInstance
+    let dataProcessor = RouteDataFilter.sharedInstance
     
     //These represent the location and map based variables
     var coreLocationManager = CLLocationManager()
@@ -32,7 +32,12 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     @IBOutlet weak var destLabel: UILabel!
     @IBOutlet weak var startLabel: UILabel!
     @IBOutlet weak var map: MKMapView!
+    @IBOutlet weak var routeControl: UISegmentedControl!
     
+    @IBAction func routeSelected(sender: UISegmentedControl) {
+        var active = sender.selectedSegmentIndex
+        self.displayRoutes(active)
+    }
     
     /* function:
     * ------------------------------------
@@ -43,11 +48,13 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     override func viewDidLoad() {
         super.viewDidLoad()
         coreLocationManager.delegate = self
-        self.destLabel.text = routeData.destination
-        self.startLabel.text = routeData.startingPoint
         
         self.displayLocation()
         locationManager = LocationManager.sharedInstance
+        
+        // add go button to view
+        var rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "GO!", style: UIBarButtonItemStyle.Plain, target: self, action: "clickGo")
+        self.navigationItem.rightBarButtonItem = rightAddBarButtonItem
         
         let authorizationCode = CLLocationManager.authorizationStatus()
         if authorizationCode == CLAuthorizationStatus.NotDetermined && coreLocationManager.respondsToSelector("requestAlwaysAuthorization") || coreLocationManager.respondsToSelector("requestWhenInUseAuthorization") {
@@ -57,6 +64,11 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 getLocation()
             }
         }
+    }
+    
+    // Navigate to next view on GO!
+    func clickGo() {
+        self.performSegueWithIdentifier("go", sender: nil)
     }
     
     /* function: locationManager
@@ -149,47 +161,38 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 println("Directions failed with error: \(error.localizedDescription), trying again")
                 self.getDirections()
             } else {
-                
                 self.setNewRegion()
-                
-                for (i, route) in enumerate(response.routes) {
-                    var currentRoute = route as! MKRoute
-                    
-                    var renderer = MKPolygonRenderer(overlay:currentRoute.polyline)
-                    renderer.strokeColor = UIColor.grayColor()
-                    self.routeData.route = currentRoute
-
-                    if i == 0 {
-                        self.routeData.route = currentRoute
-                        self.activeRoute = true
-                    } else {
-                        self.activeRoute = false
-                    }
-                    
-                    
-                    self.map.rendererForOverlay(currentRoute.polyline)
-                    self.map.addOverlay(currentRoute.polyline, level:MKOverlayLevel.AboveLabels)
-                }
-                
-//                var route = response.routes[0] as! MKRoute
-//                println(response.routes.count)
-//                
-//                self.routeData.route = route //Add the route to the route data model
-//                
-//                self.setNewRegion()
-//                
-//                var renderer = MKPolygonRenderer(overlay:route.polyline)
-//                renderer.strokeColor = UIColor.blueColor()
-//                
-//                self.map.rendererForOverlay(route.polyline)
-//                self.map.addOverlay(route.polyline, level:MKOverlayLevel.AboveLabels)
+                self.routeData.routes = response.routes
+                self.displayRoutes(0)
             }
         });
     }
     
+    // displays all routes on the map
+    func displayRoutes(activeIndex: Int) {
+        
+        for (i, route) in enumerate(routeData.routes) {
+            var currentRoute = route as! MKRoute
+            
+            var renderer = MKPolygonRenderer(overlay:currentRoute.polyline)
+            renderer.strokeColor = UIColor.grayColor()
+            
+            if i != activeIndex {
+                self.activeRoute = false
+                self.map.addOverlay(currentRoute.polyline, level:MKOverlayLevel.AboveLabels)
+            }
+        }
+        
+        // render the active route last to make it appear on top
+        var activeRoute = routeData.routes[activeIndex] as! MKRoute
+        self.routeData.route = activeRoute
+        self.activeRoute = true
+        self.map.addOverlay(activeRoute.polyline, level:MKOverlayLevel.AboveLabels)
+        
+    }
+    
     // sets the renderForOverlay delegate method
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
-        
         if overlay is MKPolyline {
             var polylineRenderer = MKPolylineRenderer(overlay: overlay)
             if self.activeRoute {

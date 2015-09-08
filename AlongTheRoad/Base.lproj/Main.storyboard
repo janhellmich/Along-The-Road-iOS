@@ -44,8 +44,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="submitRoute:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="Zrj-gW-kbu"/>
-                                    <segue destination="OcZ-lP-89x" kind="show" id="lxY-5z-8Q8"/>
+                                    <segue destination="W4N-tE-QKu" kind="show" id="ZtH-XX-o8t"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Along The Road" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hTJ-8U-TTi">
@@ -184,7 +183,65 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rgY-PA-Fbe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="950" y="280"/>
+            <point key="canvasLocation" x="1642" y="282"/>
+        </scene>
+        <!--Route View Controller-->
+        <scene sceneID="e9e-wt-YDB">
+            <objects>
+                <viewController id="W4N-tE-QKu" customClass="RouteViewController" customModule="AlongTheRoad" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="w5o-y3-bQH"/>
+                        <viewControllerLayoutGuide type="bottom" id="myq-h3-Gvw"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="nik-e5-JII">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="wJd-wx-6Ad">
+                                <rect key="frame" x="0.0" y="123" width="600" height="477"/>
+                                <connections>
+                                    <outlet property="delegate" destination="W4N-tE-QKu" id="TGP-3N-eWK"/>
+                                </connections>
+                            </mapView>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="v90-RM-eul">
+                                <rect key="frame" x="16" y="77" width="568" height="29"/>
+                                <segments>
+                                    <segment title="First"/>
+                                    <segment title="Second"/>
+                                </segments>
+                                <connections>
+                                    <action selector="routeSelected:" destination="W4N-tE-QKu" eventType="valueChanged" id="0cl-3T-6wd"/>
+                                </connections>
+                            </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kqR-zX-g2H">
+                                <rect key="frame" x="494" y="20" width="46" height="30"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="kqR-zX-g2H" secondAttribute="trailing" constant="44" id="6JA-00-ThG"/>
+                            <constraint firstItem="v90-RM-eul" firstAttribute="trailing" secondItem="nik-e5-JII" secondAttribute="trailingMargin" id="D4x-CP-YGU"/>
+                            <constraint firstItem="wJd-wx-6Ad" firstAttribute="bottom" secondItem="myq-h3-Gvw" secondAttribute="top" id="DC4-wX-h4j"/>
+                            <constraint firstItem="kqR-zX-g2H" firstAttribute="top" secondItem="nik-e5-JII" secondAttribute="top" constant="20" symbolic="YES" id="Fio-Wt-grl"/>
+                            <constraint firstItem="wJd-wx-6Ad" firstAttribute="top" secondItem="v90-RM-eul" secondAttribute="bottom" constant="18" id="LeS-Gz-QUy"/>
+                            <constraint firstItem="wJd-wx-6Ad" firstAttribute="leading" secondItem="nik-e5-JII" secondAttribute="leading" id="eUn-AB-N7a"/>
+                            <constraint firstItem="v90-RM-eul" firstAttribute="top" secondItem="w5o-y3-bQH" secondAttribute="bottom" constant="13" id="hSk-cr-P3g"/>
+                            <constraint firstItem="wJd-wx-6Ad" firstAttribute="centerX" secondItem="v90-RM-eul" secondAttribute="centerX" id="xRP-DY-fNy"/>
+                            <constraint firstItem="v90-RM-eul" firstAttribute="leading" secondItem="nik-e5-JII" secondAttribute="leadingMargin" id="zoY-DY-D2G"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="map" destination="wJd-wx-6Ad" id="49M-wx-hEn"/>
+                        <outlet property="routeControl" destination="v90-RM-eul" id="YSn-5i-K0b"/>
+                        <segue destination="OcZ-lP-89x" kind="show" identifier="go" id="MqN-5u-dvt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="i91-Cu-Y7a" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="930" y="280"/>
         </scene>
         <!--Restaurant Table View-->
         <scene sceneID="cBu-17-iuy">
@@ -309,7 +366,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dxt-lP-psl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1663" y="278"/>
+            <point key="canvasLocation" x="2355" y="280"/>
         </scene>
         <!--Restaurant Details-->
         <scene sceneID="h1z-rn-Vfa">
@@ -337,7 +394,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bWp-QF-8ra" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <barButtonItem title="Item" id="ZDX-WS-xVh"/>
             </objects>
-            <point key="canvasLocation" x="2422" y="280"/>
+            <point key="canvasLocation" x="3114" y="282"/>
         </scene>
         <!--Autocomplete View Controller-->
         <scene sceneID="eD1-jV-yep">
