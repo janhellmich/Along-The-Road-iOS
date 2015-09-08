@@ -16,6 +16,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     //This represent the shared data model
     let routeData = RouteDataModel.sharedInstance
     let dataProcessor = RouteDataFilter.sharedInstance
+    let restaurantData = RestaurantDataModel.sharedInstance
 
     //These represent the location and map based variables
     var coreLocationManager = CLLocationManager()
@@ -120,6 +121,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 self.createAnnotation(mkplace.coordinate, title: type, subtitle: "")
                 
                 if type == "Start" {
+                    self.restaurantData.startingPoint = mkplace.coordinate // Required for searching by distance
                     self.startItem = MKMapItem(placemark: mkplace)
                 } else if type == "Destination" {
                     self.destinationItem = MKMapItem(placemark: mkplace)
@@ -139,7 +141,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         var querries = self.dataProcessor.getSections(self.routeData.route!)
  
         for i in 0..<querries.count {
-            self.sendFourSquareRequest(querries[i].latitude, long: querries[i].longitude)
+            if i == querries.count-1 {
+                self.sendFourSquareRequest(querries[i].latitude, long: querries[i].longitude, last: true)
+            } else {
+                self.sendFourSquareRequest(querries[i].latitude, long: querries[i].longitude, last: false)
+            }
         }
         
         self.map.addOverlay(route.polyline, level:MKOverlayLevel.AboveLabels)
@@ -205,7 +211,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      * best restaurants found by the four square api in that area. For now it just displays them as annotations
      * with the name and ratings but can later be modified for filters and further functionallity
     */
-    func sendFourSquareRequest (lat: Double, long: Double) {
+    func sendFourSquareRequest (lat: Double, long: Double, last: Bool) {
         
        
         var url = NSURL(string: "https://api.foursquare.com/v2/venues/explore?client_id=\(self.CLIENT_ID)&client_secret=\(self.CLIENT_SECRET)&v=20130815&ll=\(lat),\(long)&&venuePhotos=1&&openNow=1")//)&&radius=\(routeData.searchRadius)&&section=\(routeData.searchSection)")
@@ -229,33 +235,22 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             
             //Add the restaurants to the restaurants array
             var restaurantArray = [AnyObject]()
-            for i in 0..<dataObj!.count {
-                restaurantArray.append(dataObj![i].objectForKey("venue")!)
-            }
             
-            //Create annotations for each restaurant that was found
-            //This section needs to later be modified to deal with possible nil values
-            for i in 0..<restaurantArray.count  {
-                var currentVenue : AnyObject = restaurantArray[i]
-                var coord = CLLocationCoordinate2D()
-                coord.latitude = currentVenue.objectForKey("location")!.objectForKey("lat") as!Double
-                coord.longitude = currentVenue.objectForKey("location")!.objectForKey("lng") as! Double
-                var title = currentVenue.objectForKey("name") as! String
-                
-                //Insanely sketchy logic but don't worry about it
-                var rating = 0.0
-                if var otherRating: AnyObject = currentVenue.objectForKey("rating")  {
-                    rating = otherRating as! Double
+            self.restaurantData.addRestaurants(dataObj)
+            
+            //This section checks if it is the last query and then adds the annotation to the map
+            if last  {
+                for i in 0..<self.restaurantData.restaurants.count  {
+                    var currentVenue = self.restaurantData.restaurants[i]
+                    var coord = currentVenue.location
+                    var title = currentVenue.name
+                    
+                    var rating = currentVenue.rating
+                    self.createAnnotation(coord, title: title, subtitle: "Rating: \(rating)")
                 }
-                
-                self.routeData.restaurantDictionary["\(coord.latitude),\(coord.longitude)"] = restaurantArray[i]
-                self.createAnnotation(coord, title: title, subtitle: "Rating: \(rating)")
+               
+                self.map.showAnnotations(self.annotations, animated: true)
             }
-           
-            //Add the restaurans to the array
-//            self.routeData.restaurants += restaurantArray;
-            //Render the pins on the map
-            self.map.showAnnotations(self.annotations, animated: true)
         }
     }
     

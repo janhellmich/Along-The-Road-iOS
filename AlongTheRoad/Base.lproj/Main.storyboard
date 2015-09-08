@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="CRA-9A-Xuy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="CRA-9A-Xuy">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
@@ -112,7 +112,7 @@
             </objects>
             <point key="canvasLocation" x="256" y="286"/>
         </scene>
-        <!--Map View Controller-->
+        <!--Restaurant Locator-->
         <scene sceneID="iz7-Pi-Bu8">
             <objects>
                 <viewController id="OcZ-lP-89x" customClass="MapViewController" customModule="AlongTheRoad" sceneMemberID="viewController">
@@ -142,12 +142,6 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="6v2-ZU-h43">
-                                <rect key="frame" x="0.0" y="122" width="600" height="478"/>
-                                <connections>
-                                    <outlet property="delegate" destination="OcZ-lP-89x" id="eX5-rB-3pe"/>
-                                </connections>
-                            </mapView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="325-Wt-Q3S">
                                 <rect key="frame" x="455" y="562" width="129" height="30"/>
                                 <state key="normal" title="List of Restaurants">
@@ -158,18 +152,12 @@
                                     <segue destination="Tfo-n2-fYq" kind="show" id="B33-bo-awi"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cJd-3g-DPp">
-                                <rect key="frame" x="515" y="72" width="85" height="48"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="85" id="YEz-fa-s7X"/>
-                                </constraints>
-                                <state key="normal" image="list">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="6v2-ZU-h43">
+                                <rect key="frame" x="0.0" y="122" width="600" height="478"/>
                                 <connections>
-                                    <segue destination="Tfo-n2-fYq" kind="show" id="QMD-KM-zSr"/>
+                                    <outlet property="delegate" destination="OcZ-lP-89x" id="eX5-rB-3pe"/>
                                 </connections>
-                            </button>
+                            </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -181,14 +169,29 @@
                             <constraint firstItem="N7Q-tA-QsU" firstAttribute="top" secondItem="325-Wt-Q3S" secondAttribute="bottom" constant="8" symbolic="YES" id="UbV-X4-rbc"/>
                             <constraint firstItem="6v2-ZU-h43" firstAttribute="top" secondItem="EGx-wr-Auv" secondAttribute="bottom" id="UgW-PB-rEL"/>
                             <constraint firstItem="EGx-wr-Auv" firstAttribute="leading" secondItem="OA8-Iu-TKi" secondAttribute="leadingMargin" id="XCb-4o-oN1"/>
-                            <constraint firstItem="cJd-3g-DPp" firstAttribute="top" secondItem="m9Z-sh-KQv" secondAttribute="top" id="YSM-VH-yWU"/>
                             <constraint firstItem="m9Z-sh-KQv" firstAttribute="top" secondItem="NKR-bf-OWK" secondAttribute="bottom" constant="8" symbolic="YES" id="Zsb-bt-LiG"/>
                             <constraint firstAttribute="trailing" secondItem="6v2-ZU-h43" secondAttribute="trailing" id="l6e-29-A35"/>
                             <constraint firstItem="6v2-ZU-h43" firstAttribute="centerX" secondItem="EGx-wr-Auv" secondAttribute="centerX" id="mcq-h5-nVy"/>
-                            <constraint firstItem="cJd-3g-DPp" firstAttribute="trailing" secondItem="6v2-ZU-h43" secondAttribute="trailing" id="pyM-mt-n1H"/>
                             <constraint firstItem="EGx-wr-Auv" firstAttribute="top" secondItem="m9Z-sh-KQv" secondAttribute="bottom" constant="8" symbolic="YES" id="zIN-Qv-73P"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Restaurant Locator" id="986-OT-d7Z">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="Xji-38-Zpz">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="cJd-3g-DPp">
+                                <rect key="frame" x="515" y="72" width="85" height="48"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="85" id="YEz-fa-s7X"/>
+                                </constraints>
+                                <state key="normal" image="list">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="Tfo-n2-fYq" kind="show" id="QMD-KM-zSr"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="destLabel" destination="EGx-wr-Auv" id="xmU-xr-qHv"/>
                         <outlet property="map" destination="6v2-ZU-h43" id="xx7-lS-1OD"/>
@@ -233,10 +236,7 @@
                                     <action selector="routeSelected:" destination="W4N-tE-QKu" eventType="valueChanged" id="0cl-3T-6wd"/>
                                 </connections>
                             </segmentedControl>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="kqR-zX-g2H" secondAttribute="trailing" constant="44" id="6JA-00-ThG"/>
+
                             <constraint firstAttribute="trailing" secondItem="v90-RM-eul" secondAttribute="trailing" id="9V5-SX-fea"/>
                             <constraint firstItem="wJd-wx-6Ad" firstAttribute="top" secondItem="v90-RM-eul" secondAttribute="bottom" constant="1" id="CXs-od-dHz"/>
                             <constraint firstItem="wJd-wx-6Ad" firstAttribute="bottom" secondItem="myq-h3-Gvw" secondAttribute="top" id="DC4-wX-h4j"/>
@@ -247,6 +247,20 @@
                             <constraint firstItem="wJd-wx-6Ad" firstAttribute="leading" secondItem="nik-e5-JII" secondAttribute="leading" id="eUn-AB-N7a"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="WyC-LI-XUF">
+                        <nil key="title"/>
+                        <segmentedControl key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="v90-RM-eul">
+                            <rect key="frame" x="16" y="7.5" width="568" height="29"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <segments>
+                                <segment title="First"/>
+                                <segment title="Second"/>
+                            </segments>
+                            <connections>
+                                <action selector="routeSelected:" destination="W4N-tE-QKu" eventType="valueChanged" id="0cl-3T-6wd"/>
+                            </connections>
+                        </segmentedControl>
+                    </navigationItem>
                     <connections>
                         <outlet property="map" destination="wJd-wx-6Ad" id="49M-wx-hEn"/>
                         <outlet property="routeControl" destination="v90-RM-eul" id="YSn-5i-K0b"/>

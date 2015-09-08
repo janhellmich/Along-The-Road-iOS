@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1E52A7CA1B9E11250039A9CE /* RouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E52A7C91B9E11250039A9CE /* RouteViewController.swift */; };
 		1EA4E2481B9A5DFE0022C81C /* AutocompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA4E2471B9A5DFE0022C81C /* AutocompleteViewController.swift */; };
+		23157EC51B9F64C40001BEE3 /* RestaurantStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23157EC41B9F64C40001BEE3 /* RestaurantStructure.swift */; };
 		2323083A1B99412100CF748D /* RestaurantTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232308391B99412100CF748D /* RestaurantTableView.swift */; };
 		2323083C1B9A18AD00CF748D /* DataFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2323083B1B9A18AD00CF748D /* DataFilter.swift */; };
 		232819091B926ADF00EBCCE6 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232819081B926ADF00EBCCE6 /* MapViewController.swift */; };
@@ -25,9 +26,6 @@
 		23EA68F11B94D5AC00EF7EBE /* RouteDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EA68F01B94D5AC00EF7EBE /* RouteDataModel.swift */; };
 		23EDA5101B9B8EB0009FD580 /* RestaurantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EDA50F1B9B8EB0009FD580 /* RestaurantTableViewCell.swift */; };
 		E39B67D19817EDADE6240DF2 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4E73317155D0B2B43ABC568 /* libPods.a */; };
-		23EDA5101B9B8EB0009FD580 /* RestaurantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EDA50F1B9B8EB0009FD580 /* RestaurantTableViewCell.swift */; };
-		E39B67D19817EDADE6240DF2 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4E73317155D0B2B43ABC568 /* libPods.a */; };
-
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +42,7 @@
 		1E3706561B9937C6007C8ACC /* AlongTheRoad-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlongTheRoad-Bridging-Header.h"; sourceTree = "<group>"; };
 		1E52A7C91B9E11250039A9CE /* RouteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteViewController.swift; sourceTree = "<group>"; };
 		1EA4E2471B9A5DFE0022C81C /* AutocompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteViewController.swift; sourceTree = "<group>"; };
+		23157EC41B9F64C40001BEE3 /* RestaurantStructure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantStructure.swift; sourceTree = "<group>"; };
 		232308391B99412100CF748D /* RestaurantTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantTableView.swift; sourceTree = "<group>"; };
 		2323083B1B9A18AD00CF748D /* DataFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataFilter.swift; sourceTree = "<group>"; };
 		232819081B926ADF00EBCCE6 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
@@ -118,7 +117,6 @@
 				233998831B92207A008D7FFC /* Supporting Files */,
 				232819081B926ADF00EBCCE6 /* MapViewController.swift */,
 				1E3706561B9937C6007C8ACC /* AlongTheRoad-Bridging-Header.h */,
-				23EDA50F1B9B8EB0009FD580 /* RestaurantTableViewCell.swift */,
 				23B453A71B9E057400EB104C /* DetailViewController.swift */,
 				1E52A7C91B9E11250039A9CE /* RouteViewController.swift */,
 			);
@@ -167,8 +165,9 @@
 			isa = PBXGroup;
 			children = (
 				2323083B1B9A18AD00CF748D /* DataFilter.swift */,
-				23B453A31B9DFF7800EB104C /* RestaurantDataModel.swift */,
 				23EA68F01B94D5AC00EF7EBE /* RouteDataModel.swift */,
+				23B453A31B9DFF7800EB104C /* RestaurantDataModel.swift */,
+				23157EC41B9F64C40001BEE3 /* RestaurantStructure.swift */,
 			);
 			name = "Data Models";
 			sourceTree = "<group>";
@@ -176,6 +175,7 @@
 		23B453A61B9E000300EB104C /* RestaurantTableView */ = {
 			isa = PBXGroup;
 			children = (
+				23EDA50F1B9B8EB0009FD580 /* RestaurantTableViewCell.swift */,
 				232308391B99412100CF748D /* RestaurantTableView.swift */,
 			);
 			name = RestaurantTableView;
@@ -342,6 +342,7 @@
 				23EDA5101B9B8EB0009FD580 /* RestaurantTableViewCell.swift in Sources */,
 				23C89B081B976BB10014B243 /* LocationManager.swift in Sources */,
 				23B453A41B9DFF7800EB104C /* RestaurantDataModel.swift in Sources */,
+				23157EC51B9F64C40001BEE3 /* RestaurantStructure.swift in Sources */,
 				232819091B926ADF00EBCCE6 /* MapViewController.swift in Sources */,
 				1EA4E2481B9A5DFE0022C81C /* AutocompleteViewController.swift in Sources */,
 				1E52A7CA1B9E11250039A9CE /* RouteViewController.swift in Sources */,

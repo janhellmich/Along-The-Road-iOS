@@ -14,19 +14,16 @@ import AddressBook
 
 class DetailViewController: UIViewController {
 
-    var routeDataModel = RouteDataModel.sharedInstance
+    var restaurantData = RestaurantDataModel.sharedInstance
     
-    @IBOutlet weak var webpageView: UIView!
     @IBAction func getDirections(sender: AnyObject) {
-        var restaurant: AnyObject = self.routeDataModel.selectedRestaurant!
-        var coord = CLLocationCoordinate2D()
-        coord.latitude = restaurant.objectForKey("location")!.objectForKey("lat") as!Double
-        coord.longitude = restaurant.objectForKey("location")!.objectForKey("lng") as! Double
+        var restaurant = self.restaurantData.selectedRestaurant
+        var coord = restaurant.location
         
-        var street = restaurant.objectForKey("location")!.objectForKey("address") as! String
-        var city = restaurant.objectForKey("location")!.objectForKey("city") as! String
-        var state = restaurant.objectForKey("location")!.objectForKey("state") as! String
-        var ZIP = restaurant.objectForKey("location")!.objectForKey("postalCode") as! String
+        var street = restaurant.streetAddress
+        var city = restaurant.city
+        var state = restaurant.state
+        var ZIP = restaurant.postalCode
         let addressDict =
         [kABPersonAddressStreetKey as NSString: street,
             kABPersonAddressCityKey: city,
@@ -58,22 +55,11 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        var restaurant: AnyObject = self.routeDataModel.selectedRestaurant!
-        var urlString = ""
-        if let name: AnyObject? = restaurant.objectForKey("name") {
-            if let id: AnyObject? = restaurant.objectForKey("id") {
-                var restaurantID = id as! String
-                var restaurantName = name as! String
-                
-                //Handling Spaces
-                var nameArr = split(restaurantName){$0 ==  " "}
-                var newName = "-".join(nameArr)
-                urlString = "https://foursquare.com/v/\(newName)/\(restaurantID)"
-            }
-        }
+        var restaurant = self.restaurantData.selectedRestaurant
+
 
         
-        var url = NSURL(string: urlString)
+        var url = NSURL(string: restaurant.url)
         
         var req = NSURLRequest(URL:url!)
         self.webView!.loadRequest(req)
