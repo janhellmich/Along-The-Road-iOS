@@ -54,9 +54,6 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         self.displayLocation()
         locationManager = LocationManager.sharedInstance
         
-        // add go button to view
-        var rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "GO!", style: UIBarButtonItemStyle.Plain, target: self, action: "clickGo")
-        self.navigationItem.rightBarButtonItem = rightAddBarButtonItem
         
         let authorizationCode = CLLocationManager.authorizationStatus()
         if authorizationCode == CLAuthorizationStatus.NotDetermined && coreLocationManager.respondsToSelector("requestAlwaysAuthorization") || coreLocationManager.respondsToSelector("requestWhenInUseAuthorization") {
@@ -168,6 +165,10 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 self.routeData.routes = response.routes
                 self.displayRoutes(0)
                 self.generateSegmentControl()
+                
+                // add go button to view
+                var rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "GO!", style: UIBarButtonItemStyle.Plain, target: self, action: "clickGo")
+                self.navigationItem.rightBarButtonItem = rightAddBarButtonItem
             }
         });
     }
