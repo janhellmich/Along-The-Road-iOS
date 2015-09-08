@@ -124,55 +124,25 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                     self.startItem = MKMapItem(placemark: mkplace)
                 } else {
                     self.destinationItem = MKMapItem(placemark: mkplace)
-                    self.getDirections()
+                    self.displayRoute()
+                    self.setNewRegion()
                 }
             }
         })
     }
     
-    /* function: getDirections
-    * ---------------------------------------
-    * This function uses the two location mapItems to determine the best route.
-    * If there is an error in searching for the directions, then it will recursively call itself.
-    * This is meant to deal with the way apple maps sends error messages for correct routes about
-    * Half the time. However, for invaldid addresses
-    */
-    func getDirections() {
-        var req = MKDirectionsRequest()
+    // display the selected route and make api requests
+    func displayRoute() {
+        var route = routeData.route!
+        var querries = self.dataProcessor.getSections(self.routeData.route!)
         
-        req.setDestination(self.destinationItem)
-        req.setSource(self.startItem)
-        req.transportType = MKDirectionsTransportType.Automobile
-        self.map.showAnnotations(self.annotations, animated: true)
+        for i in 0..<querries.count {
+            self.sendFourSquareRequest(querries[i].latitude, long: querries[i].longitude)
+        }
         
-        var directions = MKDirections(request: req)
-        
-        directions.calculateDirectionsWithCompletionHandler({ (response: MKDirectionsResponse!, error: NSError!) -> Void in
-            if error != nil {
-                println("Directions failed with error: \(error.localizedDescription), trying again")
-                self.getDirections()
-            } else {
-                var route = response.routes[0] as! MKRoute
-                var steps = route.steps
-                
-                
-                self.routeData.route = route //Add the route to the route data model
-                var querries = self.dataProcessor.getSections(self.routeData.route!)
-                
-                for i in 0..<querries.count {
-                    self.sendFourSquareRequest(querries[i].latitude, long: querries[i].longitude)
-                }
-                
-                self.setNewRegion()
-
-                var renderer = MKPolygonRenderer(overlay:route.polyline)
-                renderer.strokeColor = UIColor.blueColor()
-
-                self.map.rendererForOverlay(route.polyline)
-                self.map.addOverlay(route.polyline, level:MKOverlayLevel.AboveLabels)
-            }
-        });
+        self.map.addOverlay(route.polyline, level:MKOverlayLevel.AboveLabels)
     }
+    
     
     // sets the renderForOverlay delegate method
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
@@ -208,7 +178,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         var region = self.dataProcessor.findRegion(locations)
         
         //Currently calls sendFourSquare request on
-        self.map.setRegion(region, animated: true)
+        self.map.setRegion(region, animated: false)
     }
     
     

@@ -49,6 +49,8 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         super.viewDidLoad()
         coreLocationManager.delegate = self
         
+        routeControl.removeAllSegments();
+        
         self.displayLocation()
         locationManager = LocationManager.sharedInstance
         
@@ -64,6 +66,7 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 getLocation()
             }
         }
+        
     }
     
     // Navigate to next view on GO!
@@ -164,8 +167,44 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 self.setNewRegion()
                 self.routeData.routes = response.routes
                 self.displayRoutes(0)
+                self.generateSegmentControl()
             }
         });
+    }
+    
+    // generate Segment display to choose between routes
+    func generateSegmentControl() {
+        for (i, route) in enumerate(routeData.routes) {
+            routeControl.insertSegmentWithTitle("\(metersToMiles(route.distance))mi - \(timeConverter(route.expectedTravelTime))", atIndex: i, animated: false)
+        }
+        routeControl.selectedSegmentIndex = 0
+
+    }
+    
+    // turn meters to miles
+    func metersToMiles(distance: Double) -> Double {
+        var miles = distance * 0.0006214
+        // force one decimal only
+        if miles >= 100 {
+            miles = round(miles)
+        } else {
+            miles = round(miles*10)/10
+        }
+        
+        
+        return miles
+    }
+    
+    // turn seconds into readable time
+    func timeConverter(time: Double) -> String {
+        var min = Int(time / 60) % 60
+        var hours = (Int(time/60) - min) / 60
+        
+        if hours > 0 {
+            return "\(hours)h \(min)m"
+        } else {
+            return "\(min)min"
+        }
     }
     
     // displays all routes on the map
@@ -173,7 +212,6 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         for (i, route) in enumerate(routeData.routes) {
             var currentRoute = route as! MKRoute
-            
             var renderer = MKPolygonRenderer(overlay:currentRoute.polyline)
             renderer.strokeColor = UIColor.grayColor()
             
