@@ -102,8 +102,8 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     * the two addresses
     */
     func displayLocation(){
-        self.addMapItem( "Start", address: routeData.destination)
-        self.addMapItem( "Destination", address: routeData.startingPoint)
+        self.addMapItem( "Start", address: routeData.startingPoint)
+        self.addMapItem( "Destination", address: routeData.destination)
     }
     
     /* function: addMapItem
