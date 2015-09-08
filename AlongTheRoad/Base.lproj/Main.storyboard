@@ -199,10 +199,10 @@
             </objects>
             <point key="canvasLocation" x="1642" y="282"/>
         </scene>
-        <!--Route View Controller-->
+        <!--Choose Route-->
         <scene sceneID="e9e-wt-YDB">
             <objects>
-                <viewController id="W4N-tE-QKu" customClass="RouteViewController" customModule="AlongTheRoad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Choose Route" id="W4N-tE-QKu" customClass="RouteViewController" customModule="AlongTheRoad" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="w5o-y3-bQH"/>
                         <viewControllerLayoutGuide type="bottom" id="myq-h3-Gvw"/>
@@ -212,13 +212,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="wJd-wx-6Ad">
-                                <rect key="frame" x="0.0" y="123" width="600" height="477"/>
+                                <rect key="frame" x="0.0" y="93" width="600" height="507"/>
                                 <connections>
                                     <outlet property="delegate" destination="W4N-tE-QKu" id="TGP-3N-eWK"/>
                                 </connections>
                             </mapView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kqR-zX-g2H">
+                                <rect key="frame" x="494" y="20" width="46" height="30"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                            </button>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="v90-RM-eul">
-                                <rect key="frame" x="0.0" y="77" width="600" height="29"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="29"/>
                                 <segments>
                                     <segment title="First"/>
                                     <segment title="Second"/>
@@ -227,24 +233,18 @@
                                     <action selector="routeSelected:" destination="W4N-tE-QKu" eventType="valueChanged" id="0cl-3T-6wd"/>
                                 </connections>
                             </segmentedControl>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kqR-zX-g2H">
-                                <rect key="frame" x="494" y="20" width="46" height="30"/>
-                                <state key="normal" title="Button">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="kqR-zX-g2H" secondAttribute="trailing" constant="44" id="6JA-00-ThG"/>
+                            <constraint firstAttribute="trailing" secondItem="v90-RM-eul" secondAttribute="trailing" id="9V5-SX-fea"/>
+                            <constraint firstItem="wJd-wx-6Ad" firstAttribute="top" secondItem="v90-RM-eul" secondAttribute="bottom" constant="1" id="CXs-od-dHz"/>
                             <constraint firstItem="wJd-wx-6Ad" firstAttribute="bottom" secondItem="myq-h3-Gvw" secondAttribute="top" id="DC4-wX-h4j"/>
                             <constraint firstItem="kqR-zX-g2H" firstAttribute="top" secondItem="nik-e5-JII" secondAttribute="top" constant="20" symbolic="YES" id="Fio-Wt-grl"/>
-                            <constraint firstItem="v90-RM-eul" firstAttribute="top" secondItem="w5o-y3-bQH" secondAttribute="bottom" constant="13" id="aWg-Zz-g2F"/>
-                            <constraint firstAttribute="trailing" secondItem="v90-RM-eul" secondAttribute="trailing" id="bUP-Da-Dxj"/>
-                            <constraint firstItem="wJd-wx-6Ad" firstAttribute="top" secondItem="v90-RM-eul" secondAttribute="bottom" constant="18" id="cz5-BH-XKk"/>
+                            <constraint firstItem="v90-RM-eul" firstAttribute="trailing" secondItem="wJd-wx-6Ad" secondAttribute="trailing" id="LVN-o2-eRg"/>
+                            <constraint firstItem="v90-RM-eul" firstAttribute="top" secondItem="w5o-y3-bQH" secondAttribute="bottom" id="W3G-Y5-7hM"/>
+                            <constraint firstItem="v90-RM-eul" firstAttribute="leading" secondItem="wJd-wx-6Ad" secondAttribute="leading" id="WJX-mN-WS7"/>
                             <constraint firstItem="wJd-wx-6Ad" firstAttribute="leading" secondItem="nik-e5-JII" secondAttribute="leading" id="eUn-AB-N7a"/>
-                            <constraint firstItem="v90-RM-eul" firstAttribute="leading" secondItem="wJd-wx-6Ad" secondAttribute="leading" id="fEn-sy-Qg6"/>
-                            <constraint firstItem="v90-RM-eul" firstAttribute="trailing" secondItem="wJd-wx-6Ad" secondAttribute="trailing" id="iHz-tt-Imw"/>
                         </constraints>
                     </view>
                     <connections>
