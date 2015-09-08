@@ -158,6 +158,15 @@
                                     <segue destination="Tfo-n2-fYq" kind="show" id="B33-bo-awi"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cJd-3g-DPp">
+                                <rect key="frame" x="515" y="72" width="85" height="48"/>
+                                <state key="normal" image="list">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="Tfo-n2-fYq" kind="show" id="QMD-KM-zSr"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -462,5 +471,11 @@
             <point key="canvasLocation" x="264" y="1093"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="list" width="48" height="48"/>
+    </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="QMD-KM-zSr"/>
+    </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.65830813779999997" green="0.87441481789999997" blue="1" alpha="1" colorSpace="calibratedRGB"/>
 </document>

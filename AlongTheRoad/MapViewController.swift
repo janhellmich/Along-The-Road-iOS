@@ -166,7 +166,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      * set the map to fit around all of these. It should also include annotations later on.
     */
     func setNewRegion () {
-        
         //Extract the coord
         var startCoord = self.startItem?.placemark.coordinate
         var destCoord = self.destinationItem?.placemark.coordinate
