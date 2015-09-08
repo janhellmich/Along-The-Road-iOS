@@ -257,7 +257,7 @@
             </objects>
             <point key="canvasLocation" x="930" y="280"/>
         </scene>
-        <!--Restaurant Table View-->
+        <!--Nearby Restaurants-->
         <scene sceneID="cBu-17-iuy">
             <objects>
                 <tableViewController id="Tfo-n2-fYq" customClass="RestaurantTableView" customModule="AlongTheRoad" sceneMemberID="viewController">
@@ -377,6 +377,7 @@
                             <outlet property="delegate" destination="Tfo-n2-fYq" id="zN8-ym-C1U"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Nearby Restaurants" id="cNG-OB-hPT"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dxt-lP-psl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

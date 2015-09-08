@@ -27,6 +27,7 @@
 		E39B67D19817EDADE6240DF2 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4E73317155D0B2B43ABC568 /* libPods.a */; };
 		23EDA5101B9B8EB0009FD580 /* RestaurantTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EDA50F1B9B8EB0009FD580 /* RestaurantTableViewCell.swift */; };
 		E39B67D19817EDADE6240DF2 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A4E73317155D0B2B43ABC568 /* libPods.a */; };
+
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,7 +155,6 @@
 			children = (
 				2339988C1B92207A008D7FFC /* Images.xcassets */,
 				2339988E1B92207A008D7FFC /* LaunchScreen.xib */,
-				1E3706561B9937C6007C8ACC /* AlongTheRoad-Bridging-Header.h */,
 				233998891B92207A008D7FFC /* Main.storyboard */,
 				23C89B071B976BB10014B243 /* LocationManager.swift */,
 				233998871B92207A008D7FFC /* ViewController.swift */,
@@ -177,7 +177,6 @@
 			isa = PBXGroup;
 			children = (
 				232308391B99412100CF748D /* RestaurantTableView.swift */,
-				23EDA50F1B9B8EB0009FD580 /* RestaurantTableViewCell.swift */,
 			);
 			name = RestaurantTableView;
 			sourceTree = "<group>";

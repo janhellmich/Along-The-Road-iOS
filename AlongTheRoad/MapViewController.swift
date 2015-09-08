@@ -137,7 +137,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     func displayRoute() {
         var route = routeData.route!
         var querries = self.dataProcessor.getSections(self.routeData.route!)
-        
+ 
         for i in 0..<querries.count {
             self.sendFourSquareRequest(querries[i].latitude, long: querries[i].longitude)
         }
@@ -208,7 +208,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     func sendFourSquareRequest (lat: Double, long: Double) {
         
        
-        var url = NSURL(string: "https://api.foursquare.com/v2/venues/explore?client_id=\(self.CLIENT_ID)&client_secret=\(self.CLIENT_SECRET)&v=20130815&ll=\(lat),\(long)&&venuePhotos=1")//)&&radius=\(routeData.searchRadius)&&section=\(routeData.searchSection)")
+        var url = NSURL(string: "https://api.foursquare.com/v2/venues/explore?client_id=\(self.CLIENT_ID)&client_secret=\(self.CLIENT_SECRET)&v=20130815&ll=\(lat),\(long)&&venuePhotos=1&&openNow=1")//)&&radius=\(routeData.searchRadius)&&section=\(routeData.searchSection)")
         var req = NSURLRequest(URL: url!)
         
         NSURLConnection.sendAsynchronousRequest(req, queue: NSOperationQueue.mainQueue()) {(response, data, error) in

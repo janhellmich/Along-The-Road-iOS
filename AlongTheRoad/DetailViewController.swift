@@ -18,7 +18,7 @@ class DetailViewController: UIViewController {
     
     @IBOutlet weak var webpageView: UIView!
     @IBAction func getDirections(sender: AnyObject) {
-        var restaurant = self.routeDataModel.selectedRestaurant!
+        var restaurant: AnyObject = self.routeDataModel.selectedRestaurant!
         var coord = CLLocationCoordinate2D()
         coord.latitude = restaurant.objectForKey("location")!.objectForKey("lat") as!Double
         coord.longitude = restaurant.objectForKey("location")!.objectForKey("lng") as! Double

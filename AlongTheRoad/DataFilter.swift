@@ -22,7 +22,7 @@ class RouteDataFilter: NSObject {
         }
         
         return Static.instance!
-    }
+    } 
     
     
     /* function: getSections
