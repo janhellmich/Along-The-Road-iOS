@@ -61,8 +61,11 @@ class DetailViewController: UIViewController {
         
         var url = NSURL(string: restaurant.url)
         
-        var req = NSURLRequest(URL:url!)
-        self.webView!.loadRequest(req)
+        if url != nil {
+            var req = NSURLRequest(URL:url!)
+            self.webView!.loadRequest(req)
+        }
+
     }
     
     override func didReceiveMemoryWarning() {

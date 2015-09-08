@@ -236,13 +236,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             //Add the restaurants to the restaurants array
             var restaurantArray = [AnyObject]()
             
-            self.restaurantData.addRestaurants(dataObj)
+            var newlyAdded = self.restaurantData.addRestaurants(dataObj)
             
             //This section checks if it is the last query and then adds the annotation to the map
-            if last  {
-                self.restaurantData.convertToArray()
-                for i in 0..<self.restaurantData.restaurants.count  {
-                    var currentVenue = self.restaurantData.restaurants[i]
+                for i in 0..<newlyAdded.count  {
+                    var currentVenue = newlyAdded[i]
                     var coord = currentVenue.location
                     var title = currentVenue.name
                     
@@ -252,7 +250,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                
                 self.map.showAnnotations(self.annotations, animated: true)
             }
-        }
+        
     }
     
 }

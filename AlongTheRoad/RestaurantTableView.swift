@@ -14,6 +14,7 @@ class RestaurantTableView: UITableViewController {
     var restaurantData = RestaurantDataModel.sharedInstance
     override func viewDidLoad() {
         super.viewDidLoad()
+        restaurantData.convertToArray()
         restaurantData.sortRestaurantsByDistance()
 
     }

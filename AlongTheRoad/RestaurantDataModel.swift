@@ -30,6 +30,7 @@ class RestaurantDataModel: NSObject {
     var restaurants: [RestaurantStructure]
     var restaurantDictionary: [String: RestaurantStructure]
     var selectedRestaurant: RestaurantStructure
+    var restaurantsToAddToMap: [RestaurantStructure]
     
     
     override init () {
@@ -37,6 +38,7 @@ class RestaurantDataModel: NSObject {
         restaurants = [RestaurantStructure]()
         startingPoint = CLLocationCoordinate2D()
         selectedRestaurant = RestaurantStructure()
+        restaurantsToAddToMap = [RestaurantStructure]()
     }
     
     func addStartingPoint (startingCoords: CLLocationCoordinate2D) {
@@ -50,12 +52,15 @@ class RestaurantDataModel: NSObject {
      * data passed in and stores it based on its key value pairs in the restaurant dictionry. It also 
      * eliminates all the repeats and selects the one with the closer proximity to the route
     */
-    func addRestaurants (dataObj: AnyObject?) {
+    
+    func addRestaurants (dataObj: AnyObject?) -> [RestaurantStructure] {
+        restaurantsToAddToMap = [RestaurantStructure]()
         //Add the restaurants to the restaurants array
         var restaurantArray = [AnyObject]()
         for i in 0..<dataObj!.count {
             restaurantArray.append(dataObj![i].objectForKey("venue")!)
         }
+        
         
         //Create annotations for each restaurant that was found
         //This section needs to later be modified to deal with possible nil values
@@ -64,13 +69,14 @@ class RestaurantDataModel: NSObject {
             if restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"] == nil {
                 restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"] = restaurant
             } else {
-                
+                restaurantsToAddToMap.append(restaurant)
                 var oldRestaurant = restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"]
                 if oldRestaurant?.totalDistance > restaurant.totalDistance {
                     restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"] = restaurant
                 }
             }
         }
+        return restaurantsToAddToMap
     }
     
     func convertToArray () {
