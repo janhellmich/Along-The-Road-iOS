@@ -11,12 +11,12 @@ import MapKit
 import CoreLocation
 import AddressBook
 
-class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
-
+class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+    
     //This represent the shared data model
     let routeData = RouteDataModel.sharedInstance
     let dataProcessor = RouteDataFilter.sharedInstance
-
+    
     //These represent the location and map based variables
     var coreLocationManager = CLLocationManager()
     var locationManager:LocationManager!
@@ -25,32 +25,35 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     var annotations:[MKPointAnnotation]? //This is an array of the annotations on the map
     var userLocation: CLLocationCoordinate2D? //This will later be instantiated with the user's current location
     
-    //API Keys for FourSquare
-    let CLIENT_ID="ELLZUH013LMEXWRWGBOSNBTXE3NV02IUUO3ZFPVFFSZYLA30"
-    let CLIENT_SECRET="U2EQ1N1J4EAG4XH4QO4HCZTGM3FCWDLXU2WJ0OPTD2Q3YUKF"
-
-    
+    // variable used to reder the different routes properly
+    var activeRoute: Bool = false
     
     //These three outlets correspond to the view itself. They permit the controller to access these components
     @IBOutlet weak var destLabel: UILabel!
     @IBOutlet weak var startLabel: UILabel!
     @IBOutlet weak var map: MKMapView!
+    @IBOutlet weak var routeControl: UISegmentedControl!
     
+    @IBAction func routeSelected(sender: UISegmentedControl) {
+        var active = sender.selectedSegmentIndex
+        self.displayRoutes(active)
+    }
     
     /* function:
-     * ------------------------------------
-     *
-     *
-     *
+    * ------------------------------------
+    *
+    *
+    *
     */
     override func viewDidLoad() {
         super.viewDidLoad()
         coreLocationManager.delegate = self
-        self.destLabel.text = routeData.destination
-        self.startLabel.text = routeData.startingPoint
-        self.displayLocation()
         
+        routeControl.removeAllSegments();
+        
+        self.displayLocation()
         locationManager = LocationManager.sharedInstance
+        
         
         let authorizationCode = CLLocationManager.authorizationStatus()
         if authorizationCode == CLAuthorizationStatus.NotDetermined && coreLocationManager.respondsToSelector("requestAlwaysAuthorization") || coreLocationManager.respondsToSelector("requestWhenInUseAuthorization") {
@@ -60,8 +63,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 getLocation()
             }
         }
+        
     }
-
+    
+    // Navigate to next view on GO!
+    func clickGo() {
+        self.performSegueWithIdentifier("go", sender: nil)
+    }
+    
     /* function: locationManager
     * ---------------------------------------
     * The locationManager is a function that is automatically invoked when current location
@@ -87,14 +96,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
     
     /* function: displayLocation
-     * ---------------------------------------
-     * This function is called once the current location has been established. It creates and adds
-     * the map items to the map and then uses the two to find the directions between
-     * the two addresses
+    * ---------------------------------------
+    * This function is called once the current location has been established. It creates and adds
+    * the map items to the map and then uses the two to find the directions between
+    * the two addresses
     */
     func displayLocation(){
-        self.addMapItem( "Start", address: routeData.startingPoint)
-        self.addMapItem( "Destination", address: routeData.destination)
+        self.addMapItem( "Start", address: routeData.destination)
+        self.addMapItem( "Destination", address: routeData.startingPoint)
     }
     
     /* function: addMapItem
@@ -106,13 +115,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     */
     func addMapItem (type: String, address: String){
         let geoCoder = CLGeocoder()
-
+        
         geoCoder.geocodeAddressString(address, completionHandler: { (placemarks: [AnyObject]!, error: NSError!) -> Void in
             if error != nil {
                 println("Geocode failed with error: \(error.localizedDescription)")
             } else if placemarks.count > 0 {
                 let place = placemarks[0] as! CLPlacemark
-            
+                
                 let location = place.location
                 
                 var mkplace = MKPlacemark(placemark: place)
@@ -121,73 +130,150 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 
                 if type == "Start" {
                     self.startItem = MKMapItem(placemark: mkplace)
-                } else if type == "Destination" {
+                } else {
                     self.destinationItem = MKMapItem(placemark: mkplace)
-                    self.displayRoute()
-                }
-                
-                if (self.startItem != nil && self.destinationItem != nil) {
-                    self.setNewRegion()
+                    self.getDirections()
                 }
             }
         })
     }
-
-    // display the selected route and make api requests
-    func displayRoute() {
-        var route = routeData.route!
-        var querries = self.dataProcessor.getSections(self.routeData.route!)
+    
+    /* function: getDirections
+    * ---------------------------------------
+    * This function uses the two location mapItems to determine the best route.
+    * If there is an error in searching for the directions, then it will recursively call itself.
+    * This is meant to deal with the way apple maps sends error messages for correct routes about
+    * Half the time. However, for invaldid addresses
+    */
+    func getDirections() {
+        var req = MKDirectionsRequest()
         
-        for i in 0..<querries.count {
-            self.sendFourSquareRequest(querries[i].latitude, long: querries[i].longitude)
-        }
+        req.setDestination(self.destinationItem)
+        req.setSource(self.startItem)
+        req.transportType = MKDirectionsTransportType.Automobile
+        req.requestsAlternateRoutes = true
+        self.map.showAnnotations(self.annotations, animated: true)
         
-        self.map.addOverlay(route.polyline, level:MKOverlayLevel.AboveLabels)
+        var directions = MKDirections(request: req)
+        
+        directions.calculateDirectionsWithCompletionHandler({ (response: MKDirectionsResponse!, error: NSError!) -> Void in
+            if error != nil {
+                println("Directions failed with error: \(error.localizedDescription), trying again")
+                self.getDirections()
+            } else {
+                self.setNewRegion()
+                self.routeData.routes = response.routes
+                self.displayRoutes(0)
+                self.generateSegmentControl()
+                
+                // add go button to view
+                var rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "GO!", style: UIBarButtonItemStyle.Plain, target: self, action: "clickGo")
+                self.navigationItem.rightBarButtonItem = rightAddBarButtonItem
+            }
+        });
     }
     
+    // generate Segment display to choose between routes
+    func generateSegmentControl() {
+        for (i, route) in enumerate(routeData.routes) {
+            routeControl.insertSegmentWithTitle("\(metersToMiles(route.distance))mi - \(timeConverter(route.expectedTravelTime))", atIndex: i, animated: false)
+        }
+        routeControl.selectedSegmentIndex = 0
+
+    }
+    
+    // turn meters to miles
+    func metersToMiles(distance: Double) -> Double {
+        var miles = distance * 0.0006214
+        // force one decimal only
+        if miles >= 100 {
+            miles = round(miles)
+        } else {
+            miles = round(miles*10)/10
+        }
+        
+        
+        return miles
+    }
+    
+    // turn seconds into readable time
+    func timeConverter(time: Double) -> String {
+        var min = Int(time / 60) % 60
+        var hours = (Int(time/60) - min) / 60
+        
+        if hours > 0 {
+            return "\(hours)h \(min)m"
+        } else {
+            return "\(min)min"
+        }
+    }
+    
+    // displays all routes on the map
+    func displayRoutes(activeIndex: Int) {
+        
+        for (i, route) in enumerate(routeData.routes) {
+            var currentRoute = route as! MKRoute
+            var renderer = MKPolygonRenderer(overlay:currentRoute.polyline)
+            renderer.strokeColor = UIColor.grayColor()
+            
+            if i != activeIndex {
+                self.activeRoute = false
+                self.map.addOverlay(currentRoute.polyline, level:MKOverlayLevel.AboveLabels)
+            }
+        }
+        
+        // render the active route last to make it appear on top
+        var activeRoute = routeData.routes[activeIndex] as! MKRoute
+        self.routeData.route = activeRoute
+        self.activeRoute = true
+        self.map.addOverlay(activeRoute.polyline, level:MKOverlayLevel.AboveLabels)
+        
+    }
     
     // sets the renderForOverlay delegate method
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
-        
         if overlay is MKPolyline {
             var polylineRenderer = MKPolylineRenderer(overlay: overlay)
-            polylineRenderer.strokeColor = UIColor.blueColor()
+            if self.activeRoute {
+                polylineRenderer.strokeColor = UIColor.blueColor()
+            } else {
+                polylineRenderer.strokeColor = UIColor.grayColor()
+            }
             polylineRenderer.lineWidth = 6
             return polylineRenderer
-        } 
+        }
         return nil
     }
-
     
-
     
     /* function: setNewRegion
-     * ----------------------
-     * This function will reorient the view so that it fits both the starting point and the end
-     * of the given route. It will work by finding the furthest out longitude and latitude and then
-     * set the map to fit around all of these. It should also include annotations later on.
+    * ----------------------
+    * This function will reorient the view so that it fits both the starting point and the end
+    * of the given route. It will work by finding the furthest out longitude and latitude and then
+    * set the map to fit around all of these. It should also include annotations later on.
     */
     func setNewRegion () {
+        
         //Extract the coord
         var startCoord = self.startItem?.placemark.coordinate
         var destCoord = self.destinationItem?.placemark.coordinate
         //All elements to be displayed on the map need to be placed in this array
         var locations = [startCoord!, destCoord!]
         
-
-
+        
+        
         var region = self.dataProcessor.findRegion(locations)
         
         //Currently calls sendFourSquare request on
-        self.map.setRegion(region, animated: false)
+        self.map.setRegion(region, animated: true)
     }
     
     
     /* function: createAnnotation
-     * ---------------------------
-     * This function will take in a title, a subtitle and a CLLCoordinate and will
-     * create an annotation for those values. It will then add it to the map and 
-     * also add it to the annotations array.
+    * ---------------------------
+    * This function will take in a title, a subtitle and a CLLCoordinate and will
+    * create an annotation for those values. It will then add it to the map and
+    * also add it to the annotations array.
     */
     
     func createAnnotation (coord: CLLocationCoordinate2D, title: String, subtitle: String) {
@@ -197,66 +283,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         annotation.subtitle = subtitle
         self.annotations?.append(annotation)
         self.map.addAnnotation(annotation)
-    }
-    
-    /* function: sendFourSquareRequest
-     * -------------------------------
-     * This is a sample request to the four square api. It takes in a latitude and a longitude and display all the
-     * best restaurants found by the four square api in that area. For now it just displays them as annotations
-     * with the name and ratings but can later be modified for filters and further functionallity
-    */
-    func sendFourSquareRequest (lat: Double, long: Double) {
-        
-       
-        var url = NSURL(string: "https://api.foursquare.com/v2/venues/explore?client_id=\(self.CLIENT_ID)&client_secret=\(self.CLIENT_SECRET)&v=20130815&ll=\(lat),\(long)&&venuePhotos=1")//)&&radius=\(routeData.searchRadius)&&section=\(routeData.searchSection)")
-        var req = NSURLRequest(URL: url!)
-        
-        NSURLConnection.sendAsynchronousRequest(req, queue: NSOperationQueue.mainQueue()) {(response, data, error) in
-            var parseError: NSError?
-            
-            //Early exit for error
-            if error != nil {
-                return
-            }
-            //Section that extracts the desired data from the responce
-            let parsedObject :AnyObject? = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.AllowFragments, error:&parseError)
-            var dataObj : AnyObject? = parsedObject?.objectForKey("response")?.objectForKey("groups")?[0].objectForKey("items")!
-            
-            //Early exit if there is not valid data passed back
-            if dataObj == nil {
-                return
-            }
-            
-            //Add the restaurants to the restaurants array
-            var restaurantArray = [AnyObject]()
-            for i in 0..<dataObj!.count {
-                restaurantArray.append(dataObj![i].objectForKey("venue")!)
-            }
-            
-            //Create annotations for each restaurant that was found
-            //This section needs to later be modified to deal with possible nil values
-            for i in 0..<restaurantArray.count  {
-                var currentVenue : AnyObject = restaurantArray[i]
-                var coord = CLLocationCoordinate2D()
-                coord.latitude = currentVenue.objectForKey("location")!.objectForKey("lat") as!Double
-                coord.longitude = currentVenue.objectForKey("location")!.objectForKey("lng") as! Double
-                var title = currentVenue.objectForKey("name") as! String
-                
-                //Insanely sketchy logic but don't worry about it
-                var rating = 0.0
-                if var otherRating: AnyObject = currentVenue.objectForKey("rating")  {
-                    rating = otherRating as! Double
-                }
-                
-                self.routeData.restaurantDictionary["\(coord.latitude),\(coord.longitude)"] = restaurantArray[i]
-                self.createAnnotation(coord, title: title, subtitle: "Rating: \(rating)")
-            }
-           
-            //Add the restaurans to the array
-//            self.routeData.restaurants += restaurantArray;
-            //Render the pins on the map
-            self.map.showAnnotations(self.annotations, animated: true)
-        }
     }
     
 }
