@@ -48,6 +48,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         coreLocationManager.delegate = self
         self.destLabel.text = routeData.destination
         self.startLabel.text = routeData.startingPoint
+        self.displayLocation()
         
         locationManager = LocationManager.sharedInstance
         
@@ -81,7 +82,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     */
     func getLocation(){
         locationManager.startUpdatingLocationWithCompletionHandler { (latitude, longitude, status, verboseMessage, error) -> () in
-            self.displayLocation(CLLocation(latitude: latitude, longitude: longitude))
             self.userLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         }
     }
@@ -92,7 +92,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      * the map items to the map and then uses the two to find the directions between
      * the two addresses
     */
-    func displayLocation(location:CLLocation){
+    func displayLocation(){
         self.addMapItem( "Start", address: routeData.startingPoint)
         self.addMapItem( "Destination", address: routeData.destination)
     }
