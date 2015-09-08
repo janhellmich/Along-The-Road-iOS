@@ -240,6 +240,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             
             //This section checks if it is the last query and then adds the annotation to the map
             if last  {
+                self.restaurantData.convertToArray()
                 for i in 0..<self.restaurantData.restaurants.count  {
                     var currentVenue = self.restaurantData.restaurants[i]
                     var coord = currentVenue.location

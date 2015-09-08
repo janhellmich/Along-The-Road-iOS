@@ -28,10 +28,12 @@ class RestaurantDataModel: NSObject {
     
     var startingPoint: CLLocationCoordinate2D
     var restaurants: [RestaurantStructure]
-    var restaurantDictionary: [String: AnyObject]
+    var restaurantDictionary: [String: RestaurantStructure]
     var selectedRestaurant: RestaurantStructure
+    
+    
     override init () {
-        restaurantDictionary = [String: AnyObject]()
+        restaurantDictionary = [String: RestaurantStructure]()
         restaurants = [RestaurantStructure]()
         startingPoint = CLLocationCoordinate2D()
         selectedRestaurant = RestaurantStructure()
@@ -58,9 +60,25 @@ class RestaurantDataModel: NSObject {
         //Create annotations for each restaurant that was found
         //This section needs to later be modified to deal with possible nil values
         for i in 0..<restaurantArray.count  {
-            restaurants.append(createRestaurantObject(restaurantArray[i]))
+            var restaurant = createRestaurantObject(restaurantArray[i])
+            if restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"] == nil {
+                restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"] = restaurant
+            } else {
+                
+                var oldRestaurant = restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"]
+                if oldRestaurant?.totalDistance > restaurant.totalDistance {
+                    restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"] = restaurant
+                }
+            }
         }
     }
+    
+    func convertToArray () {
+        for (key,value) in restaurantDictionary {
+            restaurants.append(value)
+        }
+    }
+    
     
     func createRestaurantObject(venue: AnyObject) -> RestaurantStructure {
         var name = getName(venue)
@@ -76,7 +94,7 @@ class RestaurantDataModel: NSObject {
         var city = getCity(venue)
         var state = getState(venue)
         var zip = getZip(venue)
-        var distance = getTotalDistance(venue)
+        var distance = getTotalDistance(venue) + distanceToRoad
         //TotalDistance
         
         var restaurant = RestaurantStructure(name: name,  url: url, imageUrl: imageUrl, distanceToRoad: distanceToRoad, address: address, totalDistance: distance, openUntil: openUntil, rating: rating, priceRange: priceRange, location: location, streetAddress: streetAddress, city: city, state: state, postalCode: zip)
