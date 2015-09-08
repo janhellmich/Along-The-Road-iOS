@@ -85,6 +85,11 @@ class RestaurantDataModel: NSObject {
         }
     }
     
+    func reset () {
+        restaurantDictionary = [String: RestaurantStructure]()
+        restaurants = [RestaurantStructure]()
+    }
+    
     
     func createRestaurantObject(venue: AnyObject) -> RestaurantStructure {
         var name = getName(venue)
@@ -113,7 +118,7 @@ class RestaurantDataModel: NSObject {
     }
     
     func sortRestaurantsByDistance() {
-        restaurants.sort({$0.totalDistance > $1.totalDistance})
+        restaurants.sort({$1.totalDistance > $0.totalDistance})
 
     }
     
