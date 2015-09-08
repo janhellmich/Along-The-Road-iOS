@@ -158,8 +158,11 @@
                                     <segue destination="Tfo-n2-fYq" kind="show" id="B33-bo-awi"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cJd-3g-DPp">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cJd-3g-DPp">
                                 <rect key="frame" x="515" y="72" width="85" height="48"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="85" id="YEz-fa-s7X"/>
+                                </constraints>
                                 <state key="normal" image="list">
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -178,9 +181,11 @@
                             <constraint firstItem="N7Q-tA-QsU" firstAttribute="top" secondItem="325-Wt-Q3S" secondAttribute="bottom" constant="8" symbolic="YES" id="UbV-X4-rbc"/>
                             <constraint firstItem="6v2-ZU-h43" firstAttribute="top" secondItem="EGx-wr-Auv" secondAttribute="bottom" id="UgW-PB-rEL"/>
                             <constraint firstItem="EGx-wr-Auv" firstAttribute="leading" secondItem="OA8-Iu-TKi" secondAttribute="leadingMargin" id="XCb-4o-oN1"/>
+                            <constraint firstItem="cJd-3g-DPp" firstAttribute="top" secondItem="m9Z-sh-KQv" secondAttribute="top" id="YSM-VH-yWU"/>
                             <constraint firstItem="m9Z-sh-KQv" firstAttribute="top" secondItem="NKR-bf-OWK" secondAttribute="bottom" constant="8" symbolic="YES" id="Zsb-bt-LiG"/>
                             <constraint firstAttribute="trailing" secondItem="6v2-ZU-h43" secondAttribute="trailing" id="l6e-29-A35"/>
                             <constraint firstItem="6v2-ZU-h43" firstAttribute="centerX" secondItem="EGx-wr-Auv" secondAttribute="centerX" id="mcq-h5-nVy"/>
+                            <constraint firstItem="cJd-3g-DPp" firstAttribute="trailing" secondItem="6v2-ZU-h43" secondAttribute="trailing" id="pyM-mt-n1H"/>
                             <constraint firstItem="EGx-wr-Auv" firstAttribute="top" secondItem="m9Z-sh-KQv" secondAttribute="bottom" constant="8" symbolic="YES" id="zIN-Qv-73P"/>
                         </constraints>
                     </view>

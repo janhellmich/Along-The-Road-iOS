@@ -25,7 +25,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     var annotations:[MKPointAnnotation]? //This is an array of the annotations on the map
     var userLocation: CLLocationCoordinate2D? //This will later be instantiated with the user's current location
     
-    
     //API Keys for FourSquare
     let CLIENT_ID="ELLZUH013LMEXWRWGBOSNBTXE3NV02IUUO3ZFPVFFSZYLA30"
     let CLIENT_SECRET="U2EQ1N1J4EAG4XH4QO4HCZTGM3FCWDLXU2WJ0OPTD2Q3YUKF"
@@ -94,8 +93,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      * the two addresses
     */
     func displayLocation(location:CLLocation){
-        self.addMapItem( "Start", address: routeData.destination)
-        self.addMapItem( "Destination", address: routeData.startingPoint)
+        self.addMapItem( "Start", address: routeData.startingPoint)
+        self.addMapItem( "Destination", address: routeData.destination)
     }
     
     /* function: addMapItem
@@ -122,15 +121,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 
                 if type == "Start" {
                     self.startItem = MKMapItem(placemark: mkplace)
-                } else {
+                } else if type == "Destination" {
                     self.destinationItem = MKMapItem(placemark: mkplace)
                     self.displayRoute()
+                }
+                
+                if (self.startItem != nil && self.destinationItem != nil) {
                     self.setNewRegion()
                 }
             }
         })
     }
-    
+
     // display the selected route and make api requests
     func displayRoute() {
         var route = routeData.route!
