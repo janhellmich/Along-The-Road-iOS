@@ -8,8 +8,7 @@
 
 import UIKit
 
-class AutocompleteViewController: UIViewController, UITableViewDelegate, UITableViewDataSource
- {
+class AutocompleteViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var placesClient: GMSPlacesClient?
     
@@ -18,13 +17,21 @@ class AutocompleteViewController: UIViewController, UITableViewDelegate, UITable
     var suggestions: [String] = []
 
     @IBOutlet weak var tableView: UITableView!
-    
+    @IBOutlet weak var locationField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         placesClient = GMSPlacesClient()
-
-        // Do any additional setup after loading the view.
+        
+        // make the text field the first responder to allow immediate typing
+        locationField.becomeFirstResponder()
+        
+        // set the title based on if it is destination or origin
+        if routeData.isDestination {
+            self.title = "Set Destination"
+        } else {
+            self.title = "Set Origin"
+        }
     }
 
     override func didReceiveMemoryWarning() {

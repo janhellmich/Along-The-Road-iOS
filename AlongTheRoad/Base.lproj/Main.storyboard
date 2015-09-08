@@ -468,6 +468,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="locationField" destination="rXZ-7z-lX4" id="1yp-5Q-PX5"/>
                         <outlet property="tableView" destination="fnb-wc-3Cg" id="HTy-2S-lGE"/>
                     </connections>
                 </viewController>
