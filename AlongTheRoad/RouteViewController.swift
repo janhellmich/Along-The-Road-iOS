@@ -16,6 +16,7 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     //This represent the shared data model
     let routeData = RouteDataModel.sharedInstance
     let dataProcessor = RouteDataFilter.sharedInstance
+    let restaurantData = RestaurantDataModel.sharedInstance
     
     //These represent the location and map based variables
     var coreLocationManager = CLLocationManager()
@@ -68,6 +69,7 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     // Navigate to next view on GO!
     func clickGo() {
+        restaurantData.reset()
         self.performSegueWithIdentifier("go", sender: nil)
     }
     

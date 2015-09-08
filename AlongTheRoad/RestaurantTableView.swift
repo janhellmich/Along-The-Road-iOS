@@ -10,8 +10,8 @@ import UIKit
 
 class RestaurantTableView: UITableViewController {
 
-    var routeData = RouteDataModel.sharedInstance
     var restaurantData = RestaurantDataModel.sharedInstance
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         restaurantData.convertToArray()
