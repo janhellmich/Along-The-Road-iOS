@@ -40,12 +40,7 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         self.displayRoutes(active)
     }
     
-    /* function:
-    * ------------------------------------
-    *
-    *
-    *
-    */
+
     override func viewDidLoad() {
         super.viewDidLoad()
         coreLocationManager.delegate = self

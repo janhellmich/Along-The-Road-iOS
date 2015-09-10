@@ -33,13 +33,33 @@ class RestaurantDataModel: NSObject {
     var restaurantsToAddToMap: [RestaurantStructure]
     
     
+    
+    var filteredRestaurant: [RestaurantStructure]
+    var priceFilter: Int?
     override init () {
         restaurantDictionary = [String: RestaurantStructure]()
         restaurants = [RestaurantStructure]()
         startingPoint = CLLocationCoordinate2D()
         selectedRestaurant = RestaurantStructure()
         restaurantsToAddToMap = [RestaurantStructure]()
+        filteredRestaurant = [RestaurantStructure]()
+
     }
+    
+    func filterRestaurants () {
+        filteredRestaurant = [RestaurantStructure]()
+        for i in 0..<restaurants.count {
+            if priceFilter != nil {
+                if priceFilter! == restaurants[i].priceRange {
+                    filteredRestaurant.append(restaurants[i])
+                }
+            } else {
+                filteredRestaurant.append(restaurants[i])
+            }
+        }
+    }
+    
+    
     
     func addStartingPoint (startingCoords: CLLocationCoordinate2D) {
         startingPoint = startingCoords;
@@ -80,6 +100,7 @@ class RestaurantDataModel: NSObject {
     }
     
     func convertToArray () {
+        restaurants = [RestaurantStructure]()
         for (key,value) in restaurantDictionary {
             restaurants.append(value)
         }
@@ -106,7 +127,6 @@ class RestaurantDataModel: NSObject {
         var state = getState(venue)
         var zip = getZip(venue)
         var distance = getTotalDistance(venue) + distanceToRoad
-        //TotalDistance
         
         var restaurant = RestaurantStructure(name: name,  url: url, imageUrl: imageUrl, distanceToRoad: distanceToRoad, address: address, totalDistance: distance, openUntil: openUntil, rating: rating, priceRange: priceRange, location: location, streetAddress: streetAddress, city: city, state: state, postalCode: zip)
         
@@ -197,18 +217,11 @@ class RestaurantDataModel: NSObject {
     */
     func getDistanceToRoad (currentVenue: AnyObject) -> Double {
         var distanceMeters = currentVenue.objectForKey("location")?.objectForKey("distance") as! Double
-//        var distance = String(format:"%f", distanceMeters/1600)
-//        var cuttoff = advance(distance.startIndex, 3)
-//        var finalString = distance.substringToIndex(cuttoff)
         return distanceMeters
     }
     
-    /* function: getImage
-    * ----------------------
-    * This function extracts the data from the currentVenue for the image from the restaurant
-    */
+
     func getImageUrl (currentVenue: AnyObject) -> String {
-        //Getting Image Section
         var imageItems: AnyObject? = currentVenue.objectForKey("featuredPhotos")?.objectForKey("items")?[0]
         var prefix: AnyObject? = imageItems?.objectForKey("prefix")
         var suffix: AnyObject?=imageItems?.objectForKey("suffix")
@@ -240,10 +253,7 @@ class RestaurantDataModel: NSObject {
         return " "
     }
     
-    /* function: getRating
-    * ----------------------
-    *
-    */
+
     func getRating (currentVenue: AnyObject) -> Double {
         var ratingObj: AnyObject? = currentVenue.objectForKey("rating")
         
@@ -255,10 +265,6 @@ class RestaurantDataModel: NSObject {
     }
 
     
-    /* function: getPriceRange
-    * ----------------------
-    *
-    */
     func getPriceRange (currentVenue: AnyObject) -> Int{
         var price: AnyObject? = currentVenue.objectForKey("price")?.objectForKey("tier")
         if price != nil {
@@ -288,7 +294,6 @@ class RestaurantDataModel: NSObject {
         func DegreesToRadians (value:Double) -> Double {
             return value * M_PI / 180.0
         }
-        
         
         var R:Double = 6371000 // metres
         var latRad1 = DegreesToRadians(lat1)

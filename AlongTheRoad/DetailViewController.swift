@@ -43,6 +43,7 @@ class DetailViewController: UIViewController {
 
         
     }
+    
     @IBOutlet var containerView : UIView! = nil
     var webView: WKWebView?
     
