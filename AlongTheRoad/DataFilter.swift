@@ -11,18 +11,8 @@ import MapKit
 import CoreLocation
 
 class RouteDataFilter: NSObject {
-    class var sharedInstance: RouteDataFilter {
-        struct Static {
-            static var instance: RouteDataFilter?
-            static var token: dispatch_once_t = 0
-        }
-        
-        dispatch_once(&Static.token) {
-            Static.instance = RouteDataFilter()
-        }
-        
-        return Static.instance!
-    } 
+    
+    static let sharedInstance = RouteDataFilter()
     
     
     /* function: getSections

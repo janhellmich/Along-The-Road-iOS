@@ -13,52 +13,26 @@ import CoreLocation
 import Foundation
 
 class RestaurantDataModel: NSObject {
-    class var sharedInstance: RestaurantDataModel {
-        struct Static {
-            static var instance: RestaurantDataModel?
-            static var token: dispatch_once_t = 0
-        }
-        
-        dispatch_once(&Static.token) {
-            Static.instance = RestaurantDataModel()
-        }
-        
-        return Static.instance!
-    }
+
+    static let sharedInstance = RestaurantDataModel()
     
     var startingPoint: CLLocationCoordinate2D
     var restaurants: [RestaurantStructure]
     var restaurantDictionary: [String: RestaurantStructure]
     var selectedRestaurant: RestaurantStructure
     var restaurantsToAddToMap: [RestaurantStructure]
+    var filteredRestaurants: [RestaurantStructure]
     
-    
-    
-    var filteredRestaurant: [RestaurantStructure]
-    var priceFilter: Int?
+
     override init () {
         restaurantDictionary = [String: RestaurantStructure]()
         restaurants = [RestaurantStructure]()
         startingPoint = CLLocationCoordinate2D()
         selectedRestaurant = RestaurantStructure()
         restaurantsToAddToMap = [RestaurantStructure]()
-        filteredRestaurant = [RestaurantStructure]()
+        filteredRestaurants = [RestaurantStructure]()
 
     }
-    
-    func filterRestaurants () {
-        filteredRestaurant = [RestaurantStructure]()
-        for i in 0..<restaurants.count {
-            if priceFilter != nil {
-                if priceFilter! == restaurants[i].priceRange {
-                    filteredRestaurant.append(restaurants[i])
-                }
-            } else {
-                filteredRestaurant.append(restaurants[i])
-            }
-        }
-    }
-    
     
     
     func addStartingPoint (startingCoords: CLLocationCoordinate2D) {

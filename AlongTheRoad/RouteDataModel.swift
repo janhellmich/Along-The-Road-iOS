@@ -11,18 +11,7 @@ import MapKit
 
 class RouteDataModel: NSObject {
     
-    class var sharedInstance: RouteDataModel {
-        struct Static {
-            static var instance: RouteDataModel?
-            static var token: dispatch_once_t = 0
-        }
-        
-        dispatch_once(&Static.token) {
-            Static.instance = RouteDataModel()
-        }
-        
-        return Static.instance!
-    }
+    static let sharedInstance = RouteDataModel()
 
     var destination: String
     var startingPoint: String

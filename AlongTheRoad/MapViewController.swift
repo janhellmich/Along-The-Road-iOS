@@ -33,17 +33,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     
     //These three outlets correspond to the view itself. They permit the controller to access these components
-    @IBOutlet weak var destLabel: UILabel!
-    @IBOutlet weak var startLabel: UILabel!
     @IBOutlet weak var map: MKMapView!
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
         coreLocationManager.delegate = self
-        self.destLabel.text = routeData.destination
-        self.startLabel.text = routeData.startingPoint
         self.displayLocation()
+        
+        var rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "list"), style: UIBarButtonItemStyle.Plain, target: self, action: "showListView")
+        self.navigationItem.rightBarButtonItem = rightAddBarButtonItem
+
         
         locationManager = LocationManager.sharedInstance
         
@@ -55,6 +55,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 getLocation()
             }
         }
+    }
+    
+    func showListView() {
+        self.performSegueWithIdentifier("show-list", sender: nil)
     }
 
     /* function: locationManager

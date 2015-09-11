@@ -22,19 +22,19 @@ class SettingsViewController: UIViewController {
     }
     
     
-    @IBAction func priceSelection(sender: UISegmentedControl) {
-        switch priceOutlet.selectedSegmentIndex {
-            case 0:
-                restaurantData.priceFilter = nil
-            case 1:
-                restaurantData.priceFilter = 1
-            case 2:
-                restaurantData.priceFilter = 2
-            case 3:
-                restaurantData.priceFilter = 3 
-            default:
-                break;
-        }
-    }
+//    @IBAction func priceSelection(sender: UISegmentedControl) {
+//        switch priceOutlet.selectedSegmentIndex {
+//            case 0:
+//                restaurantData.priceFilter = nil
+//            case 1:
+//                restaurantData.priceFilter = 1
+//            case 2:
+//                restaurantData.priceFilter = 2
+//            case 3:
+//                restaurantData.priceFilter = 3 
+//            default:
+//                break;
+//        }
+//    }
     
 }
