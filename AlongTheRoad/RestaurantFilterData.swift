@@ -12,13 +12,13 @@ class RestaurantFilterData: NSObject {
     
     static let sharedInstance = RestaurantFilterData()
     
-    var priceSelcted: [Int]
+    var pricesSelcted: [Bool]
     var minRatingSelected: Int
     var openSelected: Bool
     
     override init() {
-        priceSelcted = [Int]()
-        minRatingSelected = 0
+        pricesSelcted = [false, false, false]
+        minRatingSelected = 7
         openSelected = false
     }
 }
