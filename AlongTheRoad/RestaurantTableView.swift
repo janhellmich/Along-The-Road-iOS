@@ -15,9 +15,11 @@ class RestaurantTableView: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         restaurantData.convertToArray()
+        restaurantData.filterRestaurants()
         restaurantData.sortRestaurantsByDistance()
 
     }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -31,11 +33,11 @@ class RestaurantTableView: UITableViewController {
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
-        return restaurantData.restaurants.count
+        return restaurantData.filteredRestaurant.count
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var restaurant:RestaurantStructure = self.restaurantData.restaurants[indexPath.row]
+        var restaurant:RestaurantStructure = self.restaurantData.filteredRestaurant[indexPath.row]
         self.restaurantData.selectedRestaurant = restaurant
         
     }
@@ -45,7 +47,7 @@ class RestaurantTableView: UITableViewController {
 
         // Configure the cell...
         
-        var currentVenue = self.restaurantData.restaurants[indexPath.item]
+        var currentVenue = self.restaurantData.filteredRestaurant[indexPath.item]
         cell.restaurantName.text =  currentVenue.name
         
         cell.location.text = currentVenue.address//self.getLocation(currentVenue)
@@ -55,19 +57,10 @@ class RestaurantTableView: UITableViewController {
         cell.priceRange.text = getPriceRange(currentVenue.priceRange);
         cell.rating.text = self.getRating(currentVenue.rating)
         
-        //Open Until
-        //First check if it is open, if not then set it to false.
-        
-
-        
-        //Returning the cell
         return cell
     }
 
-    /* function: getPriceRange
-    * ----------------------
-    *
-    */
+
     func getPriceRange (price: Int) -> String{
         var dollarSigns = "";
         for i in 0..<price {
@@ -76,10 +69,7 @@ class RestaurantTableView: UITableViewController {
         return dollarSigns
     }
     
-    /* function: getRating
-    * ----------------------
-    *
-    */
+
     func getRating (ratingDouble: Double) -> String {
             var rating = String(format:"%f", ratingDouble)
             var cuttoff = advance(rating.startIndex, 3)

@@ -37,13 +37,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     @IBOutlet weak var startLabel: UILabel!
     @IBOutlet weak var map: MKMapView!
     
-    
-    /* function:
-     * ------------------------------------
-     *
-     *
-     *
-    */
+
     override func viewDidLoad() {
         super.viewDidLoad()
         coreLocationManager.delegate = self
@@ -214,12 +208,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     func sendFourSquareRequest (lat: Double, long: Double, last: Bool) {
         
        
-        var url = NSURL(string: "https://api.foursquare.com/v2/venues/explore?client_id=\(self.CLIENT_ID)&client_secret=\(self.CLIENT_SECRET)&v=20130815&ll=\(lat),\(long)&&venuePhotos=1&&openNow=1")//)&&radius=\(routeData.searchRadius)&&section=\(routeData.searchSection)")
+        var url = NSURL(string: "https://api.foursquare.com/v2/venues/explore?client_id=\(self.CLIENT_ID)&client_secret=\(self.CLIENT_SECRET)&v=20130815&ll=\(lat),\(long)&&venuePhotos=1&&openNow=1")//&&openNow=1)")//&&section=\(routeData.searchSection)")
         var req = NSURLRequest(URL: url!)
-        
         NSURLConnection.sendAsynchronousRequest(req, queue: NSOperationQueue.mainQueue()) {(response, data, error) in
             var parseError: NSError?
-            
             //Early exit for error
             if error != nil {
                 return
@@ -250,7 +242,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                
                 self.map.showAnnotations(self.annotations, animated: true)
             }
-        
     }
     
 }
