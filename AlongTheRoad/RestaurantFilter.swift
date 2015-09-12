@@ -42,6 +42,9 @@ class RestaurantFilter: NSObject {
         
         func openNowFilter(venue: RestaurantStructure) -> Bool {
             let openNow = filterData.openSelected
+            if openNow == false {
+                return true
+            }
             return Array(venue.openUntil)[0] == "O"
         }
         filterFunctions.append(openNowFilter)
@@ -63,6 +66,7 @@ class RestaurantFilter: NSObject {
             for filter in filterFunctions {
                 if filter(restaurant) == false {
                     passes = false
+                    println(filter)
                 }
             }
             if passes == true {

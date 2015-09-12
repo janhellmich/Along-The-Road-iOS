@@ -30,8 +30,6 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     var activeRoute: Bool = false
     
     //These three outlets correspond to the view itself. They permit the controller to access these components
-    @IBOutlet weak var destLabel: UILabel!
-    @IBOutlet weak var startLabel: UILabel!
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var routeControl: UISegmentedControl!
     

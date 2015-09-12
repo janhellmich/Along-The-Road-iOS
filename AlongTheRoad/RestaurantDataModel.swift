@@ -62,13 +62,8 @@ class RestaurantDataModel: NSObject {
             var restaurant = createRestaurantObject(restaurantArray[i])
             if restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"] == nil {
                 restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"] = restaurant
-            } else {
                 restaurantsToAddToMap.append(restaurant)
-                var oldRestaurant = restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"]
-                if oldRestaurant?.totalDistance > restaurant.totalDistance {
-                    restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"] = restaurant
-                }
-            }
+            } 
         }
         return restaurantsToAddToMap
     }

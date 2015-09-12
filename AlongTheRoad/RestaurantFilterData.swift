@@ -15,10 +15,12 @@ class RestaurantFilterData: NSObject {
     var pricesSelcted: [Bool]
     var minRatingSelected: Int
     var openSelected: Bool
+    var distanceFromOrigin: Double
     
     override init() {
         pricesSelcted = [false, false, false, false]
         minRatingSelected = 7
         openSelected = false
+        distanceFromOrigin = 0.0
     }
 }
