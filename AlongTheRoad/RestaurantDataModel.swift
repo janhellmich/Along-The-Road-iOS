@@ -102,17 +102,22 @@ class RestaurantDataModel: NSObject {
         var zip = getZip(venue)
         var distance = getTotalDistance(venue) + distanceToRoad
         
+        // consider pricerange of 3 and 4 equally due to limited space in filter page
+        if (priceRange == 4) {
+            priceRange = 3
+        }
+        
         var restaurant = RestaurantStructure(name: name,  url: url, imageUrl: imageUrl, distanceToRoad: distanceToRoad, address: address, totalDistance: distance, openUntil: openUntil, rating: rating, priceRange: priceRange, location: location, streetAddress: streetAddress, city: city, state: state, postalCode: zip)
         
         return restaurant
     }
     
     func sortRestaurantsByRating () {
-        restaurants.sort({$0.rating > $1.rating})
+        filteredRestaurants.sort({$0.rating > $1.rating})
     }
     
     func sortRestaurantsByDistance() {
-        restaurants.sort({$1.totalDistance > $0.totalDistance})
+        filteredRestaurants.sort({$1.totalDistance > $0.totalDistance})
 
     }
     

@@ -12,6 +12,8 @@ class SettingsViewController: UIViewController {
 
     let filterData = RestaurantFilterData.sharedInstance
     
+    let restaurantData = RestaurantDataModel.sharedInstance
+    
     @IBOutlet weak var priceSwitch1Dollar: UISwitch!
     @IBOutlet weak var priceSwitch2Dollar: UISwitch!
     @IBOutlet weak var priceSwitch3Dollar: UISwitch!
@@ -34,6 +36,13 @@ class SettingsViewController: UIViewController {
         super.didReceiveMemoryWarning()
     }
     
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        let filter = RestaurantFilter.sharedInstance
+        filter.filterRestaurants()
+        restaurantData.sortRestaurantsByDistance()
+    }
+    
     func initializeView() {
         
         // initialize price switches
@@ -51,22 +60,22 @@ class SettingsViewController: UIViewController {
         
     }
     
-    @IBAction func priceSwitch1DollarToggled(sender: AnyObject) {
+    func togglePrice(index: Int) {
         var prices = filterData.pricesSelcted
-        prices[0] = !prices[0]
+        prices[index] = !prices[index]
         filterData.pricesSelcted = prices
+    }
+    
+    @IBAction func priceSwitch1DollarToggled(sender: AnyObject) {
+        self.togglePrice(0)
     }
     
     @IBAction func priceSwitch2DollarToggled(sender: AnyObject) {
-        var prices = filterData.pricesSelcted
-        prices[1] = !prices[1]
-        filterData.pricesSelcted = prices
+        self.togglePrice(1)
     }
     
     @IBAction func priceSwitch3DollarToggled(sender: AnyObject) {
-        var prices = filterData.pricesSelcted
-        prices[2] = !prices[2]
-        filterData.pricesSelcted = prices
+        self.togglePrice(2)
     }
     
     @IBAction func openNowSwitchToggled(sender: AnyObject) {

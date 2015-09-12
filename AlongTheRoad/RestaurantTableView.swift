@@ -8,18 +8,21 @@
 
 import UIKit
 
-class RestaurantTableView: UITableViewController {
+class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var restaurantData = RestaurantDataModel.sharedInstance
+    let restaurantData = RestaurantDataModel.sharedInstance
+    let filter = RestaurantFilter.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        restaurantData.convertToArray()
-        //restaurantData.filterRestaurants()
-        restaurantData.sortRestaurantsByDistance()
-
     }
     
+    override func viewWillAppear(animated: Bool) {
+        restaurantData.convertToArray()
+        filter.filterRestaurants()
+        restaurantData.sortRestaurantsByDistance()
+        self.tableView.reloadData()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -27,12 +30,10 @@ class RestaurantTableView: UITableViewController {
 
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-
         return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
         return restaurantData.filteredRestaurants.count
     }
 

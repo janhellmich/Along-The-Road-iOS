@@ -17,7 +17,7 @@ class RestaurantFilterData: NSObject {
     var openSelected: Bool
     
     override init() {
-        pricesSelcted = [false, false, false]
+        pricesSelcted = [false, false, false, false]
         minRatingSelected = 7
         openSelected = false
     }

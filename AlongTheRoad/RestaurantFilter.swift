@@ -13,31 +13,49 @@ class RestaurantFilter: NSObject {
     
     static let sharedInstance = RestaurantFilter()
     
-    let RestaurantData = RestaurantDataModel.sharedInstance
+    let restaurantData = RestaurantDataModel.sharedInstance
+    let filterData = RestaurantFilterData.sharedInstance
     
     var filterFunctions = Array<(RestaurantStructure -> Bool)>()
 
     // initializa all filterFunctions
     override init() {
+        super.init()
         func priceFilter(venue: RestaurantStructure) -> Bool {
-            return true
+            let prices = filterData.pricesSelcted
+            // if all ranges are checked or unchecked it should be included
+            if (prices[0] == prices[1] && prices[0] == prices[2] && prices[0] == prices[3]) {
+                return true
+            } else if venue.priceRange == 0 {
+                return false
+            } else {
+                return prices[venue.priceRange - 1]
+            }
         }
         filterFunctions.append(priceFilter)
         
         func ratingFilter(venue: RestaurantStructure) -> Bool {
-            return true
+            let minRating = filterData.minRatingSelected
+            return venue.rating > Double(minRating)
         }
         filterFunctions.append(ratingFilter)
         
         func openNowFilter(venue: RestaurantStructure) -> Bool {
-            return true
+            let openNow = filterData.openSelected
+            return Array(venue.openUntil)[0] == "O"
         }
         filterFunctions.append(openNowFilter)
+        
+        func distanceFilter(venue: RestaurantStructure) -> Bool {
+            return true
+        }
+        filterFunctions.append(distanceFilter)
+        
     }
     
     
     func filterRestaurants () {
-        let restaurants = RestaurantData.restaurants
+        let restaurants = restaurantData.restaurants
         var filterdRestaurants = [RestaurantStructure]()
         
         for restaurant in restaurants {
@@ -52,7 +70,7 @@ class RestaurantFilter: NSObject {
             }
         }
         
-        RestaurantData.filteredRestaurants = filterdRestaurants
+        restaurantData.filteredRestaurants = filterdRestaurants
         
     }
     
