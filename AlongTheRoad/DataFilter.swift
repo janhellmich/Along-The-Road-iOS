@@ -21,15 +21,14 @@ class RouteDataFilter: NSObject {
     * through all the possible sections of the route and determine which gps coordinates to discard as well as which
     * to infer for better search areas.
     */
-    func getSections(route: MKRoute) -> [CLLocationCoordinate2D]{
+    func getSections(route: MKRoute) -> [WaypointStructure]{
         var mapPoints = route.polyline.points()
         //Convert the mapPoints to actual lon/lat route points
         var routePoints = [CLLocationCoordinate2D]()
         for i in 0..<route.polyline.pointCount {
             routePoints.append(MKCoordinateForMapPoint(mapPoints[i]))
-            
         }
-        return self.filterPoints(routePoints)
+        return self.createWaypointStructures(routePoints)
     }
     
     /* function: filterPoints
@@ -38,26 +37,53 @@ class RouteDataFilter: NSObject {
     * be actually queried by the API. It does this by selecting regions that are 3 kilometers apart and then sending new requests
     * to the API
     */
-    func filterPoints(points:[CLLocationCoordinate2D]) -> [CLLocationCoordinate2D]{
+//    func filterPoints(points:[CLLocationCoordinate2D]) -> [CLLocationCoordinate2D]{
+//        var latToKilometer: Double = 95
+//        var longToKilometer: Double = 95
+//        var desiredDistance = 5.0
+//        
+//        var querySections = [CLLocationCoordinate2D]()
+//        querySections.append(points[1]) //Add the second one and start it after so it doesn't querry start
+//        for i in 2..<points.count {
+//            var lastPoint = querySections[querySections.count-1]
+//            var latChange = (lastPoint.latitude - points[i].latitude)*latToKilometer
+//            var longChange = (lastPoint.longitude - points[i].longitude)*longToKilometer
+//            
+//            var totalChange = sqrt(latChange*latChange + longChange*longChange)
+//            if totalChange >= desiredDistance  {
+//                querySections.append(points[i])
+//            }
+//        }
+//        
+//        
+//        return querySections
+//    }
+    
+    func createWaypointStructures (locations: [CLLocationCoordinate2D]) -> [WaypointStructure] {
+        var waypoints = [WaypointStructure]()
         var latToKilometer: Double = 95
         var longToKilometer: Double = 95
-        var desiredDistance = 3
+        var desiredDistance = 5.0
         
-        var querySections = [CLLocationCoordinate2D]()
-        querySections.append(points[1]) //Add the second one and start it after so it doesn't querry start
-        for i in 2..<points.count {
-            var lastPoint = querySections[querySections.count-1]
-            var latChange = (lastPoint.latitude - points[i].latitude)*latToKilometer
-            var longChange = (lastPoint.longitude - points[i].longitude)*longToKilometer
+        var firstWaypoint = WaypointStructure()
+        firstWaypoint.coordinate = locations[0]
+        waypoints.append(firstWaypoint)
+        
+        for location in locations {
+            var lastPoint = waypoints[waypoints.count-1]
+            var latChange = (lastPoint.coordinate.latitude - location.latitude)*latToKilometer
+            var longChange = (lastPoint.coordinate.longitude - location.longitude)*longToKilometer
             
             var totalChange = sqrt(latChange*latChange + longChange*longChange)
-            if totalChange >= 3.0  {
-                querySections.append(points[i])
+            if totalChange >= desiredDistance  {
+                var waypoint = WaypointStructure()
+                waypoint.distance = totalChange
+                waypoint.coordinate = location
+                waypoints.append(waypoint)
             }
         }
-        
-        
-        return querySections
+
+        return waypoints
     }
     
     /* function: findRegion

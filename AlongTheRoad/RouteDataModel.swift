@@ -28,7 +28,7 @@ class RouteDataModel: NSObject {
         routes = []
         destination = ""
         startingPoint = ""
-        searchRadius = 1600//Default at the beginning
+        searchRadius = 5000//Default at the beginning
         searchSection = "food"
         restaurants = [AnyObject]()
         isDestination = false

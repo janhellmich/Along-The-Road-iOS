@@ -25,6 +25,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     var destinationItem: MKMapItem?
     var annotations:[MKPointAnnotation] = [] //This is an array of the annotations on the map
     var userLocation: CLLocationCoordinate2D? //This will later be instantiated with the user's current location
+    var waypoints: [WaypointStructure] = []
     
     //API Keys for FourSquare
     let CLIENT_ID="ELLZUH013LMEXWRWGBOSNBTXE3NV02IUUO3ZFPVFFSZYLA30"
@@ -34,8 +35,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     //These three outlets correspond to the view itself. They permit the controller to access these components
     @IBOutlet weak var map: MKMapView!
+    @IBOutlet weak var distanceLabel: UILabel!
+    @IBOutlet weak var distanceSlider: UISlider!
     
     
+    @IBAction func distanceSliderValueChanged(sender: UISlider) {
+        distanceLabel.text = "\(round(sender.value*10)/10) mi"
+    }
+
+    @IBAction func touchUpInside(sender: UISlider) {
+        println("touchUPInside")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +54,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
         var rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "list"), style: UIBarButtonItemStyle.Plain, target: self, action: "showListView")
         self.navigationItem.rightBarButtonItem = rightAddBarButtonItem
-
+        
+        distanceSlider.maximumValue = Float(metersToMiles(routeData.route!.distance))
+        
         
         locationManager = LocationManager.sharedInstance
         
@@ -58,6 +70,20 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
     }
     
+    // turn meters to miles
+    func metersToMiles(distance: Double) -> Double {
+        var miles = distance * 0.0006214
+        // force one decimal only
+        if miles >= 100 {
+            miles = round(miles)
+        } else {
+            miles = round(miles*10)/10
+        }
+        
+        
+        return miles
+    }
+    
     override func viewWillAppear(animated: Bool) {
         
         // check that the initial load has happened
@@ -67,6 +93,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             println("# of Filtered \(restaurantData.filteredRestaurants.count)")
             println("# of Total Restauratants \(restaurantData.restaurants.count)")
             self.createAnnotation(self.startItem!.placemark.location.coordinate, title: "Start", subtitle: "")
+            annotations = []
             self.createAnnotation(self.destinationItem!.placemark.location.coordinate, title: "Destination", subtitle: "")
             
             for venue in restaurantData.filteredRestaurants {
@@ -155,11 +182,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     // display the selected route and make api requests
     func displayRoute() {
         var route = routeData.route!
-        var querries = self.dataProcessor.getSections(self.routeData.route!)
+        waypoints = self.dataProcessor.getSections(self.routeData.route!)
  
-        for i in 0..<querries.count {
-            self.sendFourSquareRequest(querries[i].latitude, long: querries[i].longitude)
-        }
+//        for i in 0..<queries.count {
+//            self.sendFourSquareRequest(queries[i].latitude, long: queries[i].longitude)
+//        }
         
         self.map.addOverlay(route.polyline, level:MKOverlayLevel.AboveLabels)
     }
@@ -226,7 +253,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     */
     func sendFourSquareRequest (lat: Double, long: Double) {
         
-        var url = NSURL(string: "https://api.foursquare.com/v2/venues/explore?client_id=\(self.CLIENT_ID)&client_secret=\(self.CLIENT_SECRET)&v=20130815&ll=\(lat),\(long)&&venuePhotos=1&&openNow=1")//&&openNow=1)")//&&section=\(routeData.searchSection)")
+        var url = NSURL(string: "https://api.foursquare.com/v2/venues/explore?client_id=\(self.CLIENT_ID)&client_secret=\(self.CLIENT_SECRET)&v=20150902&ll=\(lat),\(long)&venuePhotos=1&section=\(routeData.searchSection)&limit=20&radius=\(routeData.searchRadius)")
         var req = NSURLRequest(URL: url!)
         NSURLConnection.sendAsynchronousRequest(req, queue: NSOperationQueue.mainQueue()) {(response, data, error) in
             var parseError: NSError?
@@ -248,7 +275,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             
             var newlyAdded = self.restaurantData.addRestaurants(dataObj)
             
-            //This section checks if it is the last query and then adds the annotation to the map
             for i in 0..<newlyAdded.count  {
                 var currentVenue = newlyAdded[i]
                 var coord = currentVenue.location

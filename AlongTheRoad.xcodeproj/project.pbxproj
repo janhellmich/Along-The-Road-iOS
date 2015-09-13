@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1E4A3AFB1BA3552D00E0DC29 /* RestaurantFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4A3AFA1BA3552D00E0DC29 /* RestaurantFilter.swift */; };
 		1E4A3AFD1BA35F9B00E0DC29 /* RestaurantFilterData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4A3AFC1BA35F9B00E0DC29 /* RestaurantFilterData.swift */; };
+		1E4A3AFF1BA4E6A200E0DC29 /* WaypointStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4A3AFE1BA4E6A200E0DC29 /* WaypointStructure.swift */; };
 		1E52A7CA1B9E11250039A9CE /* RouteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E52A7C91B9E11250039A9CE /* RouteViewController.swift */; };
 		1EA4E2481B9A5DFE0022C81C /* AutocompleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA4E2471B9A5DFE0022C81C /* AutocompleteViewController.swift */; };
 		23157EC51B9F64C40001BEE3 /* RestaurantStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23157EC41B9F64C40001BEE3 /* RestaurantStructure.swift */; };
@@ -45,6 +46,7 @@
 		1E3706561B9937C6007C8ACC /* AlongTheRoad-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlongTheRoad-Bridging-Header.h"; sourceTree = "<group>"; };
 		1E4A3AFA1BA3552D00E0DC29 /* RestaurantFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantFilter.swift; sourceTree = "<group>"; };
 		1E4A3AFC1BA35F9B00E0DC29 /* RestaurantFilterData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantFilterData.swift; sourceTree = "<group>"; };
+		1E4A3AFE1BA4E6A200E0DC29 /* WaypointStructure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaypointStructure.swift; sourceTree = "<group>"; };
 		1E52A7C91B9E11250039A9CE /* RouteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RouteViewController.swift; sourceTree = "<group>"; };
 		1EA4E2471B9A5DFE0022C81C /* AutocompleteViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AutocompleteViewController.swift; sourceTree = "<group>"; };
 		23157EC41B9F64C40001BEE3 /* RestaurantStructure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantStructure.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				23157EC41B9F64C40001BEE3 /* RestaurantStructure.swift */,
 				1E4A3AFA1BA3552D00E0DC29 /* RestaurantFilter.swift */,
 				1E4A3AFC1BA35F9B00E0DC29 /* RestaurantFilterData.swift */,
+				1E4A3AFE1BA4E6A200E0DC29 /* WaypointStructure.swift */,
 			);
 			name = "Data Models";
 			sourceTree = "<group>";
@@ -360,6 +363,7 @@
 				23EDA5101B9B8EB0009FD580 /* RestaurantTableViewCell.swift in Sources */,
 				23C89B081B976BB10014B243 /* LocationManager.swift in Sources */,
 				23B453A41B9DFF7800EB104C /* RestaurantDataModel.swift in Sources */,
+				1E4A3AFF1BA4E6A200E0DC29 /* WaypointStructure.swift in Sources */,
 				23157EC51B9F64C40001BEE3 /* RestaurantStructure.swift in Sources */,
 				23E22AF31BA0B2B800E3EDFE /* SettingsViewController.swift in Sources */,
 				232819091B926ADF00EBCCE6 /* MapViewController.swift in Sources */,

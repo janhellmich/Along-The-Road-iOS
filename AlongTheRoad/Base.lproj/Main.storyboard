@@ -127,18 +127,49 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="6v2-ZU-h43">
-                                <rect key="frame" x="0.0" y="64" width="600" height="536"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                                 <connections>
                                     <outlet property="delegate" destination="OcZ-lP-89x" id="eX5-rB-3pe"/>
                                 </connections>
                             </mapView>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="juK-qZ-zKf">
+                                <rect key="frame" x="94" y="559" width="397" height="31"/>
+                                <connections>
+                                    <action selector="distanceSliderValueChanged:" destination="OcZ-lP-89x" eventType="valueChanged" id="Nlj-Sx-pPd"/>
+                                    <action selector="editingDidEnd:" destination="OcZ-lP-89x" eventType="editingDidEnd" id="cWS-E1-vpx"/>
+                                    <action selector="touchDragExit:" destination="OcZ-lP-89x" eventType="touchDragExit" id="O4b-ln-UWr"/>
+                                    <action selector="touchUpInside:" destination="OcZ-lP-89x" eventType="touchUpInside" id="1ki-vH-lPo"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance from Origin" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TL1-Kn-uzo">
+                                <rect key="frame" x="16" y="544" width="49" height="60"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0 mi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPa-cc-J3P">
+                                <rect key="frame" x="506" y="563" width="33" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="6v2-ZU-h43" firstAttribute="leading" secondItem="OA8-Iu-TKi" secondAttribute="leading" id="Mig-LG-WNG"/>
-                            <constraint firstAttribute="trailing" secondItem="6v2-ZU-h43" secondAttribute="trailing" id="PVi-CV-xKd"/>
-                            <constraint firstItem="6v2-ZU-h43" firstAttribute="top" secondItem="NKR-bf-OWK" secondAttribute="bottom" id="qxp-5X-YmQ"/>
-                            <constraint firstItem="6v2-ZU-h43" firstAttribute="bottom" secondItem="N7Q-tA-QsU" secondAttribute="top" id="zka-LO-wzc"/>
+                            <constraint firstItem="juK-qZ-zKf" firstAttribute="centerY" secondItem="TL1-Kn-uzo" secondAttribute="centerY" id="6UC-oM-Ryd"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="fPa-cc-J3P" secondAttribute="trailing" constant="45" id="6wF-Ma-49M"/>
+                            <constraint firstItem="fPa-cc-J3P" firstAttribute="leading" secondItem="juK-qZ-zKf" secondAttribute="trailing" constant="17" id="C2e-lf-buz"/>
+                            <constraint firstItem="juK-qZ-zKf" firstAttribute="leading" secondItem="OA8-Iu-TKi" secondAttribute="leading" constant="96" id="IWd-NQ-sLo"/>
+                            <constraint firstItem="fPa-cc-J3P" firstAttribute="top" secondItem="6v2-ZU-h43" secondAttribute="bottom" constant="12" id="Mg6-Dh-H9J"/>
+                            <constraint firstItem="6v2-ZU-h43" firstAttribute="top" secondItem="NKR-bf-OWK" secondAttribute="bottom" id="MpW-uL-F2s"/>
+                            <constraint firstAttribute="trailing" secondItem="6v2-ZU-h43" secondAttribute="trailing" id="Wid-o0-g4P"/>
+                            <constraint firstItem="juK-qZ-zKf" firstAttribute="top" secondItem="6v2-ZU-h43" secondAttribute="bottom" constant="8" symbolic="YES" id="aPp-e3-ZBG"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="TL1-Kn-uzo" secondAttribute="bottom" constant="-4" id="eBH-KA-KP9"/>
+                            <constraint firstItem="N7Q-tA-QsU" firstAttribute="top" secondItem="fPa-cc-J3P" secondAttribute="bottom" constant="16" id="fUe-16-fur"/>
+                            <constraint firstItem="6v2-ZU-h43" firstAttribute="leading" secondItem="OA8-Iu-TKi" secondAttribute="leading" id="gKA-pf-doz"/>
+                            <constraint firstItem="N7Q-tA-QsU" firstAttribute="top" secondItem="juK-qZ-zKf" secondAttribute="bottom" constant="11" id="ge0-aM-g5x"/>
+                            <constraint firstItem="juK-qZ-zKf" firstAttribute="leading" secondItem="TL1-Kn-uzo" secondAttribute="trailing" constant="31" id="obS-OJ-mYz"/>
+                            <constraint firstItem="TL1-Kn-uzo" firstAttribute="leading" secondItem="OA8-Iu-TKi" secondAttribute="leadingMargin" id="sZ5-aY-XgX"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="eLB-cq-4ui">
@@ -156,6 +187,8 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="distanceLabel" destination="fPa-cc-J3P" id="OWY-N9-ueA"/>
+                        <outlet property="distanceSlider" destination="juK-qZ-zKf" id="Yl6-V3-Lqy"/>
                         <outlet property="map" destination="6v2-ZU-h43" id="xx7-lS-1OD"/>
                         <segue destination="Tfo-n2-fYq" kind="show" identifier="show-list" id="P7v-uM-fhX"/>
                     </connections>
