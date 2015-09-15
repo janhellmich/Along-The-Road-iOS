@@ -13,52 +13,28 @@ import CoreLocation
 import Foundation
 
 class RestaurantDataModel: NSObject {
-    class var sharedInstance: RestaurantDataModel {
-        struct Static {
-            static var instance: RestaurantDataModel?
-            static var token: dispatch_once_t = 0
-        }
-        
-        dispatch_once(&Static.token) {
-            Static.instance = RestaurantDataModel()
-        }
-        
-        return Static.instance!
-    }
+
+    static let sharedInstance = RestaurantDataModel()
     
     var startingPoint: CLLocationCoordinate2D
     var restaurants: [RestaurantStructure]
     var restaurantDictionary: [String: RestaurantStructure]
     var selectedRestaurant: RestaurantStructure
     var restaurantsToAddToMap: [RestaurantStructure]
+    var filteredRestaurants: [RestaurantStructure]
     
+    var mapHelpers = MapHelpers()
     
-    
-    var filteredRestaurant: [RestaurantStructure]
-    var priceFilter: Int?
+
     override init () {
         restaurantDictionary = [String: RestaurantStructure]()
         restaurants = [RestaurantStructure]()
         startingPoint = CLLocationCoordinate2D()
         selectedRestaurant = RestaurantStructure()
         restaurantsToAddToMap = [RestaurantStructure]()
-        filteredRestaurant = [RestaurantStructure]()
+        filteredRestaurants = [RestaurantStructure]()
 
     }
-    
-    func filterRestaurants () {
-        filteredRestaurant = [RestaurantStructure]()
-        for i in 0..<restaurants.count {
-            if priceFilter != nil {
-                if priceFilter! == restaurants[i].priceRange {
-                    filteredRestaurant.append(restaurants[i])
-                }
-            } else {
-                filteredRestaurant.append(restaurants[i])
-            }
-        }
-    }
-    
     
     
     func addStartingPoint (startingCoords: CLLocationCoordinate2D) {
@@ -73,7 +49,7 @@ class RestaurantDataModel: NSObject {
      * eliminates all the repeats and selects the one with the closer proximity to the route
     */
     
-    func addRestaurants (dataObj: AnyObject?) -> [RestaurantStructure] {
+    func addRestaurants (dataObj: AnyObject?, waypointDistance: Double) -> [RestaurantStructure] {
         restaurantsToAddToMap = [RestaurantStructure]()
         //Add the restaurants to the restaurants array
         var restaurantArray = [AnyObject]()
@@ -85,16 +61,11 @@ class RestaurantDataModel: NSObject {
         //Create annotations for each restaurant that was found
         //This section needs to later be modified to deal with possible nil values
         for i in 0..<restaurantArray.count  {
-            var restaurant = createRestaurantObject(restaurantArray[i])
+            var restaurant = createRestaurantObject(restaurantArray[i], waypointDistance: waypointDistance)
             if restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"] == nil {
                 restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"] = restaurant
-            } else {
                 restaurantsToAddToMap.append(restaurant)
-                var oldRestaurant = restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"]
-                if oldRestaurant?.totalDistance > restaurant.totalDistance {
-                    restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"] = restaurant
-                }
-            }
+            } 
         }
         return restaurantsToAddToMap
     }
@@ -112,7 +83,7 @@ class RestaurantDataModel: NSObject {
     }
     
     
-    func createRestaurantObject(venue: AnyObject) -> RestaurantStructure {
+    func createRestaurantObject(venue: AnyObject, waypointDistance: Double) -> RestaurantStructure {
         var name = getName(venue)
         var address = getAddress(venue)
         var distanceToRoad = getDistanceToRoad(venue)
@@ -126,7 +97,13 @@ class RestaurantDataModel: NSObject {
         var city = getCity(venue)
         var state = getState(venue)
         var zip = getZip(venue)
-        var distance = getTotalDistance(venue) + distanceToRoad
+        //println("WAYPOINTDISTANCE: \(waypointDistance)")
+        var distance = waypointDistance + distanceToRoad // meters
+        
+        // consider pricerange of 3 and 4 equally due to limited space in filter page
+        if (priceRange == 4) {
+            priceRange = 3
+        }
         
         var restaurant = RestaurantStructure(name: name,  url: url, imageUrl: imageUrl, distanceToRoad: distanceToRoad, address: address, totalDistance: distance, openUntil: openUntil, rating: rating, priceRange: priceRange, location: location, streetAddress: streetAddress, city: city, state: state, postalCode: zip)
         
@@ -134,11 +111,11 @@ class RestaurantDataModel: NSObject {
     }
     
     func sortRestaurantsByRating () {
-        restaurants.sort({$0.rating > $1.rating})
+        filteredRestaurants.sort({$0.rating > $1.rating})
     }
     
     func sortRestaurantsByDistance() {
-        restaurants.sort({$1.totalDistance > $0.totalDistance})
+        filteredRestaurants.sort({$1.totalDistance > $0.totalDistance})
 
     }
     
@@ -284,33 +261,33 @@ class RestaurantDataModel: NSObject {
     
     
     
-    func getTotalDistance(currentVenue: AnyObject) -> Double {
-        var lat1 = startingPoint.latitude;
-        var lat2 = currentVenue.objectForKey("location")!.objectForKey("lat") as!Double
-        var lon1 = startingPoint.longitude
-        var lon2 = currentVenue.objectForKey("location")!.objectForKey("lng") as!Double
-
-        
-        func DegreesToRadians (value:Double) -> Double {
-            return value * M_PI / 180.0
-        }
-        
-        var R:Double = 6371000 // metres
-        var latRad1 = DegreesToRadians(lat1)
-        var latRad2 = DegreesToRadians(lat2)
-        var change1 = DegreesToRadians(lat2-lat1)
-        var change2 = DegreesToRadians(lon2-lon1)
-        
-        var l = Double(sin(change1/2) * sin(change1/2))
-        var k = Double(cos(latRad1) * cos(latRad2) *
-            sin(change2/2) * sin(change2/2))
-        
-        var a = Double( l + k)
-        
-        var c = 2 * atan2(sqrt(a), sqrt(1-a));
-        
-        var d = R * c;
-        return d
-    }
+//    func getTotalDistance(currentVenue: AnyObject) -> Double {
+//        var lat1 = startingPoint.latitude;
+//        var lat2 = currentVenue.objectForKey("location")!.objectForKey("lat") as!Double
+//        var lon1 = startingPoint.longitude
+//        var lon2 = currentVenue.objectForKey("location")!.objectForKey("lng") as!Double
+//
+//        
+//        func DegreesToRadians (value:Double) -> Double {
+//            return value * M_PI / 180.0
+//        }
+//        
+//        var R:Double = 6371000 // metres
+//        var latRad1 = DegreesToRadians(lat1)
+//        var latRad2 = DegreesToRadians(lat2)
+//        var change1 = DegreesToRadians(lat2-lat1)
+//        var change2 = DegreesToRadians(lon2-lon1)
+//        
+//        var l = Double(sin(change1/2) * sin(change1/2))
+//        var k = Double(cos(latRad1) * cos(latRad2) *
+//            sin(change2/2) * sin(change2/2))
+//        
+//        var a = Double( l + k)
+//        
+//        var c = 2 * atan2(sqrt(a), sqrt(1-a));
+//        
+//        var d = R * c;
+//        return d
+//    }
 
 }

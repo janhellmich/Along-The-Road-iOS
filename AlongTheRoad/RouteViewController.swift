@@ -17,6 +17,7 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     let routeData = RouteDataModel.sharedInstance
     let dataProcessor = RouteDataFilter.sharedInstance
     let restaurantData = RestaurantDataModel.sharedInstance
+    let mapHelpers = MapHelpers()
     
     //These represent the location and map based variables
     var coreLocationManager = CLLocationManager()
@@ -30,8 +31,6 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     var activeRoute: Bool = false
     
     //These three outlets correspond to the view itself. They permit the controller to access these components
-    @IBOutlet weak var destLabel: UILabel!
-    @IBOutlet weak var startLabel: UILabel!
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var routeControl: UISegmentedControl!
     
@@ -173,24 +172,10 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     // generate Segment display to choose between routes
     func generateSegmentControl() {
         for (i, route) in enumerate(routeData.routes) {
-            routeControl.insertSegmentWithTitle("\(metersToMiles(route.distance))mi - \(timeConverter(route.expectedTravelTime))", atIndex: i, animated: false)
+            routeControl.insertSegmentWithTitle("\(mapHelpers.roundDouble(mapHelpers.metersToMiles(route.distance)))mi - \(timeConverter(route.expectedTravelTime))", atIndex: i, animated: false)
         }
         routeControl.selectedSegmentIndex = 0
 
-    }
-    
-    // turn meters to miles
-    func metersToMiles(distance: Double) -> Double {
-        var miles = distance * 0.0006214
-        // force one decimal only
-        if miles >= 100 {
-            miles = round(miles)
-        } else {
-            miles = round(miles*10)/10
-        }
-        
-        
-        return miles
     }
     
     // turn seconds into readable time

@@ -8,18 +8,21 @@
 
 import UIKit
 
-class RestaurantTableView: UITableViewController {
+class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableViewDataSource {
 
-    var restaurantData = RestaurantDataModel.sharedInstance
+    let restaurantData = RestaurantDataModel.sharedInstance
+    let filter = RestaurantFilter.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        restaurantData.convertToArray()
-        restaurantData.filterRestaurants()
-        restaurantData.sortRestaurantsByDistance()
-
     }
     
+    override func viewWillAppear(animated: Bool) {
+        restaurantData.convertToArray()
+        filter.filterRestaurants()
+        restaurantData.sortRestaurantsByDistance()
+        self.tableView.reloadData()
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -27,17 +30,15 @@ class RestaurantTableView: UITableViewController {
 
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-
         return 1
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
-        return restaurantData.filteredRestaurant.count
+        return restaurantData.filteredRestaurants.count
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var restaurant:RestaurantStructure = self.restaurantData.filteredRestaurant[indexPath.row]
+        var restaurant:RestaurantStructure = self.restaurantData.filteredRestaurants[indexPath.row]
         self.restaurantData.selectedRestaurant = restaurant
         
     }
@@ -47,7 +48,7 @@ class RestaurantTableView: UITableViewController {
 
         // Configure the cell...
         
-        var currentVenue = self.restaurantData.filteredRestaurant[indexPath.item]
+        var currentVenue = self.restaurantData.filteredRestaurants[indexPath.item]
         cell.restaurantName.text =  currentVenue.name
         
         cell.location.text = currentVenue.address//self.getLocation(currentVenue)
