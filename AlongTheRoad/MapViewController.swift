@@ -193,7 +193,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 
                 if (self.startItem != nil && self.destinationItem != nil) {
                     self.displayRoute()
-                    self.setNewRegion()
+                    //self.setNewRegion()
                 }
             }
         })
@@ -369,8 +369,15 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             sendFourSquareRequest(activeWaypoint)
         }
         
+        centerMap(activeWaypoint)
+        
         // TODO: center the map around new waypoint, zoom appropriately
-
+    
+    }
+    
+    func centerMap (waypoint: WaypointStructure) {
+        var region = MKCoordinateRegionMakeWithDistance(waypoint.coordinate, 30000, 20000)
+        map.setRegion(region, animated: true)
     }
     
     func setActiveRestaurant (idx: Int) {
