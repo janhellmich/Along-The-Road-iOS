@@ -54,7 +54,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         println(placesClient == nil)
         
         routeData.startingPoint = "San Francisco"
-        routeData.destination = "Palo Alto"
+        routeData.destination = "San Diego"
 
     }
 

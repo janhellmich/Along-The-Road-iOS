@@ -291,7 +291,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             
             self.restaurantData.convertToArray()
             self.filter.filterRestaurants()
-            self.restaurantData.sortRestaurantsByDistance()
             
             
             // if activeRestaurant is -1 
@@ -301,7 +300,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             var activeWaypoint = self.waypoints[self.activeWaypointIdx]
             if self.activeRestaurantIdx == -1 {
                 self.determineActiveRestaurant()
-                self.searchSurroundingRestaurants()
             }
             
            
@@ -325,15 +323,22 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             println("\n\n")
             println(restaurant.totalDistance)
             println(waypoints[activeWaypointIdx].distance)
-            if restaurant.totalDistance >= waypoints[activeWaypointIdx].distance {
-                println("active waypoint distance \(waypoints[activeWaypointIdx].distance)")
-                println("active restaurant distance \(restaurant.totalDistance)")
+            println("diff between restaurant and waypoint distances\(mapHelpers.metersToMiles(restaurant.totalDistance - waypoints[activeWaypointIdx].distance))")
+            if restaurant.totalDistance >= waypoints[activeWaypointIdx].distance && restaurant.totalDistance - waypoints[activeWaypointIdx].distance <= Double(routeData.searchRadius) {
+                println("determineActiveRestaurant")
+                println("   active waypoint distance \(mapHelpers.metersToMiles(waypoints[activeWaypointIdx].distance))")
+                println("   next waypoint distance \(mapHelpers.metersToMiles(waypoints[activeWaypointIdx+1].distance))")
+                println("   active restaurant distance \(mapHelpers.metersToMiles(restaurant.totalDistance))")
                 println(idx)
                 setActiveRestaurant(idx)
-                
-                break
+                self.searchSurroundingRestaurants()
+                return
             }
         }
+        println("NO Restaurant found")
+        // set waypoint to next waypoint, adjust location of slider?
+        setActiveWaypoint(++activeWaypointIdx)
+        
     }
     
     func setActiveWaypoint (idx: Int) {
@@ -341,21 +346,21 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         activeWaypointIdx = idx
         var activeWaypoint = waypoints[activeWaypointIdx]
         
+        distanceSlider.value = Float(mapHelpers.metersToMiles(activeWaypoint.distance))
+        distanceLabel.text = "\(mapHelpers.roundDouble(Double(distanceSlider.value))) mi"
+        
         restaurantFilterData.distanceFromOrigin = activeWaypoint.distance
+        filter.filterRestaurants()
+        
+        centerMap(activeWaypoint)
         
         // check if activeWaypoint was queried
         if activeWaypoint.wasQueried {
             determineActiveRestaurant()
-            searchSurroundingRestaurants()
         } else {
             activeWaypoint.wasQueried = true
             sendFourSquareRequest(activeWaypoint)
         }
-        
-        centerMap(activeWaypoint)
-        
-        // TODO: center the map around new waypoint, zoom appropriately
-    
     }
     
     func centerMap (waypoint: WaypointStructure) {
@@ -365,6 +370,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     func setActiveRestaurant (idx: Int) {
         activeRestaurantIdx = idx
+        println("NEW ACTIVE RESTUARANT \(idx)")
+        println("   total distance of restaurant \(mapHelpers.metersToMiles(restaurantData.filteredRestaurants[idx].totalDistance))")
+        println(restaurantData.filteredRestaurants[idx].name)
+        println("   first filtered restarauant \(mapHelpers.metersToMiles(restaurantData.filteredRestaurants[0].totalDistance))")
+        var numFilteredRestaurants = restaurantData.filteredRestaurants.count
+        println("   number of restaurants filtered\(numFilteredRestaurants)")
+        println("   last filtered restarauant \(mapHelpers.metersToMiles(restaurantData.filteredRestaurants[numFilteredRestaurants-1].totalDistance))")
         // TODO: change display of the active restaurant's marker
         //restaurantData.filteredRestaurants[idx]
     }

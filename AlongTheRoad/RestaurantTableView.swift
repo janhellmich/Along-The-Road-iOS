@@ -12,6 +12,7 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
 
     let restaurantData = RestaurantDataModel.sharedInstance
     let filter = RestaurantFilter.sharedInstance
+    var mapHelpers = MapHelpers()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,7 +112,7 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
      * It returns as string formatted in miles for how far from the route the restaurant is
     */
     func getDistance (distanceMeters: Double) -> String {
-        var distance = String(format:"%f", distanceMeters/1600)
+        var distance = String(format:"%f", mapHelpers.metersToMiles(distanceMeters))
         var cuttoff = advance(distance.startIndex, 3)
         var finalString = distance.substringToIndex(cuttoff)
         return "\(finalString) mi"
