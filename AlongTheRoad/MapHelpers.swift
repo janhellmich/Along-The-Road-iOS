@@ -41,5 +41,26 @@ class MapHelpers {
         var d = R * c;
         return d
     }
+    
+    // turn meters to miles
+    func metersToMiles(distance: Double) -> Double {
+        return distance * 0.0006214
+    }
+    
+    // turn miles to meters
+    func milesToMeters(distance: Double) -> Double {
+        return distance / 0.0006214
+    }
+    
+    func roundDouble (number: Double) -> Double {
+        var num = number
+        if number >= 100 {
+            num = round(num)
+        } else {
+            num = round(num*10)/10
+        }
+        
+        return num
+    }
 
 }

@@ -64,7 +64,7 @@ class RouteDataFilter: NSObject {
         var waypoints = [WaypointStructure]()
         var latToKilometer: Double = 110
         var longToKilometer: Double = 110
-        var desiredDistance = 5.0
+        var desiredDistance = 5000.0 //meters
         
         var firstWaypoint = WaypointStructure()
         firstWaypoint.coordinate = locations[0]
@@ -75,7 +75,7 @@ class RouteDataFilter: NSObject {
         for location in locations {
             var lastPoint = waypoints[waypoints.count-1]
             
-            var totalChange = mapHelpers.getTotalDistance(lastPoint.coordinate, point2: location)/1000
+            var totalChange = mapHelpers.getTotalDistance(lastPoint.coordinate, point2: location)
 
             if totalChange >= desiredDistance  {
                 distance += totalChange

@@ -98,7 +98,7 @@ class RestaurantDataModel: NSObject {
         var state = getState(venue)
         var zip = getZip(venue)
         //println("WAYPOINTDISTANCE: \(waypointDistance)")
-        var distance = waypointDistance + (distanceToRoad / 1000) // km
+        var distance = waypointDistance + distanceToRoad // meters
         
         // consider pricerange of 3 and 4 equally due to limited space in filter page
         if (priceRange == 4) {

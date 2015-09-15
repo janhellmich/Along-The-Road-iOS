@@ -19,6 +19,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     let restaurantData = RestaurantDataModel.sharedInstance
     let restaurantFilterData = RestaurantFilterData.sharedInstance
     let filter = RestaurantFilter.sharedInstance
+    let mapHelpers = MapHelpers()
 
     //These represent the location and map based variables
     var coreLocationManager = CLLocationManager()
@@ -52,7 +53,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     @IBAction func handleSliderRelease(sender: UISlider) {
         activeRestaurantIdx = -1
-        var distance = milesToMeters(Double(sender.value))/1000
+        var distance = mapHelpers.milesToMeters(Double(sender.value))
         for (idx, waypoint) in enumerate(waypoints) {
             if waypoint.distance >= distance {
                 setActiveWaypoint(idx)
@@ -70,7 +71,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         var rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "list"), style: UIBarButtonItemStyle.Plain, target: self, action: "showListView")
         self.navigationItem.rightBarButtonItem = rightAddBarButtonItem
         
-        distanceSlider.maximumValue = Float(metersToMiles(routeData.route!.distance))
+        distanceSlider.maximumValue = Float(mapHelpers.metersToMiles(routeData.route!.distance))
         
         
         locationManager = LocationManager.sharedInstance
@@ -85,24 +86,6 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
     }
     
-    // turn meters to miles
-    func metersToMiles(distance: Double) -> Double {
-        var miles = distance * 0.0006214
-        // force one decimal only
-        if miles >= 100 {
-            miles = round(miles)
-        } else {
-            miles = round(miles*10)/10
-        }
-        
-        
-        return miles
-    }
-    
-    // turn miles to meters
-    func milesToMeters(distance: Double) -> Double {
-        return distance / 0.0006214
-    }
     
     override func viewWillAppear(animated: Bool) {
         
@@ -376,7 +359,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
     
     func centerMap (waypoint: WaypointStructure) {
-        var region = MKCoordinateRegionMakeWithDistance(waypoint.coordinate, 30000, 20000)
+        var region = MKCoordinateRegionMakeWithDistance(waypoint.coordinate, 100, 20000)
         map.setRegion(region, animated: true)
     }
     

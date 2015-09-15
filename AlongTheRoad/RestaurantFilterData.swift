@@ -23,6 +23,6 @@ class RestaurantFilterData: NSObject {
         minRatingSelected = 7
         openSelected = false
         distanceFromOrigin = 0.0
-        searchOffset = 30.0
+        searchOffset = 30000
     }
 }

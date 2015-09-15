@@ -110,8 +110,8 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
      * This function extracts the data from the currentVenue for the distance from the road.
      * It returns as string formatted in miles for how far from the route the restaurant is
     */
-    func getDistance (distanceKiloMeters: Double) -> String {
-        var distance = String(format:"%f", distanceKiloMeters/1600*1000)
+    func getDistance (distanceMeters: Double) -> String {
+        var distance = String(format:"%f", distanceMeters/1600)
         var cuttoff = advance(distance.startIndex, 3)
         var finalString = distance.substringToIndex(cuttoff)
         return "\(finalString) mi"
