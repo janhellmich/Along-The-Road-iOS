@@ -269,7 +269,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      * best restaurants found by the four square api in that area. For now it just displays them as annotations
      * with the name and ratings but can later be modified for filters and further functionallity
     */
-    func sendFourSquareRequest (lat: Double, long: Double) {
+    func sendFourSquareRequest (waypoint: WaypointStructure) {
+        
+        var lat = waypoint.coordinate.latitude
+        var long = waypoint.coordinate.longitude
         
         var url = NSURL(string: "https://api.foursquare.com/v2/venues/explore?client_id=\(self.CLIENT_ID)&client_secret=\(self.CLIENT_SECRET)&v=20150902&ll=\(lat),\(long)&venuePhotos=1&section=\(routeData.searchSection)&limit=20&radius=\(routeData.searchRadius)")
         var req = NSURLRequest(URL: url!)
@@ -291,7 +294,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             //Add the restaurants to the restaurants array
             var restaurantArray = [AnyObject]()
             
-            var newlyAdded = self.restaurantData.addRestaurants(dataObj)
+            var newlyAdded = self.restaurantData.addRestaurants(dataObj, waypointDistance: waypoint.distance)
             
             for i in 0..<newlyAdded.count  {
                 var currentVenue = newlyAdded[i]
@@ -307,31 +310,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             self.restaurantData.sortRestaurantsByDistance()
             
             
-            
-            println("printing out first 5 filtered restaurants")
-            for i in 0...4 {
-                var restaurants = self.restaurantData.filteredRestaurants
-                println(i)
-                println(restaurants[i].totalDistance)
-            }
-            
             // if activeRestaurant is -1 
                 //repeat what is below
                 // call searchSurrindingRestaurants
             
             var activeWaypoint = self.waypoints[self.activeWaypointIdx]
             if self.activeRestaurantIdx == -1 {
-                println("Setting new index")
-                for (idx, restaurant) in enumerate(self.restaurantData.filteredRestaurants) {
-                    if restaurant.totalDistance >= activeWaypoint.distance {
-                        println("new active restaurant\(restaurant.totalDistance)")
-                        println("activeWaypoint\(activeWaypoint.distance)")
-                        self.setActiveRestaurant(idx)
-                        println("new active restaurant index \(idx)")
-                        break
-                    }
-                    
-                }
+                self.determineActiveRestaurant()
+                self.searchSurroundingRestaurants()
             }
             
            
@@ -339,7 +325,32 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
     }
     
+    func searchSurroundingRestaurants () {
+        for (idx, waypoint) in enumerate(waypoints) {
+            if abs(waypoint.distance - waypoints[activeWaypointIdx].distance) <= restaurantFilterData.searchOffset {
+                if !waypoint.wasQueried {
+                    sendFourSquareRequest(waypoint)
+                    waypoints[idx].wasQueried = true
+                }
+            }
+        }
+    }
     
+    func determineActiveRestaurant () {
+        for (idx, restaurant) in enumerate(self.restaurantData.filteredRestaurants) {
+            println("\n\n")
+            println(restaurant.totalDistance)
+            println(waypoints[activeWaypointIdx].distance)
+            if restaurant.totalDistance >= waypoints[activeWaypointIdx].distance {
+                println("active waypoint distance \(waypoints[activeWaypointIdx].distance)")
+                println("active restaurant distance \(restaurant.totalDistance)")
+                println(idx)
+                setActiveRestaurant(idx)
+                
+                break
+            }
+        }
+    }
     
     func setActiveWaypoint (idx: Int) {
         println("Index of new active waypoint\(idx)")
@@ -348,21 +359,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
         restaurantFilterData.distanceFromOrigin = activeWaypoint.distance
         
-        // check if activeWaypoint was querried
-            // set acriveRestaurant
-            // call searchSurrindingRestaurants
-        
-        
-            // else: querry foursquare for activeWaypoint
-        
-        for (idx, waypoint) in enumerate(waypoints) {
-            if abs(waypoint.distance - activeWaypoint.distance) <= restaurantFilterData.searchOffset {
-                if !waypoint.wasQueried {
-                    sendFourSquareRequest(waypoint.coordinate.latitude, long: waypoint.coordinate.longitude)
-                    waypoints[idx].wasQueried = true
-                }
-            }
+        // check if activeWaypoint was queried
+        if activeWaypoint.wasQueried {
+            determineActiveRestaurant()
+            searchSurroundingRestaurants()
+        } else {
+            activeWaypoint.wasQueried = true
+            sendFourSquareRequest(activeWaypoint)
         }
+
+        
+    
         
         // TODO: center the map around new waypoint, zoom appropriately
         

@@ -23,6 +23,8 @@ class RestaurantDataModel: NSObject {
     var restaurantsToAddToMap: [RestaurantStructure]
     var filteredRestaurants: [RestaurantStructure]
     
+    var mapHelpers = MapHelpers()
+    
 
     override init () {
         restaurantDictionary = [String: RestaurantStructure]()
@@ -47,7 +49,7 @@ class RestaurantDataModel: NSObject {
      * eliminates all the repeats and selects the one with the closer proximity to the route
     */
     
-    func addRestaurants (dataObj: AnyObject?) -> [RestaurantStructure] {
+    func addRestaurants (dataObj: AnyObject?, waypointDistance: Double) -> [RestaurantStructure] {
         restaurantsToAddToMap = [RestaurantStructure]()
         //Add the restaurants to the restaurants array
         var restaurantArray = [AnyObject]()
@@ -59,7 +61,7 @@ class RestaurantDataModel: NSObject {
         //Create annotations for each restaurant that was found
         //This section needs to later be modified to deal with possible nil values
         for i in 0..<restaurantArray.count  {
-            var restaurant = createRestaurantObject(restaurantArray[i])
+            var restaurant = createRestaurantObject(restaurantArray[i], waypointDistance: waypointDistance)
             if restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"] == nil {
                 restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"] = restaurant
                 restaurantsToAddToMap.append(restaurant)
@@ -81,7 +83,7 @@ class RestaurantDataModel: NSObject {
     }
     
     
-    func createRestaurantObject(venue: AnyObject) -> RestaurantStructure {
+    func createRestaurantObject(venue: AnyObject, waypointDistance: Double) -> RestaurantStructure {
         var name = getName(venue)
         var address = getAddress(venue)
         var distanceToRoad = getDistanceToRoad(venue)
@@ -95,7 +97,8 @@ class RestaurantDataModel: NSObject {
         var city = getCity(venue)
         var state = getState(venue)
         var zip = getZip(venue)
-        var distance = (getTotalDistance(venue) + distanceToRoad) / 1000 // km
+        //println("WAYPOINTDISTANCE: \(waypointDistance)")
+        var distance = waypointDistance + (distanceToRoad / 1000) // km
         
         // consider pricerange of 3 and 4 equally due to limited space in filter page
         if (priceRange == 4) {
@@ -258,33 +261,33 @@ class RestaurantDataModel: NSObject {
     
     
     
-    func getTotalDistance(currentVenue: AnyObject) -> Double {
-        var lat1 = startingPoint.latitude;
-        var lat2 = currentVenue.objectForKey("location")!.objectForKey("lat") as!Double
-        var lon1 = startingPoint.longitude
-        var lon2 = currentVenue.objectForKey("location")!.objectForKey("lng") as!Double
-
-        
-        func DegreesToRadians (value:Double) -> Double {
-            return value * M_PI / 180.0
-        }
-        
-        var R:Double = 6371000 // metres
-        var latRad1 = DegreesToRadians(lat1)
-        var latRad2 = DegreesToRadians(lat2)
-        var change1 = DegreesToRadians(lat2-lat1)
-        var change2 = DegreesToRadians(lon2-lon1)
-        
-        var l = Double(sin(change1/2) * sin(change1/2))
-        var k = Double(cos(latRad1) * cos(latRad2) *
-            sin(change2/2) * sin(change2/2))
-        
-        var a = Double( l + k)
-        
-        var c = 2 * atan2(sqrt(a), sqrt(1-a));
-        
-        var d = R * c;
-        return d
-    }
+//    func getTotalDistance(currentVenue: AnyObject) -> Double {
+//        var lat1 = startingPoint.latitude;
+//        var lat2 = currentVenue.objectForKey("location")!.objectForKey("lat") as!Double
+//        var lon1 = startingPoint.longitude
+//        var lon2 = currentVenue.objectForKey("location")!.objectForKey("lng") as!Double
+//
+//        
+//        func DegreesToRadians (value:Double) -> Double {
+//            return value * M_PI / 180.0
+//        }
+//        
+//        var R:Double = 6371000 // metres
+//        var latRad1 = DegreesToRadians(lat1)
+//        var latRad2 = DegreesToRadians(lat2)
+//        var change1 = DegreesToRadians(lat2-lat1)
+//        var change2 = DegreesToRadians(lon2-lon1)
+//        
+//        var l = Double(sin(change1/2) * sin(change1/2))
+//        var k = Double(cos(latRad1) * cos(latRad2) *
+//            sin(change2/2) * sin(change2/2))
+//        
+//        var a = Double( l + k)
+//        
+//        var c = 2 * atan2(sqrt(a), sqrt(1-a));
+//        
+//        var d = R * c;
+//        return d
+//    }
 
 }

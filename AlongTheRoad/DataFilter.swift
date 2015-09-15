@@ -13,6 +13,7 @@ import CoreLocation
 class RouteDataFilter: NSObject {
     
     static let sharedInstance = RouteDataFilter()
+    var mapHelpers = MapHelpers()
     
     
     /* function: getSections
@@ -61,8 +62,8 @@ class RouteDataFilter: NSObject {
     
     func createWaypointStructures (locations: [CLLocationCoordinate2D]) -> [WaypointStructure] {
         var waypoints = [WaypointStructure]()
-        var latToKilometer: Double = 95
-        var longToKilometer: Double = 95
+        var latToKilometer: Double = 110
+        var longToKilometer: Double = 110
         var desiredDistance = 5.0
         
         var firstWaypoint = WaypointStructure()
@@ -73,10 +74,8 @@ class RouteDataFilter: NSObject {
         
         for location in locations {
             var lastPoint = waypoints[waypoints.count-1]
-            var latChange = (lastPoint.coordinate.latitude - location.latitude)*latToKilometer
-            var longChange = (lastPoint.coordinate.longitude - location.longitude)*longToKilometer
             
-            var totalChange = sqrt(latChange*latChange + longChange*longChange)
+            var totalChange = mapHelpers.getTotalDistance(lastPoint.coordinate, point2: location)/1000
 
             if totalChange >= desiredDistance  {
                 distance += totalChange
