@@ -66,7 +66,6 @@ class RestaurantFilter: NSObject {
             for filter in filterFunctions {
                 if filter(restaurant) == false {
                     passes = false
-                    println(filter)
                 }
             }
             if passes == true {

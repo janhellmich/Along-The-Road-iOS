@@ -95,7 +95,7 @@ class RestaurantDataModel: NSObject {
         var city = getCity(venue)
         var state = getState(venue)
         var zip = getZip(venue)
-        var distance = getTotalDistance(venue) + distanceToRoad
+        var distance = (getTotalDistance(venue) + distanceToRoad) / 1000 // km
         
         // consider pricerange of 3 and 4 equally due to limited space in filter page
         if (priceRange == 4) {

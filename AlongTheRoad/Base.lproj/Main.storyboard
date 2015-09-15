@@ -136,9 +136,8 @@
                                 <rect key="frame" x="94" y="559" width="397" height="31"/>
                                 <connections>
                                     <action selector="distanceSliderValueChanged:" destination="OcZ-lP-89x" eventType="valueChanged" id="Nlj-Sx-pPd"/>
-                                    <action selector="editingDidEnd:" destination="OcZ-lP-89x" eventType="editingDidEnd" id="cWS-E1-vpx"/>
-                                    <action selector="touchDragExit:" destination="OcZ-lP-89x" eventType="touchDragExit" id="O4b-ln-UWr"/>
-                                    <action selector="touchUpInside:" destination="OcZ-lP-89x" eventType="touchUpInside" id="1ki-vH-lPo"/>
+                                    <action selector="handleSliderRelease:" destination="OcZ-lP-89x" eventType="touchUpInside" id="RnQ-f4-4hX"/>
+                                    <action selector="handleSliderRelease:" destination="OcZ-lP-89x" eventType="touchUpOutside" id="lsl-oa-rdD"/>
                                 </connections>
                             </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance from Origin" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TL1-Kn-uzo">

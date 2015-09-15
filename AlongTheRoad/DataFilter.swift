@@ -69,15 +69,19 @@ class RouteDataFilter: NSObject {
         firstWaypoint.coordinate = locations[0]
         waypoints.append(firstWaypoint)
         
+        var distance = 0.0
+        
         for location in locations {
             var lastPoint = waypoints[waypoints.count-1]
             var latChange = (lastPoint.coordinate.latitude - location.latitude)*latToKilometer
             var longChange = (lastPoint.coordinate.longitude - location.longitude)*longToKilometer
             
             var totalChange = sqrt(latChange*latChange + longChange*longChange)
+
             if totalChange >= desiredDistance  {
+                distance += totalChange
                 var waypoint = WaypointStructure()
-                waypoint.distance = totalChange
+                waypoint.distance = distance
                 waypoint.coordinate = location
                 waypoints.append(waypoint)
             }

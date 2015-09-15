@@ -1,5 +1,5 @@
 //
-//  GoogleMapViewController.swift
+//  MapViewController.swift
 //  AlongTheRoad
 //
 //  Created by Linus Aidan Meyer-Teruel on 8/29/15.
@@ -17,6 +17,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     let routeData = RouteDataModel.sharedInstance
     let dataProcessor = RouteDataFilter.sharedInstance
     let restaurantData = RestaurantDataModel.sharedInstance
+    let restaurantFilterData = RestaurantFilterData.sharedInstance
+    let filter = RestaurantFilter.sharedInstance
 
     //These represent the location and map based variables
     var coreLocationManager = CLLocationManager()
@@ -26,6 +28,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     var annotations:[MKPointAnnotation] = [] //This is an array of the annotations on the map
     var userLocation: CLLocationCoordinate2D? //This will later be instantiated with the user's current location
     var waypoints: [WaypointStructure] = []
+    var activeWaypointIdx: Int = 0
+    var activeRestaurantIdx: Int = -1
+    let viewRadius = 20.0
+    
+    
     
     //API Keys for FourSquare
     let CLIENT_ID="ELLZUH013LMEXWRWGBOSNBTXE3NV02IUUO3ZFPVFFSZYLA30"
@@ -43,10 +50,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         distanceLabel.text = "\(round(sender.value*10)/10) mi"
     }
 
-    @IBAction func touchUpInside(sender: UISlider) {
-        println("touchUPInside")
+    @IBAction func handleSliderRelease(sender: UISlider) {
+        activeRestaurantIdx = -1
+        var distance = milesToMeters(Double(sender.value))/1000
+        for (idx, waypoint) in enumerate(waypoints) {
+            if waypoint.distance >= distance {
+                setActiveWaypoint(idx)
+                return
+            }
+        }
+        setActiveWaypoint(waypoints.count - 1)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         coreLocationManager.delegate = self
@@ -82,6 +97,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
         
         return miles
+    }
+    
+    // turn miles to meters
+    func milesToMeters(distance: Double) -> Double {
+        return distance / 0.0006214
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -183,10 +203,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     func displayRoute() {
         var route = routeData.route!
         waypoints = self.dataProcessor.getSections(self.routeData.route!)
- 
-//        for i in 0..<queries.count {
-//            self.sendFourSquareRequest(queries[i].latitude, long: queries[i].longitude)
-//        }
+        
+        setActiveWaypoint(0)
         
         self.map.addOverlay(route.polyline, level:MKOverlayLevel.AboveLabels)
     }
@@ -283,9 +301,89 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 var rating = currentVenue.rating
                 self.createAnnotation(coord, title: title, subtitle: "Rating: \(rating)")
             }
+            
+            self.restaurantData.convertToArray()
+            self.filter.filterRestaurants()
+            self.restaurantData.sortRestaurantsByDistance()
+            
+            
+            
+            println("printing out first 5 filtered restaurants")
+            for i in 0...4 {
+                var restaurants = self.restaurantData.filteredRestaurants
+                println(i)
+                println(restaurants[i].totalDistance)
+            }
+            
+            // if activeRestaurant is -1 
+                //repeat what is below
+                // call searchSurrindingRestaurants
+            
+            var activeWaypoint = self.waypoints[self.activeWaypointIdx]
+            if self.activeRestaurantIdx == -1 {
+                println("Setting new index")
+                for (idx, restaurant) in enumerate(self.restaurantData.filteredRestaurants) {
+                    if restaurant.totalDistance >= activeWaypoint.distance {
+                        println("new active restaurant\(restaurant.totalDistance)")
+                        println("activeWaypoint\(activeWaypoint.distance)")
+                        self.setActiveRestaurant(idx)
+                        println("new active restaurant index \(idx)")
+                        break
+                    }
+                    
+                }
+            }
+            
            
             //self.map.showAnnotations(self.annotations, animated: true)
         }
+    }
+    
+    
+    
+    func setActiveWaypoint (idx: Int) {
+        println("Index of new active waypoint\(idx)")
+        activeWaypointIdx = idx
+        var activeWaypoint = waypoints[activeWaypointIdx]
+        
+        restaurantFilterData.distanceFromOrigin = activeWaypoint.distance
+        
+        // check if activeWaypoint was querried
+            // set acriveRestaurant
+            // call searchSurrindingRestaurants
+        
+        
+            // else: querry foursquare for activeWaypoint
+        
+        for (idx, waypoint) in enumerate(waypoints) {
+            if abs(waypoint.distance - activeWaypoint.distance) <= restaurantFilterData.searchOffset {
+                if !waypoint.wasQueried {
+                    sendFourSquareRequest(waypoint.coordinate.latitude, long: waypoint.coordinate.longitude)
+                    waypoints[idx].wasQueried = true
+                }
+            }
+        }
+        
+        // TODO: center the map around new waypoint, zoom appropriately
+        
+//        if activeRestaurantIdx == -1 {
+//            for (idx, restaurant) in enumerate(restaurantData.filteredRestaurants) {
+//                if restaurant.totalDistance >= activeWaypoint.distance {
+//                    println("new active restaurant\(restaurant.totalDistance)")
+//                    println("activeWaypoint\(activeWaypoint.distance)")
+//                    setActiveRestaurant(idx)
+//                    println("new active restaurant index \(idx)")
+//                    break
+//                }
+//                
+//            }
+//        }
+    }
+    
+    func setActiveRestaurant (idx: Int) {
+        activeRestaurantIdx = idx
+        // TODO: change display of the active restaurant's marker
+        //restaurantData.filteredRestaurants[idx]
     }
     
 }
