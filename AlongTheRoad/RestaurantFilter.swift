@@ -59,7 +59,14 @@ class RestaurantFilter: NSObject {
     
     func filterRestaurants () {
         let restaurants = restaurantData.restaurants
-        var filterdRestaurants = [RestaurantStructure]()
+        let filteredRestaurants = filterRestaurantArray(restaurants)
+        
+        restaurantData.filteredRestaurants = filteredRestaurants
+        
+    }
+    
+    func filterRestaurantArray (restaurants: [RestaurantStructure]) -> [RestaurantStructure] {
+        var filteredRestaurants = [RestaurantStructure]()
         
         for restaurant in restaurants {
             var passes = true;
@@ -69,14 +76,12 @@ class RestaurantFilter: NSObject {
                 }
             }
             if passes == true {
-                filterdRestaurants.append(restaurant)
+                filteredRestaurants.append(restaurant)
             }
         }
         
-        restaurantData.filteredRestaurants = filterdRestaurants
-        
+        return filteredRestaurants
     }
-    
     
     
     

@@ -296,12 +296,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             
             var newlyAdded = self.restaurantData.addRestaurants(dataObj, waypointDistance: waypoint.distance)
             
-            for i in 0..<newlyAdded.count  {
-                var currentVenue = newlyAdded[i]
-                var coord = currentVenue.location
-                var title = currentVenue.name
+            var newlyFiltered = self.filter.filterRestaurantArray(newlyAdded)
+            
+            for restaurant in newlyFiltered  {
+                var coord = restaurant.location
+                var title = restaurant.name
+                var rating = restaurant.rating
                 
-                var rating = currentVenue.rating
                 self.createAnnotation(coord, title: title, subtitle: "Rating: \(rating)")
             }
             
@@ -367,24 +368,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             activeWaypoint.wasQueried = true
             sendFourSquareRequest(activeWaypoint)
         }
-
-        
-    
         
         // TODO: center the map around new waypoint, zoom appropriately
-        
-//        if activeRestaurantIdx == -1 {
-//            for (idx, restaurant) in enumerate(restaurantData.filteredRestaurants) {
-//                if restaurant.totalDistance >= activeWaypoint.distance {
-//                    println("new active restaurant\(restaurant.totalDistance)")
-//                    println("activeWaypoint\(activeWaypoint.distance)")
-//                    setActiveRestaurant(idx)
-//                    println("new active restaurant index \(idx)")
-//                    break
-//                }
-//                
-//            }
-//        }
+
     }
     
     func setActiveRestaurant (idx: Int) {

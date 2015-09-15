@@ -20,7 +20,7 @@ class RestaurantFilterData: NSObject {
     
     override init() {
         pricesSelcted = [false, false, false, false]
-        minRatingSelected = 0
+        minRatingSelected = 7
         openSelected = false
         distanceFromOrigin = 0.0
         searchOffset = 30.0
