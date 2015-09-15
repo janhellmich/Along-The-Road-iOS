@@ -327,7 +327,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             if restaurant.totalDistance >= waypoints[activeWaypointIdx].distance && restaurant.totalDistance - waypoints[activeWaypointIdx].distance <= Double(routeData.searchRadius) {
                 println("determineActiveRestaurant")
                 println("   active waypoint distance \(mapHelpers.metersToMiles(waypoints[activeWaypointIdx].distance))")
-                println("   next waypoint distance \(mapHelpers.metersToMiles(waypoints[activeWaypointIdx+1].distance))")
+                //println("   next waypoint distance \(mapHelpers.metersToMiles(waypoints[activeWaypointIdx+1].distance))")
                 println("   active restaurant distance \(mapHelpers.metersToMiles(restaurant.totalDistance))")
                 println(idx)
                 setActiveRestaurant(idx)
@@ -337,7 +337,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
         println("NO Restaurant found")
         // set waypoint to next waypoint, adjust location of slider?
-        setActiveWaypoint(++activeWaypointIdx)
+        if (++activeWaypointIdx < waypoints.count) {
+            setActiveWaypoint(activeWaypointIdx)
+        } else {
+            var lastRestaurantDistance = restaurantData.filteredRestaurants[restaurantData.filteredRestaurants.count-1].totalDistance
+            for (idx, waypoint) in enumerate(waypoints) {
+                if waypoint.distance > lastRestaurantDistance {
+                    setActiveWaypoint(idx-1)
+                }
+            }
+        
+        }
+        
         
     }
     
