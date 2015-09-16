@@ -329,7 +329,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 var title = restaurant.name
                 var rating = restaurant.rating
                 
-                self.createAnnotation(coord, imageName: title)
+                self.createAnnotation(coord, imageName: "venue")
             }
             
             
