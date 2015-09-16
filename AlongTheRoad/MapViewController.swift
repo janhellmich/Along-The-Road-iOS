@@ -31,7 +31,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     var waypoints: [WaypointStructure] = []
     var activeWaypointIdx: Int = 0
     var activeRestaurantIdx: Int = -1
+    var activeMarker: CustomAnnotation?
     let viewRadius = 20.0
+    
     
     
     
@@ -91,17 +93,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
         // check that the initial load has happened
         if self.destinationItem != nil {
-            map.removeAnnotations(annotations)
-            println("# of Annotations \(annotations.count)")
-            println("# of Filtered \(restaurantData.filteredRestaurants.count)")
-            println("# of Total Restauratants \(restaurantData.restaurants.count)")
-            self.createAnnotation(self.startItem!.placemark.location.coordinate, title: "Start", subtitle: "")
-            annotations = []
-            self.createAnnotation(self.destinationItem!.placemark.location.coordinate, title: "Destination", subtitle: "")
-            
-            for venue in restaurantData.filteredRestaurants {
-                createAnnotation(venue.location, title: venue.name, subtitle: "Rating: \(venue.rating)")
-            }
+//            map.removeAnnotations(annotations)
+//            println("# of Annotations \(annotations.count)")
+//            println("# of Filtered \(restaurantData.filteredRestaurants.count)")
+//            println("# of Total Restauratants \(restaurantData.restaurants.count)")
+//            self.createAnnotation(self.startItem!.placemark.location.coordinate, title: "Start", subtitle: "")
+//            annotations = []
+//            self.createAnnotation(self.destinationItem!.placemark.location.coordinate, title: "Destination", subtitle: "")
+//            
+//            for venue in restaurantData.filteredRestaurants {
+//                createAnnotation(venue.location, title: venue.name, subtitle: "Rating: \(venue.rating)")
+//            }
+            updateMarkers()
         }
         
     }
@@ -141,8 +144,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      * the two addresses
     */
     func displayLocation(){
-        self.addMapItem( "Start", address: routeData.startingPoint)
-        self.addMapItem( "Destination", address: routeData.destination)
+        self.addMapItem( "start", address: routeData.startingPoint)
+        self.addMapItem( "destination", address: routeData.destination)
     }
     
     /* function: addMapItem
@@ -165,12 +168,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 
                 var mkplace = MKPlacemark(placemark: place)
                 
-                self.createAnnotation(mkplace.coordinate, title: type, subtitle: "")
+                self.createAnnotation(mkplace.coordinate, imageName: type)
                 
-                if type == "Start" {
+                if type == "start" {
                     self.restaurantData.startingPoint = mkplace.coordinate // Required for searching by distance
                     self.startItem = MKMapItem(placemark: mkplace)
-                } else if type == "Destination" {
+                } else if type == "destination" {
                     self.destinationItem = MKMapItem(placemark: mkplace)
                 }
                 
@@ -205,6 +208,36 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         return nil
     }
 
+    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+        if !(annotation is CustomAnnotation) {
+            return nil
+        }
+        
+        let reuseId = "test"
+        
+        var anView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
+        if anView == nil {
+            anView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            anView.canShowCallout = true
+        }
+        else {
+            anView.annotation = annotation
+        }
+        
+        //Set annotation-specific properties **AFTER**
+        //the view is dequeued or created...
+        
+        let ca = annotation as! CustomAnnotation
+        anView.image = UIImage(named:ca.imageName)
+        anView.layer.zPosition = 1
+        if ca.imageName == "active" {
+            anView.layer.zPosition = 2
+        }
+        
+        return anView
+    }
+
+
     
 
     
@@ -216,17 +249,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     */
     func setNewRegion () {
         //Extract the coord
-        var startCoord = self.startItem?.placemark.coordinate
-        var destCoord = self.destinationItem?.placemark.coordinate
+        var startCoord = startItem?.placemark.coordinate
+        var destCoord = destinationItem?.placemark.coordinate
         //All elements to be displayed on the map need to be placed in this array
         var locations = [startCoord!, destCoord!]
         
 
 
-        var region = self.dataProcessor.findRegion(locations)
+        var region = dataProcessor.findRegion(locations)
         
         //Currently calls sendFourSquare request on
-        self.map.setRegion(region, animated: false)
+        map.setRegion(region, animated: false)
     }
     
     
@@ -237,13 +270,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      * also add it to the annotations array.
     */
     
-    func createAnnotation (coord: CLLocationCoordinate2D, title: String, subtitle: String) {
-        let annotation = MKPointAnnotation()
+    func makeAnnotation (coord: CLLocationCoordinate2D, imageName: String) -> CustomAnnotation {
+        let annotation = CustomAnnotation()
         annotation.coordinate = coord
-        annotation.title = title
-        annotation.subtitle = subtitle
-        self.annotations.append(annotation)
-        self.map.addAnnotation(annotation)
+        annotation.imageName = imageName
+        return annotation
+    }
+    
+    func createAnnotation (coord: CLLocationCoordinate2D, imageName: String) {
+        let annotation = makeAnnotation(coord, imageName: imageName)
+        annotations.append(annotation)
+        map.addAnnotation(annotation)
     }
     
     /* function: sendFourSquareRequest
@@ -286,7 +323,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 var title = restaurant.name
                 var rating = restaurant.rating
                 
-                self.createAnnotation(coord, title: title, subtitle: "Rating: \(rating)")
+                self.createAnnotation(coord, imageName: title)
             }
             
             self.restaurantData.convertToArray()
@@ -330,6 +367,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 //println("   next waypoint distance \(mapHelpers.metersToMiles(waypoints[activeWaypointIdx+1].distance))")
                 println("   active restaurant distance \(mapHelpers.metersToMiles(restaurant.totalDistance))")
                 println(idx)
+                // update all markers
+                updateMarkers()
                 setActiveRestaurant(idx)
                 self.searchSurroundingRestaurants()
                 return
@@ -350,6 +389,22 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
         
         
+    }
+    
+    func updateMarkers () {
+        map.removeAnnotations(annotations)
+
+        self.createAnnotation(self.startItem!.placemark.location.coordinate, imageName: "start")
+        self.createAnnotation(self.destinationItem!.placemark.location.coordinate, imageName: "destination")
+        
+        annotations = []
+        for venue in restaurantData.filteredRestaurants {
+            createAnnotation(venue.location, imageName: "venue")
+        }
+        println("# of Annotations \(annotations.count)")
+        println("# of Filtered \(restaurantData.filteredRestaurants.count)")
+        println("# of Total Restauratants \(restaurantData.restaurants.count)")
+
     }
     
     func setActiveWaypoint (idx: Int) {
@@ -379,8 +434,25 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         map.setRegion(region, animated: true)
     }
     
+    func addActiveMarker() {
+        var marker = makeAnnotation(annotations[activeRestaurantIdx].coordinate, imageName: "active")
+        activeMarker = marker
+        map.addAnnotation(marker)
+    }
+    
+    func removeActiveMarker() {
+        if activeMarker != nil {
+            map.removeAnnotation(activeMarker!)
+        }
+    }
+    
     func setActiveRestaurant (idx: Int) {
         activeRestaurantIdx = idx
+        // change appearance of marker
+        removeActiveMarker()
+        addActiveMarker()
+        
+        
         println("NEW ACTIVE RESTUARANT \(idx)")
         println("   total distance of restaurant \(mapHelpers.metersToMiles(restaurantData.filteredRestaurants[idx].totalDistance))")
         println(restaurantData.filteredRestaurants[idx].name)
