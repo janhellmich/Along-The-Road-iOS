@@ -12,6 +12,8 @@ import CoreLocation
 import AddressBook
 
 class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+    
+    let venueDetailHelpers = RestaurantTableView()
 
     //This represent the shared data model
     let routeData = RouteDataModel.sharedInstance
@@ -47,6 +49,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var distanceSlider: UISlider!
+    @IBOutlet weak var venueNameLabel: UILabel!
+    @IBOutlet weak var venueCategoryLabel: UILabel!
+    @IBOutlet weak var venueRatingLabel: UILabel!
+    @IBOutlet weak var venueImage: UIImageView!
     
     
     @IBAction func distanceSliderValueChanged(sender: UISlider) {
@@ -326,13 +332,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 self.createAnnotation(coord, imageName: title)
             }
             
+            
+            
+            
             self.restaurantData.convertToArray()
             self.filter.filterRestaurants()
             
-            
-            // if activeRestaurant is -1 
-                //repeat what is below
-                // call searchSurrindingRestaurants
             
             var activeWaypoint = self.waypoints[self.activeWaypointIdx]
             if self.activeRestaurantIdx == -1 {
@@ -345,6 +350,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
     
     func searchSurroundingRestaurants () {
+        println("searchSurroundingRestaurants")
         for (idx, waypoint) in enumerate(waypoints) {
             if abs(waypoint.distance - waypoints[activeWaypointIdx].distance) <= restaurantFilterData.searchOffset {
                 if !waypoint.wasQueried {
@@ -448,9 +454,41 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     func setActiveRestaurant (idx: Int) {
         activeRestaurantIdx = idx
+        var activeRestaurant = restaurantData.filteredRestaurants[idx]
         // change appearance of marker
         removeActiveMarker()
         addActiveMarker()
+        
+        // update the active restaurant display
+//        println(activeRestaurant.imageUrl)
+//        var imgURL: NSURL = NSURL(string: activeRestaurant.imageUrl)!
+//        let request: NSURLRequest = NSURLRequest(URL:imgURL)
+//        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) {(response, data, error) in
+//            if error != nil {
+//                return
+//            }
+//            var image = UIImage(data: data!)
+//            if image != nil {
+//                self.venueImage.image = image!
+////                cell.restaurantPhoto.image = image!
+////                cell.restaurantPhoto.layer.borderWidth = 3.0
+////                cell.restaurantPhoto.layer.borderColor = UIColor.brownColor().CGColor
+////                cell.restaurantPhoto.clipsToBounds = true
+////                cell.restaurantPhoto.layer.cornerRadius = cell.restaurantPhoto.frame.size.width / 2
+//            }
+//        }
+        
+//        if let url = NSURL(string: activeRestaurant.imageUrl) {
+//            if let data = NSData(contentsOfURL: url){
+//                venueImage.image = UIImage(data: data)
+//            }
+//        }
+
+
+        
+        venueNameLabel.text = activeRestaurant.name
+        venueCategoryLabel.text = venueDetailHelpers.getPriceRange(activeRestaurant.priceRange)
+        venueRatingLabel.text = venueDetailHelpers.getRating(activeRestaurant.rating)
         
         
         println("NEW ACTIVE RESTUARANT \(idx)")
@@ -463,5 +501,28 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         // TODO: change display of the active restaurant's marker
         //restaurantData.filteredRestaurants[idx]
     }
+    
+    @IBAction func goToNext(sender: UIButton) {
+        if (activeRestaurantIdx + 1 < restaurantData.filteredRestaurants.count) {
+            activeRestaurantIdx++
+            var activeRestaurant = restaurantData.filteredRestaurants[activeRestaurantIdx]
+            
+            if activeWaypointIdx + 1 < waypoints.count {
+                activeWaypointIdx++
+                var nextWaypoint = waypoints[activeWaypointIdx]
+                if (activeRestaurant.totalDistance > nextWaypoint.distance) {
+                    activeRestaurantIdx = -1
+                    setActiveWaypoint(activeWaypointIdx)
+                } else {
+                    setActiveRestaurant(activeRestaurantIdx)
+                }
+            }
+        }
+    }
+    
+    
+    @IBAction func goToPrevious(sender: UIButton) {
+    }
+    
     
 }
