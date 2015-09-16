@@ -549,9 +549,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                         println("SETTING NEW ACTIVE WP")
                     } else {
                         setActiveRestaurant(activeRestaurantIdx)
-                        println("SETTING NEW ACTIVE RESTAURANT")
                     }
+                } else {
+                    setActiveRestaurant(activeRestaurantIdx)
                 }
+                
             }
 
         }
