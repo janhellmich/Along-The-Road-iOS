@@ -36,6 +36,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     var activeMarker: CustomAnnotation?
     let viewRadius = 20.0
     
+    var queryIndex = 0
+    var maxQueryIndex = 0
     
     
     
@@ -111,6 +113,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 //                createAnnotation(venue.location, title: venue.name, subtitle: "Rating: \(venue.rating)")
 //            }
             updateMarkers()
+            activeRestaurantIdx = -1
+            setActiveWaypoint(activeWaypointIdx)
         }
         
     }
@@ -342,6 +346,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             var activeWaypoint = self.waypoints[self.activeWaypointIdx]
             if self.activeRestaurantIdx == -1 {
                 self.determineActiveRestaurant()
+            } else {
+                self.queryNext()
             }
             
            
@@ -361,6 +367,31 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         }
     }
     
+    func determineQueryRange () {
+        var minSet = false
+        for (idx, waypoint) in enumerate(waypoints) {
+            if abs(waypoint.distance - waypoints[activeWaypointIdx].distance) <= restaurantFilterData.searchOffset {
+                if !minSet {
+                    queryIndex = idx
+                    minSet = true
+                }
+                maxQueryIndex = idx
+            }
+        }
+    }
+    
+    func queryNext () {
+        if (++queryIndex <= maxQueryIndex) {
+            var waypoint = waypoints[queryIndex]
+            if !waypoint.wasQueried {
+                sendFourSquareRequest(waypoints[queryIndex])
+                waypoint.wasQueried = true
+            } else {
+                queryNext()
+            }
+        }
+    }
+    
     func determineActiveRestaurant () {
         for (idx, restaurant) in enumerate(self.restaurantData.filteredRestaurants) {
             println("\n\n")
@@ -376,7 +407,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 // update all markers
                 updateMarkers()
                 setActiveRestaurant(idx)
-                self.searchSurroundingRestaurants()
+                //self.searchSurroundingRestaurants()
+                determineQueryRange()
+                queryNext()
                 return
             }
         }
@@ -503,26 +536,43 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
     
     @IBAction func goToNext(sender: UIButton) {
-        if (activeRestaurantIdx + 1 < restaurantData.filteredRestaurants.count) {
-            activeRestaurantIdx++
-            var activeRestaurant = restaurantData.filteredRestaurants[activeRestaurantIdx]
-            
-            if activeWaypointIdx + 1 < waypoints.count {
-                activeWaypointIdx++
-                var nextWaypoint = waypoints[activeWaypointIdx]
-                if (activeRestaurant.totalDistance > nextWaypoint.distance) {
-                    activeRestaurantIdx = -1
-                    setActiveWaypoint(activeWaypointIdx)
-                } else {
-                    setActiveRestaurant(activeRestaurantIdx)
+        if activeRestaurantIdx != -1 {
+            if (activeRestaurantIdx + 1 < restaurantData.filteredRestaurants.count) {
+                activeRestaurantIdx++
+                var activeRestaurant = restaurantData.filteredRestaurants[activeRestaurantIdx]
+                
+                if activeWaypointIdx + 1 < waypoints.count {
+                    var nextWaypoint = waypoints[activeWaypointIdx + 1]
+                    if (activeRestaurant.totalDistance > nextWaypoint.distance) {
+                        activeRestaurantIdx = -1
+                        setActiveWaypoint(activeWaypointIdx + 1)
+                        println("SETTING NEW ACTIVE WP")
+                    } else {
+                        setActiveRestaurant(activeRestaurantIdx)
+                        println("SETTING NEW ACTIVE RESTAURANT")
+                    }
                 }
             }
+
         }
     }
     
     
     @IBAction func goToPrevious(sender: UIButton) {
+        if activeRestaurantIdx != -1 {
+            if (activeRestaurantIdx > 0) {
+                activeRestaurantIdx--
+                var activeRestaurant = restaurantData.filteredRestaurants[activeRestaurantIdx]
+                
+                if activeWaypointIdx > 0 {
+                    var currentWaypoint = waypoints[activeWaypointIdx]
+                    if (activeRestaurant.totalDistance < currentWaypoint.distance) {
+                        centerMap(waypoints[--activeWaypointIdx])
+                    }
+                }
+                setActiveRestaurant(activeRestaurantIdx)
+            }
+            
+        }
     }
-    
-    
 }
