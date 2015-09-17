@@ -488,20 +488,20 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     @IBAction func goToPrevious(sender: UIButton) {
         println("goToPrevious called: REST_IDX: \(activeRestaurantIdx)/\(restaurantData.filteredRestaurants.count), WP_IDX: \(activeWaypointIdx)/\(waypoints.count)")
-        if activeRestaurantIdx != -1 {
-            if (activeRestaurantIdx > 0) {
-                activeRestaurantIdx--
-                var activeRestaurant = restaurantData.filteredRestaurants[activeRestaurantIdx]
-                
-                if activeWaypointIdx > 0 {
-                    var currentWaypoint = waypoints[activeWaypointIdx]
-                    if (activeRestaurant.totalDistance < currentWaypoint.distance) {
-                        centerMap(waypoints[--activeWaypointIdx])
-                    }
-                }
-                setActiveRestaurant(activeRestaurantIdx)
+        if activeRestaurantIdx > 0 {
+            activeRestaurantIdx--
+            var activeRestaurant = restaurantData.filteredRestaurants[activeRestaurantIdx]
+            
+            
+            var idx = activeWaypointIdx
+            
+            while (idx > 0 && waypoints[idx].distance > activeRestaurant.totalDistance) {
+                idx--
             }
             
+            setActiveWaypoint(idx)
+            
+            setActiveRestaurant(activeRestaurantIdx)
         }
     }
 }
