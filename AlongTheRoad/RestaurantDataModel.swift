@@ -11,6 +11,7 @@
 import UIKit
 import CoreLocation
 import Foundation
+import MapKit
 
 class RestaurantDataModel: NSObject {
 
@@ -176,6 +177,33 @@ class RestaurantDataModel: NSObject {
         }
         return  address
     }
+    
+//    func getTotalDistance(start: CLLocationCoordinate2D, end: CLLocationCoordinate2D) -> Double {
+//        var req = MKDirectionsRequest()
+//        
+//        req.setDestination(end)
+//        req.setSource(start)
+//        req.transportType = MKDirectionsTransportType.Automobile
+//        
+//        var directions = MKDirections(request: req)
+//        
+//        directions.calculateDirectionsWithCompletionHandler({ (response: MKDirectionsResponse!, error: NSError!) -> Void in
+//            if error != nil {
+//                println("Directions failed with error: \(error.localizedDescription), trying again")
+//                self.getDirections()
+//            } else {
+//                self.setNewRegion()
+//                self.routeData.routes = response.routes
+//                self.displayRoutes(0)
+//                self.generateSegmentControl()
+//                
+//                // add go button to view
+//                var rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "GO!", style: UIBarButtonItemStyle.Plain, target: self, action: "clickGo")
+//                self.navigationItem.rightBarButtonItem = rightAddBarButtonItem
+//            }
+//        });
+//
+//    }
     
     func getUrl (currentVenue: AnyObject) -> String {
         let restaurantName = currentVenue.objectForKey("name") as! String

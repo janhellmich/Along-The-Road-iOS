@@ -132,7 +132,7 @@
                                     <outlet property="delegate" destination="OcZ-lP-89x" id="eX5-rB-3pe"/>
                                 </connections>
                             </mapView>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="100" translatesAutoresizingMaskIntoConstraints="NO" id="juK-qZ-zKf">
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="juK-qZ-zKf">
                                 <rect key="frame" x="94" y="559" width="397" height="31"/>
                                 <connections>
                                     <action selector="distanceSliderValueChanged:" destination="OcZ-lP-89x" eventType="valueChanged" id="Nlj-Sx-pPd"/>
