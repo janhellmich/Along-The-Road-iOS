@@ -206,6 +206,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         self.map.addOverlay(route.polyline, level:MKOverlayLevel.AboveLabels)
     }
     
+    @IBAction func showDetailView(sender: AnyObject) {
+        var currentVenue = restaurantData.filteredRestaurants[activeRestaurantIdx]
+        restaurantData.selectedRestaurant = currentVenue
+        performSegueWithIdentifier("show-details", sender: nil)
+    }
     
     // sets the renderForOverlay delegate method
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
