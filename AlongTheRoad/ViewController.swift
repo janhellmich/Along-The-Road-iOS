@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MapKit
 import GoogleMaps
 import CoreLocation
 
@@ -28,6 +29,17 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
         return true
     }
     
+    @IBAction func selectedSegment(sender: UISegmentedControl) {
+        println(sender.selectedSegmentIndex)
+        switch sender.selectedSegmentIndex {
+        case 0:
+            routeData.modeOfTravel = MKDirectionsTransportType.Automobile
+        case 1:
+            routeData.modeOfTravel = MKDirectionsTransportType.Walking
+        default:
+            break
+        }
+    }
     
     @IBAction func submit(sender: UIButton) {
         // validate user input

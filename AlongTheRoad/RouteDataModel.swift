@@ -24,6 +24,7 @@ class RouteDataModel: NSObject {
     var restaurantDictionary: [String: AnyObject]
     var selectedRestaurant: AnyObject?
     var currentLocation: CLLocation?
+    var modeOfTravel: MKDirectionsTransportType
 
     override init(){
         routes = []
@@ -34,6 +35,7 @@ class RouteDataModel: NSObject {
         restaurants = [AnyObject]()
         isDestination = false
         restaurantDictionary = [String: AnyObject]()
+        modeOfTravel = MKDirectionsTransportType.Automobile
     }
     
 }

@@ -168,7 +168,7 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         req.setDestination(self.destinationItem)
         req.setSource(self.startItem)
-        req.transportType = MKDirectionsTransportType.Automobile
+        req.transportType = routeData.modeOfTravel
         req.requestsAlternateRoutes = true
         self.map.showAnnotations(self.annotations, animated: true)
         
