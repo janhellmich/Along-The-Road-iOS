@@ -167,6 +167,25 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     */
     func addMapItem (type: String, address: String){
         let geoCoder = CLGeocoder()
+        
+        if address == "Current Location" {
+            let location = routeData.currentLocation
+            let mkplace = MKPlacemark(coordinate: location!.coordinate, addressDictionary: nil)
+            
+            self.createAnnotation(mkplace.coordinate, imageName: type)
+            
+            if type == "start" {
+                self.restaurantData.startingPoint = mkplace.coordinate // Required for searching by distance
+                self.startItem = MKMapItem(placemark: mkplace)
+            } else if type == "destination" {
+                self.destinationItem = MKMapItem(placemark: mkplace)
+            }
+            
+            if (self.startItem != nil && self.destinationItem != nil) {
+                self.displayRoute()
+                self.annotations = []
+            }
+        }
 
         geoCoder.geocodeAddressString(address, completionHandler: { (placemarks: [AnyObject]!, error: NSError!) -> Void in
             if error != nil {
