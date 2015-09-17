@@ -17,7 +17,7 @@ class RouteDataModel: NSObject {
     var startingPoint: String
     var route: MKRoute?
     var routes: [AnyObject]
-    var searchRadius:Int
+    var searchRadius: Double
     var searchSection: String
     var restaurants: [AnyObject]
     var isDestination: Bool
@@ -25,17 +25,20 @@ class RouteDataModel: NSObject {
     var selectedRestaurant: AnyObject?
     var currentLocation: CLLocation?
     var modeOfTravel: MKDirectionsTransportType
+    let minDistToRadiusRatio: Double
+    var mapWidth: CLLocationDistance = 20000 // 20 km
 
     override init(){
         routes = []
         destination = ""
         startingPoint = ""
-        searchRadius = 5000//Default at the beginning
+        searchRadius = 5000.0 // default of 5 km
         searchSection = "food"
         restaurants = [AnyObject]()
         isDestination = false
         restaurantDictionary = [String: AnyObject]()
         modeOfTravel = MKDirectionsTransportType.Automobile
+        minDistToRadiusRatio = 7.0
     }
     
 }
