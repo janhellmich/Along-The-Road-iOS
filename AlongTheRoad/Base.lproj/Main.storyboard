@@ -101,8 +101,8 @@
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="qqN-Mk-QCQ">
                                 <rect key="frame" x="16" y="187" width="559" height="29"/>
                                 <segments>
-                                    <segment title="Car"/>
-                                    <segment title="Walk"/>
+                                    <segment title="" image="car"/>
+                                    <segment title="" image="walk"/>
                                 </segments>
                                 <color key="tintColor" red="0.021839630169999999" green="0.042376579120000001" blue="0.019302266929999999" alpha="0.14999999999999999" colorSpace="calibratedRGB"/>
                                 <connections>
@@ -926,8 +926,10 @@
     </scenes>
     <resources>
         <image name="back.png" width="12" height="12"/>
+        <image name="car" width="30" height="11"/>
         <image name="info" width="30" height="30"/>
         <image name="list" width="48" height="48"/>
+        <image name="walk" width="9" height="15"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="URb-Eg-x4g"/>
