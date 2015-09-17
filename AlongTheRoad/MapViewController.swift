@@ -230,6 +230,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         let ca = annotation as! CustomAnnotation
         anView.image = UIImage(named:ca.imageName)
         anView.layer.zPosition = 1
+        anView.canShowCallout = false
+        
         if ca.imageName == "active" {
             anView.layer.zPosition = 2
         }
@@ -237,7 +239,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         return anView
     }
 
-
+    func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
+        var lat = view.annotation.coordinate.latitude
+        var long = view.annotation.coordinate.longitude
+        
+        for (idx, restaurant) in enumerate(restaurantData.filteredRestaurants) {
+            if restaurant.location.latitude == lat && restaurant.location.longitude == long {
+                setActiveRestaurant(idx)
+                break
+            }
+        }
+    }
     
 
     
@@ -385,6 +397,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
         }
     }
+
     
     func updateMarkers () {
         map.removeAnnotations(annotations)
@@ -453,6 +466,24 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         removeActiveMarker()
         addActiveMarker()
         
+        
+        // request the image
+        var imgURL: NSURL = NSURL(string: activeRestaurant.imageUrl)!
+        let request: NSURLRequest = NSURLRequest(URL:imgURL)
+        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) {(response, data, error) in
+            if error != nil {
+                return
+            }
+            var image = UIImage(data: data!)
+            if image != nil {
+                self.venueImage.image = image!
+//                self.venueImage.layer.borderWidth = 3.0
+//                self.venueImage.layer.borderColor = UIColor.brownColor().CGColor
+                self.venueImage.clipsToBounds = true
+                self.venueImage.layer.cornerRadius = self.venueImage.frame.size.width / 2
+            }
+        }
+
         
         venueNameLabel.text = activeRestaurant.name
         venueCategoryLabel.text = venueDetailHelpers.getPriceRange(activeRestaurant.priceRange)

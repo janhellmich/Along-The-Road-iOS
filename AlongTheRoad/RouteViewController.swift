@@ -233,6 +233,7 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         return nil
     }
     
+    
     func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
         if !(annotation is CustomAnnotation) {
             return nil
