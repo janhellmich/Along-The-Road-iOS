@@ -24,7 +24,7 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     var locationManager:LocationManager!
     var startItem: MKMapItem?
     var destinationItem: MKMapItem?
-    var annotations:[MKPointAnnotation]? //This is an array of the annotations on the map
+    var annotations:[CustomAnnotation]? //This is an array of the annotations on the map
     var userLocation: CLLocationCoordinate2D? //This will later be instantiated with the user's current location
     
     // variable used to reder the different routes properly
@@ -98,8 +98,8 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     * the two addresses
     */
     func displayLocation(){
-        self.addMapItem( "Start", address: routeData.startingPoint)
-        self.addMapItem( "Destination", address: routeData.destination)
+        self.addMapItem( "start", address: routeData.startingPoint)
+        self.addMapItem( "destination", address: routeData.destination)
     }
     
     /* function: addMapItem
@@ -126,9 +126,9 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 
                 var mkplace = MKPlacemark(placemark: place)
                 
-                self.createAnnotation(mkplace.coordinate, title: type, subtitle: "")
+                self.createAnnotation(mkplace.coordinate, imageName: type)
                 
-                if type == "Start" {
+                if type == "start" {
                     self.startItem = MKMapItem(placemark: mkplace)
                 } else {
                     self.destinationItem = MKMapItem(placemark: mkplace)
@@ -233,6 +233,31 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         return nil
     }
     
+    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+        if !(annotation is CustomAnnotation) {
+            return nil
+        }
+        
+        let reuseId = "test"
+        
+        var anView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
+        if anView == nil {
+            anView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            anView.canShowCallout = true
+        }
+        else {
+            anView.annotation = annotation
+        }
+        
+        //Set annotation-specific properties **AFTER**
+        //the view is dequeued or created...
+        
+        let ca = annotation as! CustomAnnotation
+        anView.image = UIImage(named:ca.imageName)
+        
+        return anView
+    }
+    
     
     /* function: setNewRegion
     * ----------------------
@@ -264,13 +289,18 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     * also add it to the annotations array.
     */
     
-    func createAnnotation (coord: CLLocationCoordinate2D, title: String, subtitle: String) {
-        let annotation = MKPointAnnotation()
+    func makeAnnotation (coord: CLLocationCoordinate2D, imageName: String) -> CustomAnnotation {
+        let annotation = CustomAnnotation()
+        println(imageName)
         annotation.coordinate = coord
-        annotation.title = title
-        annotation.subtitle = subtitle
-        self.annotations?.append(annotation)
-        self.map.addAnnotation(annotation)
+        annotation.imageName = imageName
+        return annotation
+    }
+    
+    func createAnnotation (coord: CLLocationCoordinate2D, imageName: String) {
+        let annotation = makeAnnotation(coord, imageName: imageName)
+        //annotations.append(annotation)
+        map.addAnnotation(annotation)
     }
     
 }
