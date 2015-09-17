@@ -7,13 +7,19 @@
 //
 
 import UIKit
+import MapKit
 import GoogleMaps
+import CoreLocation
 
-class ViewController: UIViewController, UITextFieldDelegate {
-
+class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDelegate {
     
+    @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var startingPoint: UITextField!
     @IBOutlet weak var destination: UITextField!
+    
+    var coreLocationManager = CLLocationManager()
+    var locationManager:LocationManager!
+    var currentLocation:CLLocationCoordinate2D!
     
     let routeData = RouteDataModel.sharedInstance
     
@@ -21,6 +27,32 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    @IBAction func selectedSegment(sender: UISegmentedControl) {
+        println(sender.selectedSegmentIndex)
+        switch sender.selectedSegmentIndex {
+        case 0:
+            routeData.modeOfTravel = MKDirectionsTransportType.Automobile
+        case 1:
+            routeData.modeOfTravel = MKDirectionsTransportType.Walking
+        default:
+            break
+        }
+    }
+    
+    @IBAction func submit(sender: UIButton) {
+        // validate user input
+        if startingPoint.text == "Current Location" && routeData.currentLocation == nil {
+            errorLabel.text = "Cannot find current location. Please set manually"
+        } else if destination.text == "" {
+            errorLabel.text = "Please provide a destination"
+        } else if startingPoint.text == destination.text {
+            errorLabel.text = "Origin and destination cannot be the same"
+        } else {
+            errorLabel.text = ""
+            performSegueWithIdentifier("show-routes", sender: nil)
+        }
     }
 
     var placesClient: GMSPlacesClient?
@@ -39,24 +71,39 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true)
     }
     
-    @IBAction func submitRoute(sender: AnyObject) {
-        
-    }
     
     override func viewWillAppear(animated: Bool) {
+        placesClient = GMSPlacesClient()
+        
+        coreLocationManager.delegate = self
+        coreLocationManager.desiredAccuracy = kCLLocationAccuracyBest
+        coreLocationManager.requestWhenInUseAuthorization()
+        coreLocationManager.startUpdatingLocation()
+        
         startingPoint.text = routeData.startingPoint
         destination.text = routeData.destination
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        placesClient = GMSPlacesClient()
-        println(placesClient == nil)
-        
-        routeData.startingPoint = "San Francisco"
-        routeData.destination = "Palo Alto"
-
+        errorLabel.text = ""
+        routeData.startingPoint = "Current Location"
+        routeData.destination = "San Jose"
     }
-
+    
+    
+    
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        var location = locations.last as! CLLocation
+        
+        routeData.currentLocation = location
+        println(location.coordinate.latitude)
+        println(location.coordinate.longitude)
+        
+        coreLocationManager.stopUpdatingLocation()
+    }
+    
+    
+    
 }
 

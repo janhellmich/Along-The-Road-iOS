@@ -12,9 +12,23 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
 
     let restaurantData = RestaurantDataModel.sharedInstance
     let filter = RestaurantFilter.sharedInstance
+    var mapHelpers = MapHelpers()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        var mapViewButton:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "map"), style: UIBarButtonItemStyle.Plain, target: self, action: "showMapView")
+        var filterViewButton:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "filter"), style: UIBarButtonItemStyle.Plain, target: self, action: "showFilterView")
+        
+        self.navigationItem.rightBarButtonItems = [mapViewButton, filterViewButton]
+    }
+    
+    func showFilterView() {
+        performSegueWithIdentifier("show-filter", sender: nil)
+    }
+    
+    func showMapView() {
+        navigationController?.popViewControllerAnimated(true)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -111,7 +125,7 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
      * It returns as string formatted in miles for how far from the route the restaurant is
     */
     func getDistance (distanceMeters: Double) -> String {
-        var distance = String(format:"%f", distanceMeters/1600)
+        var distance = String(format:"%f", mapHelpers.metersToMiles(distanceMeters))
         var cuttoff = advance(distance.startIndex, 3)
         var finalString = distance.substringToIndex(cuttoff)
         return "\(finalString) mi"

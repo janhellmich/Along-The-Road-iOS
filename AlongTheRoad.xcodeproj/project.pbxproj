@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1E2F22CE1BA7DC7800378D42 /* MapHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2F22CD1BA7DC7800378D42 /* MapHelpers.swift */; };
+		1E474DFB1BA8E25600449202 /* CustomAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E474DFA1BA8E25600449202 /* CustomAnnotation.swift */; };
 		1E4A3AFB1BA3552D00E0DC29 /* RestaurantFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4A3AFA1BA3552D00E0DC29 /* RestaurantFilter.swift */; };
 		1E4A3AFD1BA35F9B00E0DC29 /* RestaurantFilterData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4A3AFC1BA35F9B00E0DC29 /* RestaurantFilterData.swift */; };
 		1E4A3AFF1BA4E6A200E0DC29 /* WaypointStructure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4A3AFE1BA4E6A200E0DC29 /* WaypointStructure.swift */; };
@@ -46,6 +47,7 @@
 /* Begin PBXFileReference section */
 		1E2F22CD1BA7DC7800378D42 /* MapHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapHelpers.swift; sourceTree = "<group>"; };
 		1E3706561B9937C6007C8ACC /* AlongTheRoad-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AlongTheRoad-Bridging-Header.h"; sourceTree = "<group>"; };
+		1E474DFA1BA8E25600449202 /* CustomAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomAnnotation.swift; sourceTree = "<group>"; };
 		1E4A3AFA1BA3552D00E0DC29 /* RestaurantFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantFilter.swift; sourceTree = "<group>"; };
 		1E4A3AFC1BA35F9B00E0DC29 /* RestaurantFilterData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantFilterData.swift; sourceTree = "<group>"; };
 		1E4A3AFE1BA4E6A200E0DC29 /* WaypointStructure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WaypointStructure.swift; sourceTree = "<group>"; };
@@ -183,6 +185,7 @@
 				1E4A3AFC1BA35F9B00E0DC29 /* RestaurantFilterData.swift */,
 				1E4A3AFE1BA4E6A200E0DC29 /* WaypointStructure.swift */,
 				1E2F22CD1BA7DC7800378D42 /* MapHelpers.swift */,
+				1E474DFA1BA8E25600449202 /* CustomAnnotation.swift */,
 			);
 			name = "Data Models";
 			sourceTree = "<group>";
@@ -360,6 +363,7 @@
 				1E4A3AFB1BA3552D00E0DC29 /* RestaurantFilter.swift in Sources */,
 				23B453A81B9E057400EB104C /* DetailViewController.swift in Sources */,
 				2323083A1B99412100CF748D /* RestaurantTableView.swift in Sources */,
+				1E474DFB1BA8E25600449202 /* CustomAnnotation.swift in Sources */,
 				2323083C1B9A18AD00CF748D /* DataFilter.swift in Sources */,
 				233998881B92207A008D7FFC /* ViewController.swift in Sources */,
 				23EA68F11B94D5AC00EF7EBE /* RouteDataModel.swift in Sources */,

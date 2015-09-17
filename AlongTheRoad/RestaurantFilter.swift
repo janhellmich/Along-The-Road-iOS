@@ -50,6 +50,7 @@ class RestaurantFilter: NSObject {
         filterFunctions.append(openNowFilter)
         
         func distanceFilter(venue: RestaurantStructure) -> Bool {
+            //return abs(filterData.distanceFromOrigin - venue.totalDistance) <= filterData.searchOffset
             return true
         }
         filterFunctions.append(distanceFilter)
@@ -62,7 +63,7 @@ class RestaurantFilter: NSObject {
         let filteredRestaurants = filterRestaurantArray(restaurants)
         
         restaurantData.filteredRestaurants = filteredRestaurants
-        
+        restaurantData.sortRestaurantsByDistance()
     }
     
     func filterRestaurantArray (restaurants: [RestaurantStructure]) -> [RestaurantStructure] {

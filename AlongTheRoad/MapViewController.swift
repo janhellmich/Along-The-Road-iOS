@@ -12,6 +12,8 @@ import CoreLocation
 import AddressBook
 
 class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+    
+    let venueDetailHelpers = RestaurantTableView()
 
     //This represent the shared data model
     let routeData = RouteDataModel.sharedInstance
@@ -31,7 +33,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     var waypoints: [WaypointStructure] = []
     var activeWaypointIdx: Int = 0
     var activeRestaurantIdx: Int = -1
+    var activeMarker: CustomAnnotation?
     let viewRadius = 20.0
+    
+    var queryIndex = 0
+    var maxQueryIndex = 0
+    
+    
     
     
     
@@ -45,6 +53,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var distanceLabel: UILabel!
     @IBOutlet weak var distanceSlider: UISlider!
+    @IBOutlet weak var venueNameLabel: UILabel!
+    @IBOutlet weak var venueCategoryLabel: UILabel!
+    @IBOutlet weak var venueRatingLabel: UILabel!
+    @IBOutlet weak var venueImage: UIImageView!
     
     
     @IBAction func distanceSliderValueChanged(sender: UISlider) {
@@ -56,10 +68,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         var distance = mapHelpers.milesToMeters(Double(sender.value))
         for (idx, waypoint) in enumerate(waypoints) {
             if waypoint.distance >= distance {
+                println("SET ACTIVE WP called from handleSilider")
                 setActiveWaypoint(idx)
                 return
             }
         }
+        println("SET ACTIVE WP called from handleSilider")
         setActiveWaypoint(waypoints.count - 1)
     }
 
@@ -68,10 +82,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         coreLocationManager.delegate = self
         self.displayLocation()
         
-        var rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "list"), style: UIBarButtonItemStyle.Plain, target: self, action: "showListView")
-        self.navigationItem.rightBarButtonItem = rightAddBarButtonItem
+        println("VIEW DID LOAD CALLED: destitem is set? \(destinationItem == nil)")
         
-        distanceSlider.maximumValue = Float(mapHelpers.metersToMiles(routeData.route!.distance))
+        var listViewButton:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "list"), style: UIBarButtonItemStyle.Plain, target: self, action: "showListView")
+        var filterViewButton:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "filter"), style: UIBarButtonItemStyle.Plain, target: self, action: "showFilterView")
+        
+        self.navigationItem.rightBarButtonItems = [listViewButton, filterViewButton]
         
         
         locationManager = LocationManager.sharedInstance
@@ -91,23 +107,19 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
         // check that the initial load has happened
         if self.destinationItem != nil {
-            map.removeAnnotations(annotations)
-            println("# of Annotations \(annotations.count)")
-            println("# of Filtered \(restaurantData.filteredRestaurants.count)")
-            println("# of Total Restauratants \(restaurantData.restaurants.count)")
-            self.createAnnotation(self.startItem!.placemark.location.coordinate, title: "Start", subtitle: "")
-            annotations = []
-            self.createAnnotation(self.destinationItem!.placemark.location.coordinate, title: "Destination", subtitle: "")
-            
-            for venue in restaurantData.filteredRestaurants {
-                createAnnotation(venue.location, title: venue.name, subtitle: "Rating: \(venue.rating)")
-            }
+            updateMarkers()
+            activeRestaurantIdx = -1
+            println("SET ACTIVE WP called from viewWillAppear")
+            setActiveWaypoint(activeWaypointIdx)
         }
-        
     }
     
     func showListView() {
         self.performSegueWithIdentifier("show-list", sender: nil)
+    }
+    
+    func showFilterView() {
+        self.performSegueWithIdentifier("show-filter", sender: nil)
     }
 
     /* function: locationManager
@@ -131,6 +143,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     func getLocation(){
         locationManager.startUpdatingLocationWithCompletionHandler { (latitude, longitude, status, verboseMessage, error) -> () in
             self.userLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            //self.createAnnotation(self.userLocation!, imageName: "list")
         }
     }
     
@@ -141,8 +154,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      * the two addresses
     */
     func displayLocation(){
-        self.addMapItem( "Start", address: routeData.startingPoint)
-        self.addMapItem( "Destination", address: routeData.destination)
+        self.addMapItem( "start", address: routeData.startingPoint)
+        self.addMapItem( "destination", address: routeData.destination)
     }
     
     /* function: addMapItem
@@ -154,6 +167,25 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     */
     func addMapItem (type: String, address: String){
         let geoCoder = CLGeocoder()
+        
+        if address == "Current Location" {
+            let location = routeData.currentLocation
+            let mkplace = MKPlacemark(coordinate: location!.coordinate, addressDictionary: nil)
+            
+            self.createAnnotation(mkplace.coordinate, imageName: type)
+            
+            if type == "start" {
+                self.restaurantData.startingPoint = mkplace.coordinate // Required for searching by distance
+                self.startItem = MKMapItem(placemark: mkplace)
+            } else if type == "destination" {
+                self.destinationItem = MKMapItem(placemark: mkplace)
+            }
+            
+            if (self.startItem != nil && self.destinationItem != nil) {
+                self.displayRoute()
+                self.annotations = []
+            }
+        }
 
         geoCoder.geocodeAddressString(address, completionHandler: { (placemarks: [AnyObject]!, error: NSError!) -> Void in
             if error != nil {
@@ -165,18 +197,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
                 
                 var mkplace = MKPlacemark(placemark: place)
                 
-                self.createAnnotation(mkplace.coordinate, title: type, subtitle: "")
+                self.createAnnotation(mkplace.coordinate, imageName: type)
                 
-                if type == "Start" {
+                if type == "start" {
                     self.restaurantData.startingPoint = mkplace.coordinate // Required for searching by distance
                     self.startItem = MKMapItem(placemark: mkplace)
-                } else if type == "Destination" {
+                } else if type == "destination" {
                     self.destinationItem = MKMapItem(placemark: mkplace)
                 }
                 
                 if (self.startItem != nil && self.destinationItem != nil) {
                     self.displayRoute()
-                    //self.setNewRegion()
+                    self.annotations = []
                 }
             }
         })
@@ -187,11 +219,19 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         var route = routeData.route!
         waypoints = self.dataProcessor.getSections(self.routeData.route!)
         
-        setActiveWaypoint(0)
+        println("SET ACTIVE WP called from displayRoute")
+        queryNext()
         
         self.map.addOverlay(route.polyline, level:MKOverlayLevel.AboveLabels)
     }
     
+    @IBAction func showDetailView(sender: AnyObject) {
+        if restaurantData.filteredRestaurants.count > activeRestaurantIdx {
+            var currentVenue = restaurantData.filteredRestaurants[activeRestaurantIdx]
+            restaurantData.selectedRestaurant = currentVenue
+            performSegueWithIdentifier("show-details", sender: nil)
+        }
+    }
     
     // sets the renderForOverlay delegate method
     func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
@@ -205,6 +245,48 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         return nil
     }
 
+    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+        if !(annotation is CustomAnnotation) {
+            return nil
+        }
+        
+        let reuseId = "test"
+        
+        var anView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
+        if anView == nil {
+            anView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
+            anView.canShowCallout = true
+        }
+        else {
+            anView.annotation = annotation
+        }
+        
+        //Set annotation-specific properties **AFTER**
+        //the view is dequeued or created...
+        
+        let ca = annotation as! CustomAnnotation
+        anView.image = UIImage(named:ca.imageName)
+        anView.layer.zPosition = 1
+        anView.canShowCallout = false
+        
+        if ca.imageName == "active" {
+            anView.layer.zPosition = 2
+        }
+        
+        return anView
+    }
+
+    func mapView(mapView: MKMapView!, didSelectAnnotationView view: MKAnnotationView!) {
+        var lat = view.annotation.coordinate.latitude
+        var long = view.annotation.coordinate.longitude
+        
+        for (idx, restaurant) in enumerate(restaurantData.filteredRestaurants) {
+            if restaurant.location.latitude == lat && restaurant.location.longitude == long {
+                setActiveRestaurant(idx)
+                break
+            }
+        }
+    }
     
 
     
@@ -216,17 +298,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     */
     func setNewRegion () {
         //Extract the coord
-        var startCoord = self.startItem?.placemark.coordinate
-        var destCoord = self.destinationItem?.placemark.coordinate
+        var startCoord = startItem?.placemark.coordinate
+        var destCoord = destinationItem?.placemark.coordinate
         //All elements to be displayed on the map need to be placed in this array
         var locations = [startCoord!, destCoord!]
         
 
 
-        var region = self.dataProcessor.findRegion(locations)
+        var region = dataProcessor.findRegion(locations)
         
         //Currently calls sendFourSquare request on
-        self.map.setRegion(region, animated: false)
+        map.setRegion(region, animated: false)
     }
     
     
@@ -237,13 +319,17 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
      * also add it to the annotations array.
     */
     
-    func createAnnotation (coord: CLLocationCoordinate2D, title: String, subtitle: String) {
-        let annotation = MKPointAnnotation()
+    func makeAnnotation (coord: CLLocationCoordinate2D, imageName: String) -> CustomAnnotation {
+        let annotation = CustomAnnotation()
         annotation.coordinate = coord
-        annotation.title = title
-        annotation.subtitle = subtitle
-        self.annotations.append(annotation)
-        self.map.addAnnotation(annotation)
+        annotation.imageName = imageName
+        return annotation
+    }
+    
+    func createAnnotation (coord: CLLocationCoordinate2D, imageName: String) {
+        let annotation = makeAnnotation(coord, imageName: imageName)
+        annotations.append(annotation)
+        map.addAnnotation(annotation)
     }
     
     /* function: sendFourSquareRequest
@@ -278,84 +364,114 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             var restaurantArray = [AnyObject]()
             
             var newlyAdded = self.restaurantData.addRestaurants(dataObj, waypointDistance: waypoint.distance)
-            
             var newlyFiltered = self.filter.filterRestaurantArray(newlyAdded)
+            newlyFiltered.sort({$1.totalDistance > $0.totalDistance})
+            
+            // sort newlyFiltered by distance
+            println("NUM OF WPS: \(self.waypoints.count), LAST WP DIST: \(self.mapHelpers.metersToMiles(self.waypoints[self.waypoints.count - 1].distance))")
+            println("FourSquare request returned \(newlyFiltered.count) results for WP #\(self.queryIndex)\n")
+            if self.restaurantData.filteredRestaurants.count > 0 {
+                 println("LAST RESTAURANT DIST: \(self.mapHelpers.metersToMiles(self.restaurantData.filteredRestaurants[self.restaurantData.filteredRestaurants.count-1].totalDistance))")
+            }
+            
             
             for restaurant in newlyFiltered  {
+                println("REST DIST: \(self.mapHelpers.metersToMiles(restaurant.totalDistance))")
                 var coord = restaurant.location
                 var title = restaurant.name
                 var rating = restaurant.rating
                 
-                self.createAnnotation(coord, title: title, subtitle: "Rating: \(rating)")
+                self.createAnnotation(coord, imageName: "venue")
             }
             
             self.restaurantData.convertToArray()
             self.filter.filterRestaurants()
-            self.restaurantData.sortRestaurantsByDistance()
+            self.distanceSlider.maximumValue = Float(self.mapHelpers.metersToMiles(waypoint.distance))
             
-            
-            // if activeRestaurant is -1 
-                //repeat what is below
-                // call searchSurrindingRestaurants
-            
-            var activeWaypoint = self.waypoints[self.activeWaypointIdx]
-            if self.activeRestaurantIdx == -1 {
-                self.determineActiveRestaurant()
-                self.searchSurroundingRestaurants()
+            if self.activeRestaurantIdx == -1 && self.restaurantData.filteredRestaurants.count > 0 {
+                self.setActiveWaypoint(self.activeWaypointIdx)
             }
             
-           
-            //self.map.showAnnotations(self.annotations, animated: true)
+            self.queryNext()
+
         }
     }
     
-    func searchSurroundingRestaurants () {
-        for (idx, waypoint) in enumerate(waypoints) {
-            if abs(waypoint.distance - waypoints[activeWaypointIdx].distance) <= restaurantFilterData.searchOffset {
-                if !waypoint.wasQueried {
-                    sendFourSquareRequest(waypoint)
-                    waypoints[idx].wasQueried = true
-                }
-            }
+    func queryNext () {
+        if (queryIndex < waypoints.count) {
+            var waypoint = waypoints[queryIndex]
+            sendFourSquareRequest(waypoint)
+            queryIndex++
         }
     }
     
     func determineActiveRestaurant () {
+        
+        println("determineActiveRestaurant called: WP_IDX: \(activeWaypointIdx) WP_DIST: \(mapHelpers.metersToMiles(waypoints[activeWaypointIdx].distance))")
         for (idx, restaurant) in enumerate(self.restaurantData.filteredRestaurants) {
-            println("\n\n")
-            println(restaurant.totalDistance)
-            println(waypoints[activeWaypointIdx].distance)
-            if restaurant.totalDistance >= waypoints[activeWaypointIdx].distance {
-                println("active waypoint distance \(waypoints[activeWaypointIdx].distance)")
-                println("active restaurant distance \(restaurant.totalDistance)")
-                println(idx)
+            
+            if restaurant.totalDistance >= waypoints[activeWaypointIdx].distance && restaurant.totalDistance - waypoints[activeWaypointIdx].distance <= Double(routeData.searchRadius) {
+                println("   active restaurant found: REST_DIST: \(mapHelpers.metersToMiles(restaurant.totalDistance))")
+
                 setActiveRestaurant(idx)
-                
-                break
+                return
+            }
+        }
+        println("No matching Restaurant found")
+        // set waypoint to next waypoint
+        if (activeWaypointIdx + 1 < waypoints.count) {
+            println("SET ACTIVE WP called from determine active after no matching results found")
+            setActiveWaypoint(activeWaypointIdx + 1)
+        } else {
+            println("EDGE CASE IN DETERMINE_ACTIVE_REST")
+            if restaurantData.filteredRestaurants.count > 0 {
+                var lastRestaurantDistance = restaurantData.filteredRestaurants[restaurantData.filteredRestaurants.count-1].totalDistance
+                for (idx, waypoint) in enumerate(waypoints) {
+                    if waypoint.distance > lastRestaurantDistance {
+                        setActiveWaypoint(idx-1)
+                        return
+                    }
+                }
             }
         }
     }
+
+    
+    func updateMarkers () {
+        map.removeAnnotations(annotations)
+        
+        annotations = []
+        for venue in restaurantData.filteredRestaurants {
+            createAnnotation(venue.location, imageName: "venue")
+        }
+        
+        println("updateMarkers called: # of Filtered: \(restaurantData.filteredRestaurants.count)")
+    }
     
     func setActiveWaypoint (idx: Int) {
-        println("Index of new active waypoint\(idx)")
-        activeWaypointIdx = idx
+        println("\n")
+        
+        if idx >= waypoints.count {
+            activeWaypointIdx = waypoints.count - 1
+        } else if idx < 0 {
+            activeWaypointIdx = 0
+        } else {
+            activeWaypointIdx = idx
+        }
+        
         var activeWaypoint = waypoints[activeWaypointIdx]
+        
+        distanceSlider.value = Float(mapHelpers.metersToMiles(activeWaypoint.distance))
+        distanceLabel.text = "\(mapHelpers.roundDouble(Double(distanceSlider.value))) mi"
         
         restaurantFilterData.distanceFromOrigin = activeWaypoint.distance
         
-        // check if activeWaypoint was queried
-        if activeWaypoint.wasQueried {
-            determineActiveRestaurant()
-            searchSurroundingRestaurants()
-        } else {
-            activeWaypoint.wasQueried = true
-            sendFourSquareRequest(activeWaypoint)
-        }
-        
         centerMap(activeWaypoint)
         
-        // TODO: center the map around new waypoint, zoom appropriately
-    
+        if activeRestaurantIdx == -1 {
+            determineActiveRestaurant()
+        }
+
     }
     
     func centerMap (waypoint: WaypointStructure) {
@@ -363,10 +479,102 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         map.setRegion(region, animated: true)
     }
     
-    func setActiveRestaurant (idx: Int) {
-        activeRestaurantIdx = idx
-        // TODO: change display of the active restaurant's marker
-        //restaurantData.filteredRestaurants[idx]
+    func addActiveMarker() {
+        if annotations.count > activeRestaurantIdx {
+            var marker = makeAnnotation(annotations[activeRestaurantIdx].coordinate, imageName: "active")
+            activeMarker = marker
+            map.addAnnotation(marker)
+
+        }
     }
     
+    func removeActiveMarker() {
+        if activeMarker != nil {
+            map.removeAnnotation(activeMarker!)
+        }
+    }
+    
+    func setActiveRestaurant (idx: Int) {
+        println("setActiveRestaurant called: REST_IDX: \(idx)/\(restaurantData.filteredRestaurants.count), REST_DIST: \(mapHelpers.metersToMiles(restaurantData.filteredRestaurants[idx].totalDistance))")
+        
+        if (idx >= restaurantData.filteredRestaurants.count || idx < 0) {
+            return
+        }
+        
+        activeRestaurantIdx = idx
+        var activeRestaurant = restaurantData.filteredRestaurants[idx]
+        // change appearance of marker
+        removeActiveMarker()
+        addActiveMarker()
+        
+        
+        // request the image
+        var imgURL: NSURL = NSURL(string: activeRestaurant.imageUrl)!
+        let request: NSURLRequest = NSURLRequest(URL:imgURL)
+        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) {(response, data, error) in
+            if error != nil {
+                return
+            }
+            var image = UIImage(data: data!)
+            if image != nil {
+                self.venueImage.image = image!
+//                self.venueImage.layer.borderWidth = 3.0
+//                self.venueImage.layer.borderColor = UIColor.brownColor().CGColor
+                self.venueImage.clipsToBounds = true
+                self.venueImage.layer.cornerRadius = self.venueImage.frame.size.width / 2
+            }
+        }
+
+        
+        venueNameLabel.text = activeRestaurant.name
+        venueCategoryLabel.text = venueDetailHelpers.getPriceRange(activeRestaurant.priceRange)
+        venueRatingLabel.text = venueDetailHelpers.getRating(activeRestaurant.rating)
+
+        var numFilteredRestaurants = restaurantData.filteredRestaurants.count
+    }
+    
+    @IBAction func goToNext(sender: UIButton) {
+        println("goToNext called: REST_IDX: \(activeRestaurantIdx)/\(restaurantData.filteredRestaurants.count), WP_IDX: \(activeWaypointIdx)/\(waypoints.count)")
+        if activeRestaurantIdx != -1 {
+            if (activeRestaurantIdx + 1 < restaurantData.filteredRestaurants.count) {
+                activeRestaurantIdx++
+                var activeRestaurant = restaurantData.filteredRestaurants[activeRestaurantIdx]
+                
+                if activeWaypointIdx + 1 < waypoints.count {
+                    var nextWaypoint = waypoints[activeWaypointIdx + 1]
+                    if (activeRestaurant.totalDistance > nextWaypoint.distance) {
+                        activeRestaurantIdx = -1
+                        println("setActiveWaypoint called from nextButton")
+                        setActiveWaypoint(activeWaypointIdx + 1)
+                    } else {
+                        setActiveRestaurant(activeRestaurantIdx)
+                    }
+                } else {
+                    setActiveRestaurant(activeRestaurantIdx)
+                }
+                
+            }
+
+        }
+    }
+    
+    
+    @IBAction func goToPrevious(sender: UIButton) {
+        println("goToPrevious called: REST_IDX: \(activeRestaurantIdx)/\(restaurantData.filteredRestaurants.count), WP_IDX: \(activeWaypointIdx)/\(waypoints.count)")
+        if activeRestaurantIdx > 0 {
+            activeRestaurantIdx--
+            var activeRestaurant = restaurantData.filteredRestaurants[activeRestaurantIdx]
+            
+            
+            var idx = activeWaypointIdx
+            
+            while (idx > 0 && waypoints[idx].distance > activeRestaurant.totalDistance) {
+                idx--
+            }
+            
+            setActiveWaypoint(idx)
+            
+            setActiveRestaurant(activeRestaurantIdx)
+        }
+    }
 }
