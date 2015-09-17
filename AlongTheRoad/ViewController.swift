@@ -49,34 +49,38 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
     }
     
     override func viewWillAppear(animated: Bool) {
-        startingPoint.text = routeData.startingPoint
-        destination.text = routeData.destination
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
         placesClient = GMSPlacesClient()
-        println(placesClient == nil)
         
-        routeData.startingPoint = "San Francisco"
-        routeData.destination = "San Diego"
+        routeData.startingPoint = "Current Location"
+        routeData.destination = "San Jose"
         
         coreLocationManager.delegate = self
         coreLocationManager.desiredAccuracy = kCLLocationAccuracyBest
         coreLocationManager.requestWhenInUseAuthorization()
         coreLocationManager.startUpdatingLocation()
         
+        startingPoint.text = routeData.startingPoint
+        destination.text = routeData.destination
     }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+       
+    }
+    
+    
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
         var location = locations.last as! CLLocation
-        println(locations.count)
+        
+        routeData.currentLocation = location
         println(location.coordinate.latitude)
         println(location.coordinate.longitude)
+        
+        coreLocationManager.stopUpdatingLocation()
     }
     
-
-
-
+    
+    
 }
 

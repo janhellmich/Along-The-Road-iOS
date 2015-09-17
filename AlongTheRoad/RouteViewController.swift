@@ -113,9 +113,24 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         let geoCoder = CLGeocoder()
         
         if address == "Current Location" {
-            self.startItem = MKMapItem.mapItemForCurrentLocation()
+            var location = routeData.currentLocation
+            var mkplace = MKPlacemark(coordinate: location!.coordinate, addressDictionary: nil)
+            
+            self.createAnnotation(mkplace.coordinate, imageName: type)
+            
+            if type == "start" {
+                self.startItem = MKMapItem(placemark: mkplace)
+            } else {
+                self.destinationItem = MKMapItem(placemark: mkplace)
+            }
+            
+            if self.startItem != nil && self.destinationItem != nil {
+                self.getDirections()
+            }
+            
             return
         }
+        
         geoCoder.geocodeAddressString(address, completionHandler: { (placemarks: [AnyObject]!, error: NSError!) -> Void in
             if error != nil {
                 println("Geocode failed with error: \(error.localizedDescription)")
