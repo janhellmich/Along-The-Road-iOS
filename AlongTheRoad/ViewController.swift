@@ -62,33 +62,44 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
         routeData.destination = "San Diego"
         
         coreLocationManager.delegate = self
+        coreLocationManager.desiredAccuracy = kCLLocationAccuracyBest
+        coreLocationManager.requestWhenInUseAuthorization()
+        coreLocationManager.startUpdatingLocation()
         
-        locationManager = LocationManager.sharedInstance
         
-        
-        let authorizationCode = CLLocationManager.authorizationStatus()
-        if authorizationCode == CLAuthorizationStatus.NotDetermined && coreLocationManager.respondsToSelector("requestAlwaysAuthorization") || coreLocationManager.respondsToSelector("requestWhenInUseAuthorization") {
-            if NSBundle.mainBundle().objectForInfoDictionaryKey("NSLocationAlwaysUsageDescription") != nil {
-                coreLocationManager.requestAlwaysAuthorization()
-            } else {
-                getLocation()
-            }
-        }
+//        locationManager = LocationManager.sharedInstance
+//        
+//        
+//        let authorizationCode = CLLocationManager.authorizationStatus()
+//        if authorizationCode == CLAuthorizationStatus.NotDetermined && coreLocationManager.respondsToSelector("requestAlwaysAuthorization") || coreLocationManager.respondsToSelector("requestWhenInUseAuthorization") {
+//            if NSBundle.mainBundle().objectForInfoDictionaryKey("NSLocationAlwaysUsageDescription") != nil {
+//                coreLocationManager.requestAlwaysAuthorization()
+//            } else {
+//                getLocation()
+//            }
+//        }
     }
     
-    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if status != CLAuthorizationStatus.NotDetermined || status != CLAuthorizationStatus.Denied || status != CLAuthorizationStatus.Restricted {
-            getLocation()
-        }
+    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
+        var location = locations.last as! CLLocation
+        println(locations.count)
+        println(location.coordinate.latitude)
+        println(location.coordinate.longitude)
     }
     
-    func getLocation(){
-        locationManager.startUpdatingLocationWithCompletionHandler { (latitude, longitude, status, verboseMessage, error) -> () in
-            self.currentLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-            self.routeData.currentLocation = self.currentLocation
-            println("\(self.currentLocation.latitude), \(self.currentLocation.longitude)")
-        }
-    }
+//    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+//        if status != CLAuthorizationStatus.NotDetermined || status != CLAuthorizationStatus.Denied || status != CLAuthorizationStatus.Restricted {
+//            getLocation()
+//        }
+//    }
+    
+//    func getLocation(){
+//        locationManager.startUpdatingLocationWithCompletionHandler { (latitude, longitude, status, verboseMessage, error) -> () in
+//            self.currentLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+//            self.routeData.currentLocation = self.currentLocation
+//            println("\(self.currentLocation.latitude), \(self.currentLocation.longitude)")
+//        }
+//    }
     
 
 

@@ -207,9 +207,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
     
     @IBAction func showDetailView(sender: AnyObject) {
-        var currentVenue = restaurantData.filteredRestaurants[activeRestaurantIdx]
-        restaurantData.selectedRestaurant = currentVenue
-        performSegueWithIdentifier("show-details", sender: nil)
+        if restaurantData.filteredRestaurants.count > activeRestaurantIdx {
+            var currentVenue = restaurantData.filteredRestaurants[activeRestaurantIdx]
+            restaurantData.selectedRestaurant = currentVenue
+            performSegueWithIdentifier("show-details", sender: nil)
+        }
     }
     
     // sets the renderForOverlay delegate method
