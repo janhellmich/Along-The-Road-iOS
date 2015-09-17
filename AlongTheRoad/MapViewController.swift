@@ -132,6 +132,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     func getLocation(){
         locationManager.startUpdatingLocationWithCompletionHandler { (latitude, longitude, status, verboseMessage, error) -> () in
             self.userLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+            //self.createAnnotation(self.userLocation!, imageName: "list")
         }
     }
     

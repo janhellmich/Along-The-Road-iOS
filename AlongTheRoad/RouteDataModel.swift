@@ -23,6 +23,7 @@ class RouteDataModel: NSObject {
     var isDestination: Bool
     var restaurantDictionary: [String: AnyObject]
     var selectedRestaurant: AnyObject?
+    var currentLocation: CLLocationCoordinate2D?
 
     override init(){
         routes = []

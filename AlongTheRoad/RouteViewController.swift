@@ -112,6 +112,10 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     func addMapItem (type: String, address: String){
         let geoCoder = CLGeocoder()
         
+        if address == "Current Location" {
+            self.startItem = MKMapItem.mapItemForCurrentLocation()
+            return
+        }
         geoCoder.geocodeAddressString(address, completionHandler: { (placemarks: [AnyObject]!, error: NSError!) -> Void in
             if error != nil {
                 println("Geocode failed with error: \(error.localizedDescription)")
@@ -128,6 +132,9 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                     self.startItem = MKMapItem(placemark: mkplace)
                 } else {
                     self.destinationItem = MKMapItem(placemark: mkplace)
+                }
+                
+                if self.startItem != nil && self.destinationItem != nil {
                     self.getDirections()
                 }
             }
@@ -154,8 +161,7 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         
         directions.calculateDirectionsWithCompletionHandler({ (response: MKDirectionsResponse!, error: NSError!) -> Void in
             if error != nil {
-                println("Directions failed with error: \(error.localizedDescription), trying again")
-                self.getDirections()
+                println("Directions failed with error: \(error.localizedDescription)")
             } else {
                 self.setNewRegion()
                 self.routeData.routes = response.routes
