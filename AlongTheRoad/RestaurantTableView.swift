@@ -16,6 +16,19 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        var mapViewButton:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "map"), style: UIBarButtonItemStyle.Plain, target: self, action: "showMapView")
+        var filterViewButton:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "filter"), style: UIBarButtonItemStyle.Plain, target: self, action: "showFilterView")
+        
+        self.navigationItem.rightBarButtonItems = [mapViewButton, filterViewButton]
+    }
+    
+    func showFilterView() {
+        performSegueWithIdentifier("show-filter", sender: nil)
+    }
+    
+    func showMapView() {
+        navigationController?.popViewControllerAnimated(true)
     }
     
     override func viewWillAppear(animated: Bool) {

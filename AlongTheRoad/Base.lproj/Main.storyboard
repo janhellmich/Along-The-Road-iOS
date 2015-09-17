@@ -446,11 +446,12 @@
                         <outlet property="venueNameLabel" destination="XPv-R6-Few" id="Izl-iM-UbA"/>
                         <outlet property="venueRatingLabel" destination="4bi-Zj-r76" id="Dna-mx-zOu"/>
                         <segue destination="Tfo-n2-fYq" kind="show" identifier="show-list" id="P7v-uM-fhX"/>
+                        <segue destination="ale-oy-Vlu" kind="show" identifier="show-filter" id="URb-Eg-x4g"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rgY-PA-Fbe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1645" y="286"/>
+            <point key="canvasLocation" x="1691" y="282"/>
         </scene>
         <!--Choose Route-->
         <scene sceneID="e9e-wt-YDB">
@@ -781,17 +782,15 @@
                             <outlet property="delegate" destination="Tfo-n2-fYq" id="j24-Pm-bKO"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" id="FCG-ps-xmw">
-                        <barButtonItem key="rightBarButtonItem" title="Settings" id="7Ah-eL-y5z">
-                            <connections>
-                                <segue destination="ale-oy-Vlu" kind="show" id="4un-mw-GJU"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Title" id="FCG-ps-xmw"/>
+                    <connections>
+                        <segue destination="ale-oy-Vlu" kind="show" identifier="show-filter" id="Y8x-Mn-Szi"/>
+                        <segue destination="OcZ-lP-89x" kind="show" identifier="show-map" id="vI4-zF-dx9"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dxt-lP-psl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2403" y="286"/>
+            <point key="canvasLocation" x="2458" y="282"/>
         </scene>
         <!--Restaurant Details-->
         <scene sceneID="h1z-rn-Vfa">
@@ -891,5 +890,9 @@
     <resources>
         <image name="list" width="48" height="48"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="Y8x-Mn-Szi"/>
+        <segue reference="vI4-zF-dx9"/>
+    </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
 </document>

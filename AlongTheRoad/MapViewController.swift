@@ -41,6 +41,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     
     
+    
+    
     //API Keys for FourSquare
     let CLIENT_ID="ELLZUH013LMEXWRWGBOSNBTXE3NV02IUUO3ZFPVFFSZYLA30"
     let CLIENT_SECRET="U2EQ1N1J4EAG4XH4QO4HCZTGM3FCWDLXU2WJ0OPTD2Q3YUKF"
@@ -80,8 +82,13 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         coreLocationManager.delegate = self
         self.displayLocation()
         
-        var rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "list"), style: UIBarButtonItemStyle.Plain, target: self, action: "showListView")
-        self.navigationItem.rightBarButtonItem = rightAddBarButtonItem
+        println("VIEW DID LOAD CALLED: destitem is set? \(destinationItem == nil)")
+        
+        var listViewButton:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "list"), style: UIBarButtonItemStyle.Plain, target: self, action: "showListView")
+        var filterViewButton:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "filter"), style: UIBarButtonItemStyle.Plain, target: self, action: "showFilterView")
+        
+        self.navigationItem.rightBarButtonItems = [listViewButton, filterViewButton]
+        
         
         locationManager = LocationManager.sharedInstance
         
@@ -109,6 +116,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     func showListView() {
         self.performSegueWithIdentifier("show-list", sender: nil)
+    }
+    
+    func showFilterView() {
+        self.performSegueWithIdentifier("show-filter", sender: nil)
     }
 
     /* function: locationManager
@@ -387,14 +398,15 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             setActiveWaypoint(activeWaypointIdx + 1)
         } else {
             println("EDGE CASE IN DETERMINE_ACTIVE_REST")
-            var lastRestaurantDistance = restaurantData.filteredRestaurants[restaurantData.filteredRestaurants.count-1].totalDistance
-            for (idx, waypoint) in enumerate(waypoints) {
-                if waypoint.distance > lastRestaurantDistance {
-                    setActiveWaypoint(idx-1)
-                    return
+            if restaurantData.filteredRestaurants.count > 0 {
+                var lastRestaurantDistance = restaurantData.filteredRestaurants[restaurantData.filteredRestaurants.count-1].totalDistance
+                for (idx, waypoint) in enumerate(waypoints) {
+                    if waypoint.distance > lastRestaurantDistance {
+                        setActiveWaypoint(idx-1)
+                        return
+                    }
                 }
             }
-        
         }
     }
 
@@ -442,9 +454,12 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
     
     func addActiveMarker() {
-        var marker = makeAnnotation(annotations[activeRestaurantIdx].coordinate, imageName: "active")
-        activeMarker = marker
-        map.addAnnotation(marker)
+        if annotations.count > activeRestaurantIdx {
+            var marker = makeAnnotation(annotations[activeRestaurantIdx].coordinate, imageName: "active")
+            activeMarker = marker
+            map.addAnnotation(marker)
+
+        }
     }
     
     func removeActiveMarker() {
