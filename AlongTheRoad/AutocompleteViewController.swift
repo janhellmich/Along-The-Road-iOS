@@ -61,6 +61,15 @@ class AutocompleteViewController: UIViewController, UITableViewDelegate, UITable
         
     }
 
+    @IBAction func useCurrentLocation(sender: AnyObject) {
+        if routeData.isDestination {
+            routeData.destination = "Current Location"
+        } else {
+            routeData.startingPoint = "Current Location"
+        }
+        navigationController?.popViewControllerAnimated(true)
+    }
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
@@ -83,7 +92,7 @@ class AutocompleteViewController: UIViewController, UITableViewDelegate, UITable
         } else {
             routeData.startingPoint = location!
         }
-        self.navigationController?.popViewControllerAnimated(true)
+        navigationController?.popViewControllerAnimated(true)
     }
 
 

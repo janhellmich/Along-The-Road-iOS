@@ -87,7 +87,7 @@
                                 </connections>
                             </textField>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aPb-fA-z9i">
-                                <rect key="frame" x="54" y="410" width="492" height="21"/>
+                                <rect key="frame" x="55" y="410" width="434" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -113,7 +113,7 @@
                     <navigationItem key="navigationItem" id="QBU-Jk-g70"/>
                     <connections>
                         <outlet property="destination" destination="spy-EC-kjQ" id="fs1-Wu-9kj"/>
-                        <outlet property="errorLabel" destination="aPb-fA-z9i" id="K46-Wd-5Nv"/>
+                        <outlet property="errorLabel" destination="aPb-fA-z9i" id="gLn-3n-d4J"/>
                         <outlet property="startingPoint" destination="KqL-wx-oz1" id="LbT-7A-fBH"/>
                         <segue destination="MET-Bz-AQk" kind="show" identifier="autocomplete" id="S98-z8-ldf"/>
                         <segue destination="W4N-tE-QKu" kind="show" identifier="show-routes" id="icF-eD-ypz"/>
@@ -853,6 +853,14 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                             </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Location" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rXZ-7z-lX4">
+                                <rect key="frame" x="0.0" y="64" width="600" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <action selector="getSuggestions:" destination="MET-Bz-AQk" eventType="editingChanged" id="RaR-qe-u64"/>
+                                </connections>
+                            </textField>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="fnb-wc-3Cg">
                                 <rect key="frame" x="0.0" y="133" width="600" height="467"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -870,26 +878,18 @@
                                     <outlet property="delegate" destination="MET-Bz-AQk" id="Oc1-GK-AeP"/>
                                 </connections>
                             </tableView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter Location" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rXZ-7z-lX4">
-                                <rect key="frame" x="0.0" y="64" width="600" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                                <connections>
-                                    <action selector="getSuggestions:" destination="MET-Bz-AQk" eventType="editingChanged" id="RaR-qe-u64"/>
-                                </connections>
-                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="fnb-wc-3Cg" firstAttribute="top" secondItem="7wM-Fo-yah" secondAttribute="bottom" constant="8" symbolic="YES" id="1Ne-DR-cdc"/>
-                            <constraint firstItem="fnb-wc-3Cg" firstAttribute="trailing" secondItem="rXZ-7z-lX4" secondAttribute="trailing" id="7rb-Cc-Qpo"/>
-                            <constraint firstItem="7wM-Fo-yah" firstAttribute="top" secondItem="rXZ-7z-lX4" secondAttribute="bottom" constant="1" id="T8I-zO-ymM"/>
-                            <constraint firstAttribute="trailing" secondItem="rXZ-7z-lX4" secondAttribute="trailing" id="Yhs-GB-wkO"/>
-                            <constraint firstItem="rXZ-7z-lX4" firstAttribute="top" secondItem="vEl-xn-y5t" secondAttribute="bottom" id="exO-nk-af9"/>
-                            <constraint firstItem="rXZ-7z-lX4" firstAttribute="leading" secondItem="gwa-wb-Q8m" secondAttribute="leading" id="fcE-rV-h4z"/>
-                            <constraint firstItem="fnb-wc-3Cg" firstAttribute="leading" secondItem="rXZ-7z-lX4" secondAttribute="leading" id="ovd-Hr-HTS"/>
-                            <constraint firstItem="7wM-Fo-yah" firstAttribute="leading" secondItem="gwa-wb-Q8m" secondAttribute="leadingMargin" id="sJf-PG-6i2"/>
-                            <constraint firstItem="fnb-wc-3Cg" firstAttribute="bottom" secondItem="71T-KA-Iag" secondAttribute="top" id="xQd-H2-EkQ"/>
+                            <constraint firstItem="rXZ-7z-lX4" firstAttribute="top" secondItem="vEl-xn-y5t" secondAttribute="bottom" id="Aru-xh-2pL"/>
+                            <constraint firstItem="rXZ-7z-lX4" firstAttribute="trailing" secondItem="fnb-wc-3Cg" secondAttribute="trailing" id="HlF-v6-3N5"/>
+                            <constraint firstItem="7wM-Fo-yah" firstAttribute="leading" secondItem="gwa-wb-Q8m" secondAttribute="leadingMargin" id="Tg5-Ir-LC7"/>
+                            <constraint firstItem="rXZ-7z-lX4" firstAttribute="leading" secondItem="gwa-wb-Q8m" secondAttribute="leading" id="d5f-cm-0Ef"/>
+                            <constraint firstItem="rXZ-7z-lX4" firstAttribute="leading" secondItem="fnb-wc-3Cg" secondAttribute="leading" id="g4L-cZ-7dJ"/>
+                            <constraint firstAttribute="trailing" secondItem="rXZ-7z-lX4" secondAttribute="trailing" id="m6g-8U-P5Q"/>
+                            <constraint firstItem="fnb-wc-3Cg" firstAttribute="bottom" secondItem="71T-KA-Iag" secondAttribute="top" id="mMK-Nc-8gl"/>
+                            <constraint firstItem="fnb-wc-3Cg" firstAttribute="top" secondItem="7wM-Fo-yah" secondAttribute="bottom" constant="8" symbolic="YES" id="sod-JI-kqx"/>
+                            <constraint firstItem="7wM-Fo-yah" firstAttribute="top" secondItem="rXZ-7z-lX4" secondAttribute="bottom" constant="1" id="taM-6P-UfK"/>
                         </constraints>
                     </view>
                     <connections>
