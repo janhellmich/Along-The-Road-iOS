@@ -11,8 +11,8 @@ import GoogleMaps
 import CoreLocation
 
 class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDelegate {
-
     
+    @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var startingPoint: UITextField!
     @IBOutlet weak var destination: UITextField!
     
@@ -26,6 +26,21 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    
+    @IBAction func submit(sender: UIButton) {
+        // validate user input
+        if startingPoint.text == "Current Location" && routeData.currentLocation == nil {
+            errorLabel.text = "Cannot find current location. Please set manually"
+        } else if destination.text == "" {
+            errorLabel.text = "Please provide a destination"
+        } else if startingPoint.text == destination.text {
+            errorLabel.text = "Origin and destination cannot be the same"
+        } else {
+            errorLabel.text = ""
+            performSegueWithIdentifier("show-routes", sender: nil)
+        }
     }
 
     var placesClient: GMSPlacesClient?
@@ -44,15 +59,9 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
         self.view.endEditing(true)
     }
     
-    @IBAction func submitRoute(sender: AnyObject) {
-        
-    }
     
     override func viewWillAppear(animated: Bool) {
         placesClient = GMSPlacesClient()
-        
-        routeData.startingPoint = "Current Location"
-        routeData.destination = "San Jose"
         
         coreLocationManager.delegate = self
         coreLocationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -65,7 +74,9 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        errorLabel.text = ""
+        routeData.startingPoint = "Current Location"
+        routeData.destination = "San Jose"
     }
     
     
