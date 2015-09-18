@@ -540,10 +540,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
         
         venueNameLabel.text = activeRestaurant.name
-        //venueCategoryLabel.text = activeRestaurant.category
+        venueCategoryLabel.text = activeRestaurant.category
         venuePriceLabel.text = venueDetailHelpers.getPriceRange(activeRestaurant.priceRange)
         venueRatingLabel.text = "\u{1f3c6} \(venueDetailHelpers.getRating(activeRestaurant.rating))"
-        //venueTipLabel.text = activeRestaurant.tip
+        venueTipLabel.text = activeRestaurant.tip
 
         var numFilteredRestaurants = restaurantData.filteredRestaurants.count
     }
