@@ -24,4 +24,6 @@ struct RestaurantStructure {
     var city = ""
     var state = ""
     var postalCode = ""
+    var category = ""
+    var tip = ""
 }

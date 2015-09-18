@@ -55,7 +55,7 @@ class RestaurantDataModel: NSObject {
         //Add the restaurants to the restaurants array
         var restaurantArray = [AnyObject]()
         for i in 0..<dataObj!.count {
-            restaurantArray.append(dataObj![i].objectForKey("venue")!)
+            restaurantArray.append(dataObj![i])
         }
         
         
@@ -84,7 +84,9 @@ class RestaurantDataModel: NSObject {
     }
     
     
-    func createRestaurantObject(venue: AnyObject, waypointDistance: Double) -> RestaurantStructure {
+    func createRestaurantObject(item: AnyObject, waypointDistance: Double) -> RestaurantStructure {
+        
+        var venue: AnyObject = item.objectForKey("venue")!
         var name = getName(venue)
         var address = getAddress(venue)
         var distanceToRoad = getDistanceToRoad(venue)
@@ -98,15 +100,17 @@ class RestaurantDataModel: NSObject {
         var city = getCity(venue)
         var state = getState(venue)
         var zip = getZip(venue)
-        //println("WAYPOINTDISTANCE: \(waypointDistance)")
         var distance = waypointDistance + distanceToRoad // meters
+        var category = getCategory(venue)
+        
+        var tip = getTip(item) // will have to pass in MUST BE CHANGED
         
         // consider pricerange of 3 and 4 equally due to limited space in filter page
         if (priceRange == 4) {
             priceRange = 3
         }
         
-        var restaurant = RestaurantStructure(name: name,  url: url, imageUrl: imageUrl, distanceToRoad: distanceToRoad, address: address, totalDistance: distance, openUntil: openUntil, rating: rating, priceRange: priceRange, location: location, streetAddress: streetAddress, city: city, state: state, postalCode: zip)
+        var restaurant = RestaurantStructure(name: name,  url: url, imageUrl: imageUrl, distanceToRoad: distanceToRoad, address: address, totalDistance: distance, openUntil: openUntil, rating: rating, priceRange: priceRange, location: location, streetAddress: streetAddress, city: city, state: state, postalCode: zip, category: category, tip: tip)
         
         return restaurant
     }
@@ -137,8 +141,8 @@ class RestaurantDataModel: NSObject {
     }
     func getState(currentVenue: AnyObject) -> String {
         if var state: AnyObject = currentVenue.objectForKey("location")!.objectForKey("state") {
-                return state as! String
-            }
+            return state as! String
+        }
         
         return ""
     }
@@ -155,9 +159,21 @@ class RestaurantDataModel: NSObject {
         
     }
     func getCategory (currentVenue: AnyObject) -> String {
+        if var categories: AnyObject = currentVenue.objectForKey("categories") {
+            if categories.count > 0 {
+                var category: AnyObject? = categories[0].objectForKey("shortName")
+                return category as! String
+            }
+        }
         return ""
     }
-    func getTip (currentVenue: AnyObject) -> String {
+    func getTip (item: AnyObject) -> String {
+        if var tips: AnyObject = item.objectForKey("tips") {
+            if tips.count > 0 {
+                var tip : AnyObject? = tips[0].objectForKey("text")
+                return tip as! String
+            }
+        }
         return ""
     }
     /* function: getLocation
@@ -184,32 +200,6 @@ class RestaurantDataModel: NSObject {
         return  address
     }
     
-//    func getTotalDistance(start: CLLocationCoordinate2D, end: CLLocationCoordinate2D) -> Double {
-//        var req = MKDirectionsRequest()
-//        
-//        req.setDestination(end)
-//        req.setSource(start)
-//        req.transportType = MKDirectionsTransportType.Automobile
-//        
-//        var directions = MKDirections(request: req)
-//        
-//        directions.calculateDirectionsWithCompletionHandler({ (response: MKDirectionsResponse!, error: NSError!) -> Void in
-//            if error != nil {
-//                println("Directions failed with error: \(error.localizedDescription), trying again")
-//                self.getDirections()
-//            } else {
-//                self.setNewRegion()
-//                self.routeData.routes = response.routes
-//                self.displayRoutes(0)
-//                self.generateSegmentControl()
-//                
-//                // add go button to view
-//                var rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "GO!", style: UIBarButtonItemStyle.Plain, target: self, action: "clickGo")
-//                self.navigationItem.rightBarButtonItem = rightAddBarButtonItem
-//            }
-//        });
-//
-//    }
     
     func getUrl (currentVenue: AnyObject) -> String {
         let restaurantName = currentVenue.objectForKey("name") as! String
@@ -292,36 +282,5 @@ class RestaurantDataModel: NSObject {
         coord.longitude = currentVenue.objectForKey("location")!.objectForKey("lng") as! Double
         return coord
     }
-    
-    
-    
-//    func getTotalDistance(currentVenue: AnyObject) -> Double {
-//        var lat1 = startingPoint.latitude;
-//        var lat2 = currentVenue.objectForKey("location")!.objectForKey("lat") as!Double
-//        var lon1 = startingPoint.longitude
-//        var lon2 = currentVenue.objectForKey("location")!.objectForKey("lng") as!Double
-//
-//        
-//        func DegreesToRadians (value:Double) -> Double {
-//            return value * M_PI / 180.0
-//        }
-//        
-//        var R:Double = 6371000 // metres
-//        var latRad1 = DegreesToRadians(lat1)
-//        var latRad2 = DegreesToRadians(lat2)
-//        var change1 = DegreesToRadians(lat2-lat1)
-//        var change2 = DegreesToRadians(lon2-lon1)
-//        
-//        var l = Double(sin(change1/2) * sin(change1/2))
-//        var k = Double(cos(latRad1) * cos(latRad2) *
-//            sin(change2/2) * sin(change2/2))
-//        
-//        var a = Double( l + k)
-//        
-//        var c = 2 * atan2(sqrt(a), sqrt(1-a));
-//        
-//        var d = R * c;
-//        return d
-//    }
 
 }
