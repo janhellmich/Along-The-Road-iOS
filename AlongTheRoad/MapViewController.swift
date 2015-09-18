@@ -59,6 +59,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     @IBOutlet weak var venueRatingLabel: UILabel!
     @IBOutlet weak var venueTipLabel: UILabel!
     @IBOutlet weak var venueImage: UIImageView!
+    @IBOutlet weak var venueOpenLabel: UILabel!
     
     
     @IBAction func distanceSliderValueChanged(sender: UISlider) {
@@ -544,6 +545,14 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         venuePriceLabel.text = venueDetailHelpers.getPriceRange(activeRestaurant.priceRange)
         venueRatingLabel.text = "\u{1f3c6} \(venueDetailHelpers.getRating(activeRestaurant.rating))"
         venueTipLabel.text = activeRestaurant.tip
+        venueOpenLabel.text = activeRestaurant.openUntil
+        
+        if (Array(activeRestaurant.openUntil.lowercaseString)[0] == "c") {
+            venueOpenLabel.textColor = UIColor.redColor()
+        } else {
+            venueOpenLabel.textColor = UIColor(red: 50/255, green: 154/255, blue: 119/255, alpha: 1)
+        }
+        
 
         var numFilteredRestaurants = restaurantData.filteredRestaurants.count
     }
