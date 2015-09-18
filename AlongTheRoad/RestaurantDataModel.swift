@@ -154,6 +154,12 @@ class RestaurantDataModel: NSObject {
         return name
         
     }
+    func getCategory (currentVenue: AnyObject) -> String {
+        return ""
+    }
+    func getTip (currentVenue: AnyObject) -> String {
+        return ""
+    }
     /* function: getLocation
     * ----------------------
     * This function extracts the data from the currentVenue for the location and address.

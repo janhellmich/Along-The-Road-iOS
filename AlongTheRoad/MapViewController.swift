@@ -55,7 +55,9 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     @IBOutlet weak var distanceSlider: UISlider!
     @IBOutlet weak var venueNameLabel: UILabel!
     @IBOutlet weak var venueCategoryLabel: UILabel!
+    @IBOutlet weak var venuePriceLabel: UILabel!
     @IBOutlet weak var venueRatingLabel: UILabel!
+    @IBOutlet weak var venueTipLabel: UILabel!
     @IBOutlet weak var venueImage: UIImageView!
     
     
@@ -90,6 +92,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         
         coreLocationManager.delegate = self
         self.displayLocation()
+
         
         println("VIEW DID LOAD CALLED: destitem is set? \(destinationItem == nil)")
         
@@ -537,8 +540,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
         
         venueNameLabel.text = activeRestaurant.name
-        venueCategoryLabel.text = venueDetailHelpers.getPriceRange(activeRestaurant.priceRange)
+        //venueCategoryLabel.text = activeRestaurant.category
+        venuePriceLabel.text = venueDetailHelpers.getPriceRange(activeRestaurant.priceRange)
         venueRatingLabel.text = venueDetailHelpers.getRating(activeRestaurant.rating)
+        //venueTipLabel.text = activeRestaurant.tip
 
         var numFilteredRestaurants = restaurantData.filteredRestaurants.count
     }
