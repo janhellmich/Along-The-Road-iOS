@@ -44,11 +44,11 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
     @IBAction func submit(sender: UIButton) {
         // validate user input
         if startingPoint.text == "Current Location" && routeData.currentLocation == nil {
-            errorLabel.text = "Cannot find current location. Please set manually"
+            errorLabel.text = "Cannot find current location. Please set manually."
         } else if destination.text == "" {
-            errorLabel.text = "Please provide a destination"
+            errorLabel.text = "Please provide a destination."
         } else if startingPoint.text == destination.text {
-            errorLabel.text = "Origin and destination cannot be the same"
+            errorLabel.text = "Origin and destination cannot be the same."
         } else {
             errorLabel.text = ""
             performSegueWithIdentifier("show-routes", sender: nil)
@@ -91,6 +91,20 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
         routeData.destination = "San Jose"
     }
     
+    override func viewDidAppear(animated: Bool) {
+        var nav = navigationController?.navigationBar
+        nav?.barTintColor = UIColor(red: 102/255, green: 205/255, blue: 170/255, alpha: 0.1)
+        nav?.tintColor = UIColor.whiteColor()
+        
+//        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 20))
+//        imageView.contentMode = UIViewContentMode.ScaleAspectFit
+//        
+//        let image = UIImage(named: "logo")
+//        imageView.image = image
+//        navigationItem.titleView = imageView
+        
+        
+    }
     
     
     func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {

@@ -19,6 +19,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         GMSServices.provideAPIKey("AIzaSyAkplkngx3ms6cQOfdjRkZGSJeOlO4ozAc")
         
+        UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: false)
+        
         // Override point for customization after application launch.
         return true
     }
