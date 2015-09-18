@@ -44,11 +44,11 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
     @IBAction func submit(sender: UIButton) {
         // validate user input
         if startingPoint.text == "Current Location" && routeData.currentLocation == nil {
-            errorLabel.text = "Cannot find current location. Please set manually"
+            errorLabel.text = "Cannot find current location. Please set manually."
         } else if destination.text == "" {
-            errorLabel.text = "Please provide a destination"
+            errorLabel.text = "Please provide a destination."
         } else if startingPoint.text == destination.text {
-            errorLabel.text = "Origin and destination cannot be the same"
+            errorLabel.text = "Origin and destination cannot be the same."
         } else {
             errorLabel.text = ""
             performSegueWithIdentifier("show-routes", sender: nil)
@@ -88,7 +88,7 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
         super.viewDidLoad()
         errorLabel.text = ""
         routeData.startingPoint = "Current Location"
-        routeData.destination = "San Jose"
+//        routeData.destination = "San Jose"
     }
     
     
