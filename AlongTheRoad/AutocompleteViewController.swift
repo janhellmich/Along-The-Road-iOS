@@ -33,7 +33,7 @@ class AutocompleteViewController: UIViewController, UITableViewDelegate, UITable
             self.title = "Set Origin"
         }
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
