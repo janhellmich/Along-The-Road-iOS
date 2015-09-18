@@ -531,18 +531,18 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             var image = UIImage(data: data!)
             if image != nil {
                 self.venueImage.image = image!
-//                self.venueImage.layer.borderWidth = 3.0
-//                self.venueImage.layer.borderColor = UIColor.brownColor().CGColor
+                self.venueImage.layer.borderWidth = 0.5
+                self.venueImage.layer.borderColor = UIColor.lightGrayColor().CGColor
                 self.venueImage.clipsToBounds = true
                 self.venueImage.layer.cornerRadius = self.venueImage.frame.size.width / 2
             }
         }
-
+        
         
         venueNameLabel.text = activeRestaurant.name
         //venueCategoryLabel.text = activeRestaurant.category
         venuePriceLabel.text = venueDetailHelpers.getPriceRange(activeRestaurant.priceRange)
-        venueRatingLabel.text = venueDetailHelpers.getRating(activeRestaurant.rating)
+        venueRatingLabel.text = "\u{1f3c6} \(venueDetailHelpers.getRating(activeRestaurant.rating))"
         //venueTipLabel.text = activeRestaurant.tip
 
         var numFilteredRestaurants = restaurantData.filteredRestaurants.count

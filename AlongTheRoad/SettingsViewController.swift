@@ -28,6 +28,14 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.initializeView()
+        
+        let mediumAquaMarine = UIColor(red: 102/255, green: 205/255, blue: 170/255, alpha: 1)
+        
+        priceSwitch1Dollar.onTintColor = mediumAquaMarine
+        priceSwitch2Dollar.onTintColor = mediumAquaMarine
+        priceSwitch3Dollar.onTintColor = mediumAquaMarine
+        openNowSwitch.onTintColor = mediumAquaMarine
+        
 
     }
     

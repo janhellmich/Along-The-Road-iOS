@@ -70,7 +70,12 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
         self.getImage(currentVenue.imageUrl, cell: cell)
         cell.openUntil.text = currentVenue.openUntil
         cell.priceRange.text = getPriceRange(currentVenue.priceRange);
-        cell.rating.text = self.getRating(currentVenue.rating)
+        cell.rating.text = "\u{1f3c6} \(self.getRating(currentVenue.rating))"
+        if (Array(currentVenue.openUntil.lowercaseString)[0] == "c") {
+            cell.openUntil.textColor = UIColor.redColor()
+        } else {
+            cell.openUntil.textColor = UIColor(red: 50/255, green: 154/255, blue: 119/255, alpha: 1)
+        }
         
         return cell
     }
@@ -111,8 +116,8 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
             var image = UIImage(data: data!)
             if image != nil {
                 cell.restaurantPhoto.image = image!
-                cell.restaurantPhoto.layer.borderWidth = 3.0
-                cell.restaurantPhoto.layer.borderColor = UIColor.brownColor().CGColor
+                cell.restaurantPhoto.layer.borderWidth = 0.5
+                cell.restaurantPhoto.layer.borderColor = UIColor.lightGrayColor().CGColor
                 cell.restaurantPhoto.clipsToBounds = true
                 cell.restaurantPhoto.layer.cornerRadius = cell.restaurantPhoto.frame.size.width / 2
             }
