@@ -95,6 +95,8 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
         var nav = navigationController?.navigationBar
         nav?.barTintColor = UIColor(red: 102/255, green: 205/255, blue: 170/255, alpha: 0.1)
         nav?.tintColor = UIColor.whiteColor()
+        nav?.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
+
         
 //        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 20))
 //        imageView.contentMode = UIViewContentMode.ScaleAspectFit
