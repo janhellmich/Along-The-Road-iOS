@@ -16,6 +16,8 @@ class RouteDataFilter: NSObject {
     var mapHelpers = MapHelpers()
     
     
+    var routeData = RouteDataModel.sharedInstance
+    
     /* function: getSections
     * ---------------------------------
     * This function takes in a route and finds all the sections to be queried from the FourSquare API. It will filter
@@ -64,7 +66,7 @@ class RouteDataFilter: NSObject {
         var waypoints = [WaypointStructure]()
         var latToKilometer: Double = 110
         var longToKilometer: Double = 110
-        var desiredDistance = 5000.0 //meters
+        var desiredDistance = routeData.searchRadius
         
         var firstWaypoint = WaypointStructure()
         firstWaypoint.coordinate = locations[0]

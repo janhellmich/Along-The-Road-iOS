@@ -79,6 +79,15 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        var distance = routeData.route!.distance as Double
+        if routeData.searchRadius > distance/routeData.minDistToRadiusRatio {
+            routeData.searchRadius = distance/routeData.minDistToRadiusRatio
+            routeData.mapWidth = distance
+        }
+        
+        
+        
         coreLocationManager.delegate = self
         self.displayLocation()
         
@@ -160,7 +169,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     
     /* function: addMapItem
     * ---------------------------------------
-    * This function geocodes the address string. This means that it querries the apple database
+    * This function geocodes the address string. This means that it queries the apple database
     * for where that address is located geographically. It then selects the most likely result
     * and uses it to create a map item. If the map item is the destination, then it will invoke
     * the getDirections method which will find the directions and update the map
@@ -220,6 +229,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         waypoints = self.dataProcessor.getSections(self.routeData.route!)
         
         println("SET ACTIVE WP called from displayRoute")
+        println("\n\n\n\n NUM WAYPOINTS: \(waypoints.count), SEARCH RADIUS: \(routeData.searchRadius)\n\n\n\n")
         queryNext()
         
         self.map.addOverlay(route.polyline, level:MKOverlayLevel.AboveLabels)
@@ -475,7 +485,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     }
     
     func centerMap (waypoint: WaypointStructure) {
-        var region = MKCoordinateRegionMakeWithDistance(waypoint.coordinate, 100, 20000)
+        var region = MKCoordinateRegionMakeWithDistance(waypoint.coordinate, 100, routeData.mapWidth)
         map.setRegion(region, animated: true)
     }
     
