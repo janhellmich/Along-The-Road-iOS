@@ -272,7 +272,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0640;
-				ORGANIZATIONNAME = "Linus Aidan Meyer-Teruel";
+				ORGANIZATIONNAME = "Along the Road";
 				TargetAttributes = {
 					2339987F1B92207A008D7FFC = {
 						CreatedOnToolsVersion = 6.4;
@@ -283,7 +283,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 2339987B1B92207A008D7FFC /* Build configuration list for PBXProject "AlongTheRoad" */;
+			buildConfigurationList = 2339987B1B92207A008D7FFC /* Build configuration list for PBXProject "Along the Road" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -565,7 +565,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2339987B1B92207A008D7FFC /* Build configuration list for PBXProject "AlongTheRoad" */ = {
+		2339987B1B92207A008D7FFC /* Build configuration list for PBXProject "Along the Road" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2339989D1B92207A008D7FFC /* Debug */,
