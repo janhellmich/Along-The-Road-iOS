@@ -83,13 +83,21 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // reset the venue labels
+        venueNameLabel.text = ""
+        venueOpenLabel.text = ""
+        venueRatingLabel.text = ""
+        venueTipLabel.text = ""
+        venuePriceLabel.text = ""
+        venueCategoryLabel.text = ""
+        
         var distance = routeData.route!.distance as Double
         if routeData.searchRadius > distance/routeData.minDistToRadiusRatio {
             routeData.searchRadius = distance/routeData.minDistToRadiusRatio
             routeData.mapWidth = distance
         }
         
-        
+        distanceSlider.maximumTrackTintColor = UIColor.darkGrayColor()
         
         coreLocationManager.delegate = self
         self.displayLocation()

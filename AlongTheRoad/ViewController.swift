@@ -101,7 +101,7 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
 //        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 20))
 //        imageView.contentMode = UIViewContentMode.ScaleAspectFit
 //        
-//        let image = UIImage(named: "logo")
+//        let image = UIImage(named: "logo-white")
 //        imageView.image = image
 //        navigationItem.titleView = imageView
         

@@ -16,7 +16,6 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         var mapViewButton:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "map"), style: UIBarButtonItemStyle.Plain, target: self, action: "showMapView")
         var filterViewButton:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "filter"), style: UIBarButtonItemStyle.Plain, target: self, action: "showFilterView")
         
@@ -36,6 +35,7 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
         filter.filterRestaurants()
         restaurantData.sortRestaurantsByDistance()
         self.tableView.reloadData()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -64,7 +64,7 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
         
         var currentVenue = self.restaurantData.filteredRestaurants[indexPath.item]
         cell.restaurantName.text =  currentVenue.name
-        
+        cell.category.text = currentVenue.category
         cell.location.text = currentVenue.address//self.getLocation(currentVenue)
         cell.distance.text = self.getDistance(currentVenue.totalDistance)
         self.getImage(currentVenue.imageUrl, cell: cell)

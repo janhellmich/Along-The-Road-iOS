@@ -329,14 +329,14 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PjH-DY-kHI">
                                 <rect key="frame" x="0.0" y="560" width="600" height="40"/>
                                 <subviews>
-                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="juK-qZ-zKf">
+                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="juK-qZ-zKf">
                                         <rect key="frame" x="6" y="5" width="499" height="31"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="423" id="K5Q-Bz-D7A"/>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="423" id="dSA-bo-32i"/>
                                         </constraints>
-                                        <color key="minimumTrackTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        <color key="maximumTrackTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="minimumTrackTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="maximumTrackTintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="K5Q-Bz-D7A"/>
@@ -350,7 +350,7 @@
                                         </connections>
                                     </slider>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="9220.2 mi" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPa-cc-J3P">
-                                        <rect key="frame" x="516" y="9" width="76" height="20.5"/>
+                                        <rect key="frame" x="516" y="9" width="76" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="67" id="UTv-9s-Oft"/>
                                             <constraint firstAttribute="width" constant="76" id="Zcu-js-v7N"/>
@@ -770,10 +770,10 @@
             </objects>
             <point key="canvasLocation" x="1674" y="286"/>
         </scene>
-        <!--Route View Controller-->
+        <!--Choose Route-->
         <scene sceneID="e9e-wt-YDB">
             <objects>
-                <viewController id="W4N-tE-QKu" customClass="RouteViewController" customModule="AlongTheRoad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Choose Route" id="W4N-tE-QKu" customClass="RouteViewController" customModule="AlongTheRoad" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="w5o-y3-bQH"/>
                         <viewControllerLayoutGuide type="bottom" id="myq-h3-Gvw"/>
@@ -965,7 +965,7 @@
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="0.40000000000000002" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CMn-AZ-c7v">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CMn-AZ-c7v">
                                 <rect key="frame" x="16" y="72" width="40" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="mzh-Og-zJD"/>
@@ -1070,7 +1070,7 @@
             </objects>
             <point key="canvasLocation" x="2403" y="1063"/>
         </scene>
-        <!--Title-->
+        <!--Restaurant Table View-->
         <scene sceneID="cBu-17-iuy">
             <objects>
                 <tableViewController id="Tfo-n2-fYq" customClass="RestaurantTableView" customModule="AlongTheRoad" customModuleProvider="target" sceneMemberID="viewController">
@@ -1332,6 +1332,7 @@
                                 <color key="backgroundColor" red="1" green="0.92120773860000005" blue="0.51790324139999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="tintColor" red="1" green="0.92120773860000005" blue="0.51790324139999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
+                                    <outlet property="category" destination="AmR-B5-4TV" id="OP8-cp-Qhe"/>
                                     <outlet property="distance" destination="EZa-iK-6lk" id="0p8-O9-SxU"/>
                                     <outlet property="location" destination="73d-Yj-TEr" id="L7X-0N-Rad"/>
                                     <outlet property="openUntil" destination="UHg-ik-HFs" id="aKN-wO-IXN"/>
@@ -1348,7 +1349,6 @@
                             <outlet property="delegate" destination="Tfo-n2-fYq" id="j24-Pm-bKO"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" id="FCG-ps-xmw"/>
                     <connections>
                         <segue destination="ale-oy-Vlu" kind="show" identifier="show-filter" id="Y8x-Mn-Szi"/>
                         <segue destination="OcZ-lP-89x" kind="show" identifier="show-map" id="vI4-zF-dx9"/>
@@ -1358,7 +1358,7 @@
             </objects>
             <point key="canvasLocation" x="2412" y="45"/>
         </scene>
-        <!--Restaurant Details-->
+        <!--Detail View Controller-->
         <scene sceneID="h1z-rn-Vfa">
             <objects>
                 <viewController id="r8b-3L-obx" customClass="DetailViewController" customModule="AlongTheRoad" customModuleProvider="target" sceneMemberID="viewController">
@@ -1372,8 +1372,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" title="Restaurant Details" id="YKQ-G2-aEt">
-                        <barButtonItem key="rightBarButtonItem" title="Go To Maps" id="1eQ-xH-ANd">
+                    <navigationItem key="navigationItem" id="YKQ-G2-aEt">
+                        <barButtonItem key="rightBarButtonItem" title="Directions" id="1eQ-xH-ANd">
                             <connections>
                                 <action selector="getDirections:" destination="r8b-3L-obx" id="e9K-zP-8qd"/>
                             </connections>
@@ -1484,9 +1484,9 @@
         <image name="walk" width="9" height="15"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="vI4-zF-dx9"/>
-        <segue reference="dJe-Dy-mwa"/>
-        <segue reference="URb-Eg-x4g"/>
+        <segue reference="MqN-5u-dvt"/>
+        <segue reference="Y8x-Mn-Szi"/>
+        <segue reference="ivg-sc-MpU"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
 </document>
