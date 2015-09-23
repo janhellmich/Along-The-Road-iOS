@@ -88,7 +88,7 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
         super.viewDidLoad()
         errorLabel.text = ""
         routeData.startingPoint = "Current Location"
-        routeData.destination = "San Jose"
+//        routeData.destination = "San Jose"
     }
     
     override func viewDidAppear(animated: Bool) {
