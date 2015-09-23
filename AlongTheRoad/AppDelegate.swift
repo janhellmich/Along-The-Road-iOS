@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         
-        GMSServices.provideAPIKey("AIzaSyAkplkngx3ms6cQOfdjRkZGSJeOlO4ozAc")
+        GMSServices.provideAPIKey("AIzaSyC_gpfsKzzxZanKEoaHJySe_3buie3wkHg")
         
         UIApplication.sharedApplication().setStatusBarStyle(UIStatusBarStyle.LightContent, animated: false)
         

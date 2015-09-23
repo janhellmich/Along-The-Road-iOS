@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "2339987F1B92207A008D7FFC"
-               BuildableName = "AlongTheRoad.app"
-               BlueprintName = "AlongTheRoad"
-               ReferencedContainer = "container:Along the Road.xcodeproj">
+               BuildableName = "FoodEnRoute.app"
+               BlueprintName = "FoodEnRoute"
+               ReferencedContainer = "container:FoodEnRoute.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,9 +29,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "233998941B92207A008D7FFC"
-               BuildableName = "AlongTheRoadTests.xctest"
-               BlueprintName = "AlongTheRoadTests"
-               ReferencedContainer = "container:Along the Road.xcodeproj">
+               BuildableName = "FoodEnRouteTests.xctest"
+               BlueprintName = "FoodEnRouteTests"
+               ReferencedContainer = "container:FoodEnRoute.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -47,9 +47,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "233998941B92207A008D7FFC"
-               BuildableName = "AlongTheRoadTests.xctest"
-               BlueprintName = "AlongTheRoadTests"
-               ReferencedContainer = "container:Along the Road.xcodeproj">
+               BuildableName = "FoodEnRouteTests.xctest"
+               BlueprintName = "FoodEnRouteTests"
+               ReferencedContainer = "container:FoodEnRoute.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -57,9 +57,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2339987F1B92207A008D7FFC"
-            BuildableName = "AlongTheRoad.app"
-            BlueprintName = "AlongTheRoad"
-            ReferencedContainer = "container:Along the Road.xcodeproj">
+            BuildableName = "FoodEnRoute.app"
+            BlueprintName = "FoodEnRoute"
+            ReferencedContainer = "container:FoodEnRoute.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -77,9 +77,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2339987F1B92207A008D7FFC"
-            BuildableName = "AlongTheRoad.app"
-            BlueprintName = "AlongTheRoad"
-            ReferencedContainer = "container:Along the Road.xcodeproj">
+            BuildableName = "FoodEnRoute.app"
+            BlueprintName = "FoodEnRoute"
+            ReferencedContainer = "container:FoodEnRoute.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -96,9 +96,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "2339987F1B92207A008D7FFC"
-            BuildableName = "AlongTheRoad.app"
-            BlueprintName = "AlongTheRoad"
-            ReferencedContainer = "container:Along the Road.xcodeproj">
+            BuildableName = "FoodEnRoute.app"
+            BlueprintName = "FoodEnRoute"
+            ReferencedContainer = "container:FoodEnRoute.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

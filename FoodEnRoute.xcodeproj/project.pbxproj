@@ -57,14 +57,14 @@
 		232308391B99412100CF748D /* RestaurantTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantTableView.swift; sourceTree = "<group>"; };
 		2323083B1B9A18AD00CF748D /* DataFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataFilter.swift; sourceTree = "<group>"; };
 		232819081B926ADF00EBCCE6 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
-		233998801B92207A008D7FFC /* AlongTheRoad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AlongTheRoad.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		233998801B92207A008D7FFC /* FoodEnRoute.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FoodEnRoute.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		233998841B92207A008D7FFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		233998851B92207A008D7FFC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		233998871B92207A008D7FFC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		2339988A1B92207A008D7FFC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		2339988C1B92207A008D7FFC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		2339988F1B92207A008D7FFC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
-		233998951B92207A008D7FFC /* AlongTheRoadTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AlongTheRoadTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		233998951B92207A008D7FFC /* FoodEnRouteTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FoodEnRouteTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2339989A1B92207A008D7FFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2339989B1B92207A008D7FFC /* AlongTheRoadTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlongTheRoadTests.swift; sourceTree = "<group>"; };
 		23B453A31B9DFF7800EB104C /* RestaurantDataModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RestaurantDataModel.swift; sourceTree = "<group>"; };
@@ -102,7 +102,7 @@
 		233998771B92207A008D7FFC = {
 			isa = PBXGroup;
 			children = (
-				233998821B92207A008D7FFC /* AlongTheRoad */,
+				233998821B92207A008D7FFC /* Food en Route */,
 				233998981B92207A008D7FFC /* AlongTheRoadTests */,
 				233998811B92207A008D7FFC /* Products */,
 				5F8307EB515F32DF18861796 /* Frameworks */,
@@ -113,13 +113,13 @@
 		233998811B92207A008D7FFC /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				233998801B92207A008D7FFC /* AlongTheRoad.app */,
-				233998951B92207A008D7FFC /* AlongTheRoadTests.xctest */,
+				233998801B92207A008D7FFC /* FoodEnRoute.app */,
+				233998951B92207A008D7FFC /* FoodEnRouteTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		233998821B92207A008D7FFC /* AlongTheRoad */ = {
+		233998821B92207A008D7FFC /* Food en Route */ = {
 			isa = PBXGroup;
 			children = (
 				23E22AF11BA0B29E00E3EDFE /* Settings */,
@@ -132,6 +132,7 @@
 				1E52A7C91B9E11250039A9CE /* RouteViewController.swift */,
 				233998831B92207A008D7FFC /* Supporting Files */,
 			);
+			name = "Food en Route";
 			path = AlongTheRoad;
 			sourceTree = "<group>";
 		};
@@ -228,9 +229,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		2339987F1B92207A008D7FFC /* AlongTheRoad */ = {
+		2339987F1B92207A008D7FFC /* FoodEnRoute */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 2339989F1B92207A008D7FFC /* Build configuration list for PBXNativeTarget "AlongTheRoad" */;
+			buildConfigurationList = 2339989F1B92207A008D7FFC /* Build configuration list for PBXNativeTarget "FoodEnRoute" */;
 			buildPhases = (
 				56AE793DCE313836DA0FCB77 /* Check Pods Manifest.lock */,
 				2339987C1B92207A008D7FFC /* Sources */,
@@ -242,14 +243,14 @@
 			);
 			dependencies = (
 			);
-			name = AlongTheRoad;
+			name = FoodEnRoute;
 			productName = AlongTheRoad;
-			productReference = 233998801B92207A008D7FFC /* AlongTheRoad.app */;
+			productReference = 233998801B92207A008D7FFC /* FoodEnRoute.app */;
 			productType = "com.apple.product-type.application";
 		};
-		233998941B92207A008D7FFC /* AlongTheRoadTests */ = {
+		233998941B92207A008D7FFC /* FoodEnRouteTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 233998A21B92207A008D7FFC /* Build configuration list for PBXNativeTarget "AlongTheRoadTests" */;
+			buildConfigurationList = 233998A21B92207A008D7FFC /* Build configuration list for PBXNativeTarget "FoodEnRouteTests" */;
 			buildPhases = (
 				233998911B92207A008D7FFC /* Sources */,
 				233998921B92207A008D7FFC /* Frameworks */,
@@ -260,9 +261,9 @@
 			dependencies = (
 				233998971B92207A008D7FFC /* PBXTargetDependency */,
 			);
-			name = AlongTheRoadTests;
+			name = FoodEnRouteTests;
 			productName = AlongTheRoadTests;
-			productReference = 233998951B92207A008D7FFC /* AlongTheRoadTests.xctest */;
+			productReference = 233998951B92207A008D7FFC /* FoodEnRouteTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -272,10 +273,11 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0640;
-				ORGANIZATIONNAME = "Along the Road";
+				ORGANIZATIONNAME = "Food en Route";
 				TargetAttributes = {
 					2339987F1B92207A008D7FFC = {
 						CreatedOnToolsVersion = 6.4;
+						DevelopmentTeam = 6T9X99DZ9Q;
 					};
 					233998941B92207A008D7FFC = {
 						CreatedOnToolsVersion = 6.4;
@@ -283,7 +285,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 2339987B1B92207A008D7FFC /* Build configuration list for PBXProject "Along the Road" */;
+			buildConfigurationList = 2339987B1B92207A008D7FFC /* Build configuration list for PBXProject "FoodEnRoute" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -296,8 +298,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				2339987F1B92207A008D7FFC /* AlongTheRoad */,
-				233998941B92207A008D7FFC /* AlongTheRoadTests */,
+				2339987F1B92207A008D7FFC /* FoodEnRoute */,
+				233998941B92207A008D7FFC /* FoodEnRouteTests */,
 			);
 		};
 /* End PBXProject section */
@@ -395,7 +397,7 @@
 /* Begin PBXTargetDependency section */
 		233998971B92207A008D7FFC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 2339987F1B92207A008D7FFC /* AlongTheRoad */;
+			target = 2339987F1B92207A008D7FFC /* FoodEnRoute */;
 			targetProxy = 233998961B92207A008D7FFC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -507,9 +509,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Jan Hellmich (45F2W3KR5K)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = AlongTheRoad/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "AlongTheRoad/AlongTheRoad-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -521,9 +526,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Jan Hellmich (45F2W3KR5K)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = AlongTheRoad/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "AlongTheRoad/AlongTheRoad-Bridging-Header.h";
 			};
 			name = Release;
@@ -531,7 +539,7 @@
 		233998A31B92207A008D7FFC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Jan Hellmich (45F2W3KR5K)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -550,7 +558,7 @@
 		233998A41B92207A008D7FFC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Jan Hellmich (45F2W3KR5K)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
 					"$(inherited)",
@@ -565,7 +573,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		2339987B1B92207A008D7FFC /* Build configuration list for PBXProject "Along the Road" */ = {
+		2339987B1B92207A008D7FFC /* Build configuration list for PBXProject "FoodEnRoute" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				2339989D1B92207A008D7FFC /* Debug */,
@@ -574,7 +582,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		2339989F1B92207A008D7FFC /* Build configuration list for PBXNativeTarget "AlongTheRoad" */ = {
+		2339989F1B92207A008D7FFC /* Build configuration list for PBXNativeTarget "FoodEnRoute" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				233998A01B92207A008D7FFC /* Debug */,
@@ -583,7 +591,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		233998A21B92207A008D7FFC /* Build configuration list for PBXNativeTarget "AlongTheRoadTests" */ = {
+		233998A21B92207A008D7FFC /* Build configuration list for PBXNativeTarget "FoodEnRouteTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				233998A31B92207A008D7FFC /* Debug */,

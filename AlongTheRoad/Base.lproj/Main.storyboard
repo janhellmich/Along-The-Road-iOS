@@ -27,7 +27,7 @@
         <!--View Controller-->
         <scene sceneID="ufC-wZ-h7g">
             <objects>
-                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="AlongTheRoad" sceneMemberID="viewController">
+                <viewController id="vXZ-lx-hvc" customClass="ViewController" customModule="FoodEnRoute" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="jyV-Pf-zRb"/>
                         <viewControllerLayoutGuide type="bottom" id="2fi-mo-0CV"/>
@@ -37,7 +37,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3kA-BQ-IYw">
-                                <rect key="frame" x="47" y="276" width="0.0" height="0.0"/>
+                                <rect key="frame" x="36" y="276" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
@@ -138,7 +138,7 @@
                                 </variation>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SUBMIT" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GSG-cr-LqY">
-                                <rect key="frame" x="268" y="347" width="65" height="21"/>
+                                <rect key="frame" x="268" y="347" width="65" height="20.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="65" id="FQu-Gn-6Ln"/>
                                 </constraints>
@@ -174,27 +174,26 @@
                         <color key="tintColor" red="0.82603257239416028" green="1" blue="0.66648013441228193" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="KqL-wx-oz1" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="0MG-6D-HVf"/>
-                            <constraint firstItem="spy-EC-kjQ" firstAttribute="leading" secondItem="KqL-wx-oz1" secondAttribute="leading" id="0rd-yK-QVp"/>
-                            <constraint firstItem="spy-EC-kjQ" firstAttribute="top" secondItem="KqL-wx-oz1" secondAttribute="bottom" constant="23" id="1ZA-qx-EsL"/>
                             <constraint firstItem="aPb-fA-z9i" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="3gd-WU-Jre"/>
                             <constraint firstItem="aPb-fA-z9i" firstAttribute="top" secondItem="fIW-Ip-40l" secondAttribute="bottom" constant="30" id="5lf-Vf-x1b"/>
                             <constraint firstItem="8PD-bz-p6i" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="6vN-cf-vrt"/>
+                            <constraint firstItem="spy-EC-kjQ" firstAttribute="leading" secondItem="KqL-wx-oz1" secondAttribute="leading" id="7Is-JZ-sPF"/>
                             <constraint firstAttribute="trailingMargin" secondItem="fIW-Ip-40l" secondAttribute="trailing" constant="242" id="7br-ul-Snt"/>
                             <constraint firstItem="aPb-fA-z9i" firstAttribute="top" secondItem="fIW-Ip-40l" secondAttribute="bottom" constant="30" id="APP-vO-96S"/>
                             <constraint firstItem="CYi-11-qE3" firstAttribute="centerX" secondItem="qqN-Mk-QCQ" secondAttribute="centerX" id="Bgn-No-YKl"/>
                             <constraint firstItem="8PD-bz-p6i" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="CQC-rr-Tzi"/>
+                            <constraint firstItem="fIW-Ip-40l" firstAttribute="top" secondItem="spy-EC-kjQ" secondAttribute="bottom" constant="32" id="CQa-t3-2he"/>
                             <constraint firstItem="fIW-Ip-40l" firstAttribute="top" secondItem="spy-EC-kjQ" secondAttribute="bottom" constant="32" id="Dd8-VK-ngX"/>
                             <constraint firstItem="aPb-fA-z9i" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="Dko-cG-X8L"/>
                             <constraint firstItem="aPb-fA-z9i" firstAttribute="leading" secondItem="fIW-Ip-40l" secondAttribute="trailing" constant="-413" id="E1m-Rj-ApQ"/>
                             <constraint firstItem="aPb-fA-z9i" firstAttribute="leading" secondItem="Q8C-D9-tBr" secondAttribute="leading" id="Edx-An-goC"/>
                             <constraint firstItem="fIW-Ip-40l" firstAttribute="top" secondItem="spy-EC-kjQ" secondAttribute="bottom" constant="32" id="Fmn-Rx-NiU"/>
+                            <constraint firstItem="spy-EC-kjQ" firstAttribute="top" secondItem="KqL-wx-oz1" secondAttribute="bottom" constant="23" id="GK0-H5-Ufb"/>
                             <constraint firstItem="GSG-cr-LqY" firstAttribute="centerX" secondItem="fIW-Ip-40l" secondAttribute="centerX" id="GRU-Am-kSG"/>
                             <constraint firstItem="fIW-Ip-40l" firstAttribute="centerX" secondItem="aPb-fA-z9i" secondAttribute="centerX" id="HsT-Ua-iaj"/>
-                            <constraint firstItem="GSG-cr-LqY" firstAttribute="top" secondItem="spy-EC-kjQ" secondAttribute="bottom" constant="41" id="Ind-gs-Pge"/>
                             <constraint firstItem="fIW-Ip-40l" firstAttribute="top" secondItem="spy-EC-kjQ" secondAttribute="bottom" constant="26" id="Iro-dA-d7c"/>
                             <constraint firstItem="spy-EC-kjQ" firstAttribute="trailing" secondItem="aPb-fA-z9i" secondAttribute="trailing" id="JA3-m0-aM0"/>
                             <constraint firstAttribute="trailingMargin" secondItem="qqN-Mk-QCQ" secondAttribute="trailing" constant="9" id="KwQ-S8-5bZ"/>
-                            <constraint firstItem="fIW-Ip-40l" firstAttribute="top" secondItem="spy-EC-kjQ" secondAttribute="bottom" constant="32" id="Lh6-xh-F96"/>
                             <constraint firstItem="CYi-11-qE3" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="164" id="NCo-XH-Phf"/>
                             <constraint firstItem="KqL-wx-oz1" firstAttribute="top" secondItem="qqN-Mk-QCQ" secondAttribute="bottom" constant="22" id="QR8-Em-a15"/>
                             <constraint firstItem="aPb-fA-z9i" firstAttribute="top" secondItem="fIW-Ip-40l" secondAttribute="bottom" constant="50" id="SDr-hJ-KD3"/>
@@ -212,7 +211,6 @@
                             <constraint firstItem="qqN-Mk-QCQ" firstAttribute="leading" secondItem="8PD-bz-p6i" secondAttribute="leading" id="Y1C-F6-TG1"/>
                             <constraint firstItem="qqN-Mk-QCQ" firstAttribute="height" secondItem="KqL-wx-oz1" secondAttribute="height" id="YgY-6b-CWw"/>
                             <constraint firstItem="fIW-Ip-40l" firstAttribute="top" secondItem="spy-EC-kjQ" secondAttribute="bottom" constant="52" id="Z24-dN-1dv"/>
-                            <constraint firstItem="aPb-fA-z9i" firstAttribute="trailing" secondItem="spy-EC-kjQ" secondAttribute="trailing" id="cCM-Ch-RZH"/>
                             <constraint firstItem="fIW-Ip-40l" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="cYf-VK-Vze"/>
                             <constraint firstItem="fIW-Ip-40l" firstAttribute="top" secondItem="spy-EC-kjQ" secondAttribute="bottom" constant="52" id="ch8-ad-Osw"/>
                             <constraint firstItem="aPb-fA-z9i" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="cij-4g-ZIp"/>
@@ -221,19 +219,21 @@
                             <constraint firstAttribute="trailingMargin" secondItem="fIW-Ip-40l" secondAttribute="trailing" constant="242" id="dun-tU-S2M"/>
                             <constraint firstItem="aPb-fA-z9i" firstAttribute="top" secondItem="fIW-Ip-40l" secondAttribute="bottom" constant="50" id="eWB-WM-3f9"/>
                             <constraint firstItem="GSG-cr-LqY" firstAttribute="centerY" secondItem="fIW-Ip-40l" secondAttribute="centerY" id="f4A-eL-FXz"/>
+                            <constraint firstItem="spy-EC-kjQ" firstAttribute="trailing" secondItem="aPb-fA-z9i" secondAttribute="trailing" id="fMk-zE-PAn"/>
                             <constraint firstItem="qqN-Mk-QCQ" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="gDs-8D-GsW"/>
                             <constraint firstItem="fIW-Ip-40l" firstAttribute="centerX" secondItem="aPb-fA-z9i" secondAttribute="centerX" id="gOa-5E-DCo"/>
                             <constraint firstItem="fIW-Ip-40l" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="242" id="gy7-7q-jDF"/>
                             <constraint firstItem="fIW-Ip-40l" firstAttribute="top" secondItem="spy-EC-kjQ" secondAttribute="bottom" constant="14" id="hvH-Jw-R92"/>
-                            <constraint firstItem="spy-EC-kjQ" firstAttribute="top" secondItem="3kA-BQ-IYw" secondAttribute="top" id="hxr-uI-GTw"/>
                             <constraint firstItem="qqN-Mk-QCQ" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="iJN-6S-xYz"/>
                             <constraint firstItem="2fi-mo-0CV" firstAttribute="top" secondItem="aPb-fA-z9i" secondAttribute="bottom" constant="20" id="irz-Uc-8Ph"/>
                             <constraint firstItem="fIW-Ip-40l" firstAttribute="centerX" secondItem="aPb-fA-z9i" secondAttribute="centerX" id="jg9-j1-sC7"/>
                             <constraint firstItem="spy-EC-kjQ" firstAttribute="leading" secondItem="KqL-wx-oz1" secondAttribute="leading" id="kJ9-dD-QkZ"/>
+                            <constraint firstItem="spy-EC-kjQ" firstAttribute="trailing" secondItem="KqL-wx-oz1" secondAttribute="trailing" id="kR3-Bd-Rdg"/>
                             <constraint firstItem="aPb-fA-z9i" firstAttribute="centerX" secondItem="fIW-Ip-40l" secondAttribute="centerX" id="lJx-1c-SF7"/>
                             <constraint firstItem="CYi-11-qE3" firstAttribute="centerX" secondItem="fIW-Ip-40l" secondAttribute="centerX" id="nca-Cb-cDN"/>
                             <constraint firstAttribute="bottom" secondItem="aPb-fA-z9i" secondAttribute="bottom" constant="20" symbolic="YES" id="oU2-5K-Sd6"/>
                             <constraint firstItem="aPb-fA-z9i" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="q1d-gf-wPQ"/>
+                            <constraint firstItem="spy-EC-kjQ" firstAttribute="top" secondItem="3kA-BQ-IYw" secondAttribute="top" id="qEY-wa-ci3"/>
                             <constraint firstItem="aPb-fA-z9i" firstAttribute="leading" secondItem="Q8C-D9-tBr" secondAttribute="leading" id="qye-Kf-qI5"/>
                             <constraint firstItem="KqL-wx-oz1" firstAttribute="leading" secondItem="8PD-bz-p6i" secondAttribute="trailing" constant="20" id="rgA-iL-wG3"/>
                             <constraint firstItem="qqN-Mk-QCQ" firstAttribute="top" secondItem="CYi-11-qE3" secondAttribute="bottom" constant="31" id="s3U-5Z-eZh"/>
@@ -245,7 +245,6 @@
                             <constraint firstItem="Q8C-D9-tBr" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" id="vdD-b3-uDG"/>
                             <constraint firstItem="fIW-Ip-40l" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="242" id="xb1-hf-ogw"/>
                             <constraint firstItem="spy-EC-kjQ" firstAttribute="top" secondItem="KqL-wx-oz1" secondAttribute="bottom" constant="8" symbolic="YES" id="y7c-W5-Er5"/>
-                            <constraint firstItem="spy-EC-kjQ" firstAttribute="trailing" secondItem="KqL-wx-oz1" secondAttribute="trailing" id="yz5-Fg-XYn"/>
                             <constraint firstItem="aPb-fA-z9i" firstAttribute="centerY" secondItem="fIW-Ip-40l" secondAttribute="centerY" constant="94.5" id="z2r-Q5-FEY"/>
                         </constraints>
                         <variation key="default">
@@ -317,7 +316,7 @@
         <!--Map View Controller-->
         <scene sceneID="iz7-Pi-Bu8">
             <objects>
-                <viewController id="OcZ-lP-89x" customClass="MapViewController" customModule="AlongTheRoad" sceneMemberID="viewController">
+                <viewController id="OcZ-lP-89x" customClass="MapViewController" customModule="FoodEnRoute" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="NKR-bf-OWK"/>
                         <viewControllerLayoutGuide type="bottom" id="N7Q-tA-QsU"/>
@@ -773,7 +772,7 @@
         <!--Choose Route-->
         <scene sceneID="e9e-wt-YDB">
             <objects>
-                <viewController title="Choose Route" id="W4N-tE-QKu" customClass="RouteViewController" customModule="AlongTheRoad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Choose Route" id="W4N-tE-QKu" customClass="RouteViewController" customModule="FoodEnRoute" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="w5o-y3-bQH"/>
                         <viewControllerLayoutGuide type="bottom" id="myq-h3-Gvw"/>
@@ -832,7 +831,7 @@
         <!--Set Filter-->
         <scene sceneID="v9T-I5-VH6">
             <objects>
-                <viewController title="Set Filter" id="ale-oy-Vlu" customClass="SettingsViewController" customModule="AlongTheRoad" sceneMemberID="viewController">
+                <viewController title="Set Filter" id="ale-oy-Vlu" customClass="SettingsViewController" customModule="FoodEnRoute" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="TK5-OW-a20"/>
                         <viewControllerLayoutGuide type="bottom" id="zwD-fM-6cw"/>
@@ -965,7 +964,7 @@
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="0.40000000000000002" colorSpace="calibratedWhite"/>
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CMn-AZ-c7v">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Price" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CMn-AZ-c7v">
                                 <rect key="frame" x="16" y="72" width="40" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="mzh-Og-zJD"/>
@@ -1073,13 +1072,13 @@
         <!--Restaurant Table View-->
         <scene sceneID="cBu-17-iuy">
             <objects>
-                <tableViewController id="Tfo-n2-fYq" customClass="RestaurantTableView" customModule="AlongTheRoad" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="Tfo-n2-fYq" customClass="RestaurantTableView" customModule="FoodEnRoute" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="76" sectionHeaderHeight="22" sectionFooterHeight="22" id="dm5-yM-acv">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="restaurandID" editingAccessoryType="disclosureIndicator" rowHeight="76" id="1o7-f2-Y63" customClass="RestaurantTableViewCell" customModule="AlongTheRoad" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="restaurandID" editingAccessoryType="disclosureIndicator" rowHeight="76" id="1o7-f2-Y63" customClass="RestaurantTableViewCell" customModule="FoodEnRoute" customModuleProvider="target">
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="1o7-f2-Y63" id="k8a-4z-GRu">
                                     <autoresizingMask key="autoresizingMask"/>
@@ -1361,7 +1360,7 @@
         <!--Detail View Controller-->
         <scene sceneID="h1z-rn-Vfa">
             <objects>
-                <viewController id="r8b-3L-obx" customClass="DetailViewController" customModule="AlongTheRoad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="r8b-3L-obx" customClass="DetailViewController" customModule="FoodEnRoute" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rpV-ye-Ghd"/>
                         <viewControllerLayoutGuide type="bottom" id="u72-Ll-8HX"/>
@@ -1389,7 +1388,7 @@
         <!--Autocomplete View Controller-->
         <scene sceneID="eD1-jV-yep">
             <objects>
-                <viewController id="MET-Bz-AQk" customClass="AutocompleteViewController" customModule="AlongTheRoad" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="MET-Bz-AQk" customClass="AutocompleteViewController" customModule="FoodEnRoute" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="vEl-xn-y5t"/>
                         <viewControllerLayoutGuide type="bottom" id="71T-KA-Iag"/>
@@ -1478,14 +1477,14 @@
         <image name="info" width="30" height="30"/>
         <image name="list" width="48" height="48"/>
         <image name="location" width="30" height="30"/>
-        <image name="logo" width="438" height="75"/>
+        <image name="logo" width="734" height="134"/>
         <image name="start" width="25" height="80"/>
         <image name="submit" width="200" height="39"/>
         <image name="walk" width="9" height="15"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="MqN-5u-dvt"/>
         <segue reference="Y8x-Mn-Szi"/>
+        <segue reference="vI4-zF-dx9"/>
         <segue reference="ivg-sc-MpU"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>

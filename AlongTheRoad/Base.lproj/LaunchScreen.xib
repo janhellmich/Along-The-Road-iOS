@@ -11,7 +11,7 @@
             <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyright (c) 2015 Along the Road. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="8ie-xW-0ye">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Copyright (c) 2015 FoodEnRoute. All rights reserved." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="8ie-xW-0ye">
                     <rect key="frame" x="138" y="434" width="204" height="31"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="31" id="KsI-yH-p2t"/>
@@ -89,12 +89,6 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <variation key="default">
                 <mask key="constraints">
-                    <exclude reference="JgA-bR-Ub7"/>
-                    <exclude reference="NeV-vP-W5C"/>
-                    <exclude reference="YyQ-Q7-Oy7"/>
-                    <exclude reference="cuD-iR-4zg"/>
-                    <exclude reference="fW5-Yz-VbH"/>
-                    <exclude reference="o9y-rb-JKs"/>
                     <exclude reference="08V-SA-WtW"/>
                     <exclude reference="3O1-Ju-lG7"/>
                     <exclude reference="FSK-j5-EUW"/>
@@ -102,6 +96,12 @@
                     <exclude reference="iva-dp-WTD"/>
                     <exclude reference="oGv-ma-Xjo"/>
                     <exclude reference="wt2-S8-82W"/>
+                    <exclude reference="JgA-bR-Ub7"/>
+                    <exclude reference="NeV-vP-W5C"/>
+                    <exclude reference="YyQ-Q7-Oy7"/>
+                    <exclude reference="cuD-iR-4zg"/>
+                    <exclude reference="fW5-Yz-VbH"/>
+                    <exclude reference="o9y-rb-JKs"/>
                     <exclude reference="524-GT-w20"/>
                     <exclude reference="Cc1-2H-Fgi"/>
                     <exclude reference="XFu-w0-ASV"/>
