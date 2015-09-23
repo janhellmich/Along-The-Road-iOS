@@ -60,6 +60,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
     @IBOutlet weak var venueTipLabel: UILabel!
     @IBOutlet weak var venueImage: UIImageView!
     @IBOutlet weak var venueOpenLabel: UILabel!
+    @IBOutlet weak var rightArrow: UIButton!
     
     
     @IBAction func distanceSliderValueChanged(sender: UISlider) {
@@ -82,6 +83,8 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+//        rightArrow.imageEdgeInsets = UIEdgeInsetsMake(-10, -10, -10, -10)
         
         // reset the venue labels
         venueNameLabel.text = ""
@@ -133,6 +136,7 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             println("SET ACTIVE WP called from viewWillAppear")
             setActiveWaypoint(activeWaypointIdx)
         }
+         self.navigationController?.interactivePopGestureRecognizer.enabled = false
     }
     
     func showListView() {

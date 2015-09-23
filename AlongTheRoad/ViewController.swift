@@ -92,6 +92,7 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
     }
     
     override func viewDidAppear(animated: Bool) {
+        
         var nav = navigationController?.navigationBar
         nav?.barTintColor = UIColor(red: 102/255, green: 205/255, blue: 170/255, alpha: 0.1)
         nav?.tintColor = UIColor.whiteColor()

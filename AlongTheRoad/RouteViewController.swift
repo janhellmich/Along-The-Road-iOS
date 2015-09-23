@@ -33,6 +33,7 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     //These three outlets correspond to the view itself. They permit the controller to access these components
     @IBOutlet weak var map: MKMapView!
     @IBOutlet weak var routeControl: UISegmentedControl!
+    @IBOutlet weak var goButton: UIButton!
     
     @IBAction func routeSelected(sender: UISegmentedControl) {
         var active = sender.selectedSegmentIndex
@@ -62,7 +63,7 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     }
     
     // Navigate to next view on GO!
-    func clickGo() {
+    @IBAction func clickGo(sender: AnyObject) {
         restaurantData.reset()
         self.performSegueWithIdentifier("go", sender: nil)
     }
@@ -183,9 +184,10 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
                 self.displayRoutes(0)
                 self.generateSegmentControl()
                 
+                self.goButton.enabled = true;
                 // add go button to view
-                var rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "GO!", style: UIBarButtonItemStyle.Plain, target: self, action: "clickGo")
-                self.navigationItem.rightBarButtonItem = rightAddBarButtonItem
+//                var rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "GO!", style: UIBarButtonItemStyle.Plain, target: self, action: "clickGo")
+//                self.navigationItem.rightBarButtonItem = rightAddBarButtonItem
             }
         });
     }
