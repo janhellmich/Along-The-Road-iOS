@@ -11,7 +11,7 @@ import MapKit
 import CoreLocation
 import AddressBook
 
-class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate, UIGestureRecognizerDelegate {
     
     let venueDetailHelpers = RestaurantTableView()
 
@@ -136,7 +136,11 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
             println("SET ACTIVE WP called from viewWillAppear")
             setActiveWaypoint(activeWaypointIdx)
         }
-         self.navigationController?.interactivePopGestureRecognizer.enabled = false
+        self.navigationController?.interactivePopGestureRecognizer.delegate = self;
+    }
+    
+    override func viewWillDisappear(animated: Bool) {
+        self.navigationController?.interactivePopGestureRecognizer.delegate = nil;
     }
     
     func showListView() {
@@ -157,6 +161,10 @@ class MapViewController: UIViewController, CLLocationManagerDelegate, MKMapViewD
         if status != CLAuthorizationStatus.NotDetermined || status != CLAuthorizationStatus.Denied || status != CLAuthorizationStatus.Restricted {
             getLocation()
         }
+    }
+    
+    func gestureRecognizerShouldBegin(gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return false;
     }
     
     /* function: getLocation
