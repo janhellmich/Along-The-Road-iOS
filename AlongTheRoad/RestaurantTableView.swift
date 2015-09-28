@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableViewDataSource {
+class RestaurantTableView: UITableViewController {
 
     let restaurantData = RestaurantDataModel.sharedInstance
     let filter = RestaurantFilter.sharedInstance
@@ -16,8 +16,8 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        var mapViewButton:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "map"), style: UIBarButtonItemStyle.Plain, target: self, action: "showMapView")
-        var filterViewButton:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "filter"), style: UIBarButtonItemStyle.Plain, target: self, action: "showFilterView")
+        let mapViewButton:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "map"), style: UIBarButtonItemStyle.Plain, target: self, action: "showMapView")
+        let filterViewButton:UIBarButtonItem = UIBarButtonItem(image: UIImage(named: "filter"), style: UIBarButtonItemStyle.Plain, target: self, action: "showFilterView")
         
         self.navigationItem.rightBarButtonItems = [mapViewButton, filterViewButton]
     }
@@ -52,7 +52,7 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
     }
 
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var restaurant:RestaurantStructure = self.restaurantData.filteredRestaurants[indexPath.row]
+        let restaurant:RestaurantStructure = self.restaurantData.filteredRestaurants[indexPath.row]
         self.restaurantData.selectedRestaurant = restaurant
         
     }
@@ -62,7 +62,7 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
 
         // Configure the cell...
         
-        var currentVenue = self.restaurantData.filteredRestaurants[indexPath.item]
+        let currentVenue = self.restaurantData.filteredRestaurants[indexPath.item]
         cell.restaurantName.text =  currentVenue.name
         cell.category.text = currentVenue.category
         cell.location.text = currentVenue.address//self.getLocation(currentVenue)
@@ -71,7 +71,7 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
         cell.openUntil.text = currentVenue.openUntil
         cell.priceRange.text = getPriceRange(currentVenue.priceRange);
         cell.rating.text = "\u{1f3c6} \(self.getRating(currentVenue.rating))"
-        if (Array(currentVenue.openUntil.lowercaseString)[0] == "c") {
+        if (Array(currentVenue.openUntil.lowercaseString.characters)[0] == "c") {
             cell.openUntil.textColor = UIColor.redColor()
         } else {
             cell.openUntil.textColor = UIColor(red: 50/255, green: 154/255, blue: 119/255, alpha: 1)
@@ -83,7 +83,7 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
 
     func getPriceRange (price: Int) -> String{
         var dollarSigns = "";
-        for i in 0..<price {
+        for _ in 0..<price {
             dollarSigns += "$"
         }
         return dollarSigns
@@ -92,7 +92,7 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
 
     func getRating (ratingDouble: Double) -> String {
             var rating = String(format:"%f", ratingDouble)
-            var cuttoff = advance(rating.startIndex, 3)
+            let cuttoff = rating.startIndex.advancedBy(3)
             rating = rating.substringToIndex(cuttoff)
         
         return rating
@@ -107,13 +107,13 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
     * This function extracts the data from the currentVenue for the image from the restaurant
     */
     func getImage (url: String, cell: RestaurantTableViewCell) {
-        var imgURL: NSURL = NSURL(string: url)!
+        let imgURL: NSURL = NSURL(string: url)!
         let request: NSURLRequest = NSURLRequest(URL:imgURL)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) {(response, data, error) in
             if error != nil {
                 return
             }
-            var image = UIImage(data: data!)
+            let image = UIImage(data: data!)
             if image != nil {
                 cell.restaurantPhoto.image = image!
                 cell.restaurantPhoto.layer.borderWidth = 0.5
@@ -130,9 +130,9 @@ class RestaurantTableView: UITableViewController, UITableViewDelegate, UITableVi
      * It returns as string formatted in miles for how far from the route the restaurant is
     */
     func getDistance (distanceMeters: Double) -> String {
-        var distance = String(format:"%f", mapHelpers.metersToMiles(distanceMeters))
-        var cuttoff = advance(distance.startIndex, 3)
-        var finalString = distance.substringToIndex(cuttoff)
+        let distance = String(format:"%f", mapHelpers.metersToMiles(distanceMeters))
+        let cuttoff = distance.startIndex.advancedBy(3)
+        let finalString = distance.substringToIndex(cuttoff)
         return "\(finalString) mi"
     }
 

@@ -62,7 +62,7 @@ class RestaurantDataModel: NSObject {
         //Create annotations for each restaurant that was found
         //This section needs to later be modified to deal with possible nil values
         for i in 0..<restaurantArray.count  {
-            var restaurant = createRestaurantObject(restaurantArray[i], waypointDistance: waypointDistance)
+            let restaurant = createRestaurantObject(restaurantArray[i], waypointDistance: waypointDistance)
             if restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"] == nil {
                 restaurantDictionary["\(restaurant.location.latitude),\(restaurant.location.longitude)"] = restaurant
                 restaurantsToAddToMap.append(restaurant)
@@ -73,7 +73,7 @@ class RestaurantDataModel: NSObject {
     
     func convertToArray () {
         restaurants = [RestaurantStructure]()
-        for (key,value) in restaurantDictionary {
+        for (_,value) in restaurantDictionary {
             restaurants.append(value)
         }
     }
@@ -86,53 +86,53 @@ class RestaurantDataModel: NSObject {
     
     func createRestaurantObject(item: AnyObject, waypointDistance: Double) -> RestaurantStructure {
         
-        var venue: AnyObject = item.objectForKey("venue")!
-        var name = getName(venue)
-        var address = getAddress(venue)
-        var distanceToRoad = getDistanceToRoad(venue)
-        var imageUrl = getImageUrl(venue)
-        var openUntil = getOpenUntil(venue)
-        var rating = getRating(venue)
+        let venue: AnyObject = item.objectForKey("venue")!
+        let name = getName(venue)
+        let address = getAddress(venue)
+        let distanceToRoad = getDistanceToRoad(venue)
+        let imageUrl = getImageUrl(venue)
+        let openUntil = getOpenUntil(venue)
+        let rating = getRating(venue)
         var priceRange = getPriceRange(venue)
-        var location = getLocation(venue)
-        var url = getUrl(venue)
-        var streetAddress = getStreetAddress(venue)
-        var city = getCity(venue)
-        var state = getState(venue)
-        var zip = getZip(venue)
-        var distance = waypointDistance + distanceToRoad // meters
-        var category = getCategory(venue)
+        let location = getLocation(venue)
+        let url = getUrl(venue)
+        let streetAddress = getStreetAddress(venue)
+        let city = getCity(venue)
+        let state = getState(venue)
+        let zip = getZip(venue)
+        let distance = waypointDistance + distanceToRoad // meters
+        let category = getCategory(venue)
         
-        var tip = getTip(item) // will have to pass in MUST BE CHANGED
+        let tip = getTip(item) // will have to pass in MUST BE CHANGED
         
         // consider pricerange of 3 and 4 equally due to limited space in filter page
         if (priceRange == 4) {
             priceRange = 3
         }
         
-        var restaurant = RestaurantStructure(name: name,  url: url, imageUrl: imageUrl, distanceToRoad: distanceToRoad, address: address, totalDistance: distance, openUntil: openUntil, rating: rating, priceRange: priceRange, location: location, streetAddress: streetAddress, city: city, state: state, postalCode: zip, category: category, tip: tip)
+        let restaurant = RestaurantStructure(name: name,  url: url, imageUrl: imageUrl, distanceToRoad: distanceToRoad, address: address, totalDistance: distance, openUntil: openUntil, rating: rating, priceRange: priceRange, location: location, streetAddress: streetAddress, city: city, state: state, postalCode: zip, category: category, tip: tip)
         
         return restaurant
     }
     
     func sortRestaurantsByRating () {
-        filteredRestaurants.sort({$0.rating > $1.rating})
+        filteredRestaurants.sortInPlace({$0.rating > $1.rating})
     }
     
     func sortRestaurantsByDistance() {
-        filteredRestaurants.sort({$1.totalDistance > $0.totalDistance})
+        filteredRestaurants.sortInPlace({$1.totalDistance > $0.totalDistance})
 
     }
     
     func getStreetAddress(currentVenue: AnyObject) -> String {
-        if var street: AnyObject = currentVenue.objectForKey("location")!.objectForKey("address") {
+        if let street: AnyObject = currentVenue.objectForKey("location")!.objectForKey("address") {
             return street as! String
         }
         return ""
         
     }
     func getCity(currentVenue: AnyObject) -> String {
-        if var city: AnyObject = currentVenue.objectForKey("location")!.objectForKey("city") {
+        if let city: AnyObject = currentVenue.objectForKey("location")!.objectForKey("city") {
             return city as! String
         }
         return ""
@@ -140,7 +140,7 @@ class RestaurantDataModel: NSObject {
 
     }
     func getState(currentVenue: AnyObject) -> String {
-        if var state: AnyObject = currentVenue.objectForKey("location")!.objectForKey("state") {
+        if let state: AnyObject = currentVenue.objectForKey("location")!.objectForKey("state") {
             return state as! String
         }
         
@@ -153,24 +153,24 @@ class RestaurantDataModel: NSObject {
         return ""
     }
     func getName (currentVenue: AnyObject) -> String {
-        var name = currentVenue.objectForKey("name") as! String
+        let name = currentVenue.objectForKey("name") as! String
 
         return name
         
     }
     func getCategory (currentVenue: AnyObject) -> String {
-        if var categories: AnyObject = currentVenue.objectForKey("categories") {
+        if let categories: AnyObject = currentVenue.objectForKey("categories") {
             if categories.count > 0 {
-                var category: AnyObject? = categories[0].objectForKey("shortName")
+                let category: AnyObject? = categories[0].objectForKey("shortName")
                 return category as! String
             }
         }
         return ""
     }
     func getTip (item: AnyObject) -> String {
-        if var tips: AnyObject = item.objectForKey("tips") {
+        if let tips: AnyObject = item.objectForKey("tips") {
             if tips.count > 0 {
-                var tip : AnyObject? = tips[0].objectForKey("text")
+                let tip : AnyObject? = tips[0].objectForKey("text")
                 return tip as! String
             }
         }
@@ -183,17 +183,17 @@ class RestaurantDataModel: NSObject {
     */
     func getAddress (currentVenue: AnyObject) -> String {
         var address = ""
-        var addexists:AnyObject? = currentVenue.objectForKey("location")?.objectForKey("address")
+        let addexists:AnyObject? = currentVenue.objectForKey("location")?.objectForKey("address")
         if addexists != nil {
             address += addexists as! String + ", "
         }
         
-        var city:AnyObject? = currentVenue.objectForKey("location")?.objectForKey("city")
+        let city:AnyObject? = currentVenue.objectForKey("location")?.objectForKey("city")
         if city != nil {
             address += city as! String + ", "
         }
         
-        var state: AnyObject? = currentVenue.objectForKey("location")?.objectForKey("state")
+        let state: AnyObject? = currentVenue.objectForKey("location")?.objectForKey("state")
         if state != nil {
             address += state as! String
         }
@@ -205,8 +205,8 @@ class RestaurantDataModel: NSObject {
         let restaurantName = currentVenue.objectForKey("name") as! String
         let restaurantID = currentVenue.objectForKey("id") as! String
         
-        var nameArr = split(restaurantName){$0 ==  " "}
-        var newName = "-".join(nameArr)
+        let nameArr = restaurantName.characters.split{$0 ==  " "}.map { String($0) }
+        let newName = nameArr.joinWithSeparator("-")
 
         return "https://foursquare.com/v/\(newName)/\(restaurantID)"
     }
@@ -217,15 +217,15 @@ class RestaurantDataModel: NSObject {
     * It returns as string formatted in miles for how far from the route the restaurant is
     */
     func getDistanceToRoad (currentVenue: AnyObject) -> Double {
-        var distanceMeters = currentVenue.objectForKey("location")?.objectForKey("distance") as! Double
+        let distanceMeters = currentVenue.objectForKey("location")?.objectForKey("distance") as! Double
         return distanceMeters
     }
     
 
     func getImageUrl (currentVenue: AnyObject) -> String {
-        var imageItems: AnyObject? = currentVenue.objectForKey("featuredPhotos")?.objectForKey("items")?[0]
-        var prefix: AnyObject? = imageItems?.objectForKey("prefix")
-        var suffix: AnyObject?=imageItems?.objectForKey("suffix")
+        let imageItems: AnyObject? = currentVenue.objectForKey("featuredPhotos")?.objectForKey("items")?[0]
+        let prefix: AnyObject? = imageItems?.objectForKey("prefix")
+        let suffix: AnyObject?=imageItems?.objectForKey("suffix")
         
         
         var url: String = ""
@@ -242,12 +242,12 @@ class RestaurantDataModel: NSObject {
     * returns a string showing when the store is open until or closed if it is closed
     */
     func getOpenUntil (currentVenue: AnyObject) -> String {
-        var open: AnyObject? = currentVenue.objectForKey("hours")?.objectForKey("isOpen")
+        let open: AnyObject? = currentVenue.objectForKey("hours")?.objectForKey("isOpen")
         if open != nil && open as! Int  == 0 {
             return "Closed"
         }
         
-        var status: AnyObject? = currentVenue.objectForKey("hours")?.objectForKey("status")
+        let status: AnyObject? = currentVenue.objectForKey("hours")?.objectForKey("status")
         if status != nil {
             return status as! String
         }
@@ -256,10 +256,10 @@ class RestaurantDataModel: NSObject {
     
 
     func getRating (currentVenue: AnyObject) -> Double {
-        var ratingObj: AnyObject? = currentVenue.objectForKey("rating")
+        let ratingObj: AnyObject? = currentVenue.objectForKey("rating")
         
         if ratingObj != nil {
-            var temp = ratingObj as! Double
+            let temp = ratingObj as! Double
             return temp
         }
         return 0.0
@@ -267,9 +267,9 @@ class RestaurantDataModel: NSObject {
 
     
     func getPriceRange (currentVenue: AnyObject) -> Int{
-        var price: AnyObject? = currentVenue.objectForKey("price")?.objectForKey("tier")
+        let price: AnyObject? = currentVenue.objectForKey("price")?.objectForKey("tier")
         if price != nil {
-            var newPrice = price as! Int
+            let newPrice = price as! Int
 
             return newPrice
         }

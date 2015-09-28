@@ -24,21 +24,21 @@ class MapHelpers {
             return value * M_PI / 180.0
         }
         
-        var R:Double = 6371000 // metres
-        var latRad1 = DegreesToRadians(lat1)
-        var latRad2 = DegreesToRadians(lat2)
-        var change1 = DegreesToRadians(lat2-lat1)
-        var change2 = DegreesToRadians(lon2-lon1)
+        let R:Double = 6371000 // metres
+        let latRad1 = DegreesToRadians(lat1)
+        let latRad2 = DegreesToRadians(lat2)
+        let change1 = DegreesToRadians(lat2-lat1)
+        let change2 = DegreesToRadians(lon2-lon1)
         
-        var l = Double(sin(change1/2) * sin(change1/2))
-        var k = Double(cos(latRad1) * cos(latRad2) *
+        let l = Double(sin(change1/2) * sin(change1/2))
+        let k = Double(cos(latRad1) * cos(latRad2) *
             sin(change2/2) * sin(change2/2))
         
-        var a = Double( l + k)
+        let a = Double( l + k)
         
-        var c = 2 * atan2(sqrt(a), sqrt(1-a));
+        let c = 2 * atan2(sqrt(a), sqrt(1-a));
         
-        var d = R * c;
+        let d = R * c;
         return d
     }
     

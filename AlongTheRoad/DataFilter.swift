@@ -25,7 +25,7 @@ class RouteDataFilter: NSObject {
     * to infer for better search areas.
     */
     func getSections(route: MKRoute) -> [WaypointStructure]{
-        var mapPoints = route.polyline.points()
+        let mapPoints = route.polyline.points()
         //Convert the mapPoints to actual lon/lat route points
         var routePoints = [CLLocationCoordinate2D]()
         for i in 0..<route.polyline.pointCount {
@@ -64,9 +64,7 @@ class RouteDataFilter: NSObject {
     
     func createWaypointStructures (locations: [CLLocationCoordinate2D]) -> [WaypointStructure] {
         var waypoints = [WaypointStructure]()
-        var latToKilometer: Double = 110
-        var longToKilometer: Double = 110
-        var desiredDistance = routeData.searchRadius
+        let desiredDistance = routeData.searchRadius
         
         var firstWaypoint = WaypointStructure()
         firstWaypoint.coordinate = locations[0]
@@ -75,9 +73,9 @@ class RouteDataFilter: NSObject {
         var distance = 0.0
         
         for location in locations {
-            var lastPoint = waypoints[waypoints.count-1]
+            let lastPoint = waypoints[waypoints.count-1]
             
-            var totalChange = mapHelpers.getTotalDistance(lastPoint.coordinate, point2: location)
+            let totalChange = mapHelpers.getTotalDistance(lastPoint.coordinate, point2: location)
 
             if totalChange >= desiredDistance  {
                 distance += totalChange
@@ -129,7 +127,7 @@ class RouteDataFilter: NSObject {
         
         
 
-        var region = MKCoordinateRegion(center: center, span: locationSpan)
+        let region = MKCoordinateRegion(center: center, span: locationSpan)
         return region
     }
     

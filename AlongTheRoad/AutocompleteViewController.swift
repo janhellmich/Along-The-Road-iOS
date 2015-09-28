@@ -41,10 +41,10 @@ class AutocompleteViewController: UIViewController, UITableViewDelegate, UITable
     
     
     @IBAction func getSuggestions(sender: UITextField) {
-        if count(sender.text!) > 1 {
+        if (sender.text!).characters.count > 1 {
             placesClient?.autocompleteQuery(sender.text!, bounds: nil, filter: nil, callback: { (results, error: NSError?) -> Void in
                 if let error = error {
-                    println("Autocomplete error \(error)")
+                    print("Autocomplete error \(error)")
                 } else {
                     var newSuggestions: [String] = []
                     for result in results! {
@@ -79,7 +79,7 @@ class AutocompleteViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = UITableViewCell();
+        let cell = UITableViewCell();
         cell.textLabel?.text = suggestions[indexPath.row]
         return cell
     }

@@ -45,7 +45,7 @@ class RestaurantFilter: NSObject {
             if openNow == false {
                 return true
             }
-            return Array(venue.openUntil)[0] == "O"
+            return Array(venue.openUntil.characters)[0] == "O"
         }
         filterFunctions.append(openNowFilter)
         

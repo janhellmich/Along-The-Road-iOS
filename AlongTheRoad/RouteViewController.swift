@@ -21,7 +21,7 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     //These represent the location and map based variables
     var coreLocationManager = CLLocationManager()
-    var locationManager:LocationManager!
+    //var locationManager:LocationManager!
     var startItem: MKMapItem?
     var destinationItem: MKMapItem?
     var annotations:[CustomAnnotation]? //This is an array of the annotations on the map
@@ -36,7 +36,7 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     @IBOutlet weak var goButton: UIButton!
     
     @IBAction func routeSelected(sender: UISegmentedControl) {
-        var active = sender.selectedSegmentIndex
+        let active = sender.selectedSegmentIndex
         self.displayRoutes(active)
     }
     
@@ -48,17 +48,17 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         routeControl.removeAllSegments();
         
         self.displayLocation()
-        locationManager = LocationManager.sharedInstance
+        //locationManager = LocationManager.sharedInstance
         
         
-        let authorizationCode = CLLocationManager.authorizationStatus()
-        if authorizationCode == CLAuthorizationStatus.NotDetermined && coreLocationManager.respondsToSelector("requestAlwaysAuthorization") || coreLocationManager.respondsToSelector("requestWhenInUseAuthorization") {
-            if NSBundle.mainBundle().objectForInfoDictionaryKey("NSLocationAlwaysUsageDescription") != nil {
-                coreLocationManager.requestAlwaysAuthorization()
-            } else {
-                getLocation()
-            }
-        }
+//        let authorizationCode = CLLocationManager.authorizationStatus()
+//        if authorizationCode == CLAuthorizationStatus.NotDetermined && coreLocationManager.respondsToSelector("requestAlwaysAuthorization") || coreLocationManager.respondsToSelector("requestWhenInUseAuthorization") {
+//            if NSBundle.mainBundle().objectForInfoDictionaryKey("NSLocationAlwaysUsageDescription") != nil {
+//                coreLocationManager.requestAlwaysAuthorization()
+//            } else {
+//                getLocation()
+//            }
+//        }
         
     }
     
@@ -74,23 +74,23 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     * is searched for
     *
     */
-    func locationManager(manager: CLLocationManager!, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
-        if status != CLAuthorizationStatus.NotDetermined || status != CLAuthorizationStatus.Denied || status != CLAuthorizationStatus.Restricted {
-            getLocation()
-        }
-    }
-    
+//    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+//        if status != CLAuthorizationStatus.NotDetermined || status != CLAuthorizationStatus.Denied || status != CLAuthorizationStatus.Restricted {
+//            getLocation()
+//        }
+//    }
+//    
     /* function: getLocation
     * ---------------------------------------
     * This function beggins checking for the users current location. It starts updating the
     * users movements, which can be modified to allow for the users location to be allowed
     * as a starting point
     */
-    func getLocation(){
-        locationManager.startUpdatingLocationWithCompletionHandler { (latitude, longitude, status, verboseMessage, error) -> () in
-            self.userLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        }
-    }
+//    func getLocation(){
+//        locationManager.startUpdatingLocationWithCompletionHandler { (latitude, longitude, status, verboseMessage, error) -> () in
+//            self.userLocation = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+//        }
+//    }
     
     /* function: displayLocation
     * ---------------------------------------
@@ -114,8 +114,8 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         let geoCoder = CLGeocoder()
         
         if address == "Current Location" {
-            var location = routeData.currentLocation
-            var mkplace = MKPlacemark(coordinate: location!.coordinate, addressDictionary: nil)
+            let location = routeData.currentLocation
+            let mkplace = MKPlacemark(coordinate: location!.coordinate, addressDictionary: nil)
             
             self.createAnnotation(mkplace.coordinate, imageName: type)
             
@@ -132,15 +132,13 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
             return
         }
         
-        geoCoder.geocodeAddressString(address, completionHandler: { (placemarks: [AnyObject]!, error: NSError!) -> Void in
+        geoCoder.geocodeAddressString(address as String, completionHandler: { (placemarks: [CLPlacemark]?, error: NSError?) -> Void in
             if error != nil {
-                println("Geocode failed with error: \(error.localizedDescription)")
-            } else if placemarks.count > 0 {
-                let place = placemarks[0] as! CLPlacemark
+                print("Geocode failed with error: \(error?.localizedDescription)")
+            } else if placemarks?.count > 0 {
+                let place = placemarks![0]
                 
-                let location = place.location
-                
-                var mkplace = MKPlacemark(placemark: place)
+                let mkplace = MKPlacemark(placemark: place)
                 
                 self.createAnnotation(mkplace.coordinate, imageName: type)
                 
@@ -165,22 +163,22 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     * Half the time. However, for invaldid addresses
     */
     func getDirections() {
-        var req = MKDirectionsRequest()
+        let req = MKDirectionsRequest()
         
-        req.setDestination(self.destinationItem)
-        req.setSource(self.startItem)
+        req.destination = self.destinationItem
+        req.source = self.startItem
         req.transportType = routeData.modeOfTravel
         req.requestsAlternateRoutes = true
-        self.map.showAnnotations(self.annotations, animated: true)
+        //self.map.showAnnotations(self.annotations, animated: true)
         
-        var directions = MKDirections(request: req)
+        let directions = MKDirections(request: req)
         
-        directions.calculateDirectionsWithCompletionHandler({ (response: MKDirectionsResponse!, error: NSError!) -> Void in
+        directions.calculateDirectionsWithCompletionHandler({ (response: MKDirectionsResponse?, error: NSError?) -> Void in
             if error != nil {
-                println("Directions failed with error: \(error.localizedDescription)")
+                print("Directions failed with error: \(error?.localizedDescription)")
             } else {
                 self.setNewRegion()
-                self.routeData.routes = response.routes
+                self.routeData.routes = response!.routes
                 self.displayRoutes(0)
                 self.generateSegmentControl()
                 
@@ -194,7 +192,7 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     // generate Segment display to choose between routes
     func generateSegmentControl() {
-        for (i, route) in enumerate(routeData.routes) {
+        for (i, route) in routeData.routes.enumerate() {
             routeControl.insertSegmentWithTitle("\(mapHelpers.roundDouble(mapHelpers.metersToMiles(route.distance)))mi - \(timeConverter(route.expectedTravelTime))", atIndex: i, animated: false)
         }
         routeControl.selectedSegmentIndex = 0
@@ -203,8 +201,8 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     // turn seconds into readable time
     func timeConverter(time: Double) -> String {
-        var min = Int(time / 60) % 60
-        var hours = (Int(time/60) - min) / 60
+        let min = Int(time / 60) % 60
+        let hours = (Int(time/60) - min) / 60
         
         if hours > 0 {
             return "\(hours)h \(min)m"
@@ -216,9 +214,9 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     // displays all routes on the map
     func displayRoutes(activeIndex: Int) {
         
-        for (i, route) in enumerate(routeData.routes) {
-            var currentRoute = route as! MKRoute
-            var renderer = MKPolygonRenderer(overlay:currentRoute.polyline)
+        for (i, route) in routeData.routes.enumerate() {
+            let currentRoute = route as! MKRoute
+            let renderer = MKPolygonRenderer(overlay:currentRoute.polyline)
             renderer.strokeColor = UIColor.grayColor()
             
             if i != activeIndex {
@@ -228,7 +226,7 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         }
         
         // render the active route last to make it appear on top
-        var activeRoute = routeData.routes[activeIndex] as! MKRoute
+        let activeRoute = routeData.routes[activeIndex] as! MKRoute
         self.routeData.route = activeRoute
         self.activeRoute = true
         self.map.addOverlay(activeRoute.polyline, level:MKOverlayLevel.AboveLabels)
@@ -236,9 +234,9 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     }
     
     // sets the renderForOverlay delegate method
-    func mapView(mapView: MKMapView!, rendererForOverlay overlay: MKOverlay!) -> MKOverlayRenderer! {
+    func mapView(mapView: MKMapView, rendererForOverlay overlay: MKOverlay) -> MKOverlayRenderer! {
         if overlay is MKPolyline {
-            var polylineRenderer = MKPolylineRenderer(overlay: overlay)
+            let polylineRenderer = MKPolylineRenderer(overlay: overlay)
             if self.activeRoute {
                 polylineRenderer.strokeColor = UIColor.blueColor()
             } else {
@@ -251,7 +249,7 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     }
     
     
-    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView! {
         if !(annotation is CustomAnnotation) {
             return nil
         }
@@ -261,17 +259,17 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
         var anView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId)
         if anView == nil {
             anView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseId)
-            anView.canShowCallout = true
+            anView?.canShowCallout = true
         }
         else {
-            anView.annotation = annotation
+            anView?.annotation = annotation
         }
         
         //Set annotation-specific properties **AFTER**
         //the view is dequeued or created...
         
         let ca = annotation as! CustomAnnotation
-        anView.image = UIImage(named:ca.imageName)
+        anView?.image = UIImage(named:ca.imageName)
         
         return anView
     }
@@ -286,14 +284,14 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     func setNewRegion () {
         
         //Extract the coord
-        var startCoord = self.startItem?.placemark.coordinate
-        var destCoord = self.destinationItem?.placemark.coordinate
+        let startCoord = self.startItem?.placemark.coordinate
+        let destCoord = self.destinationItem?.placemark.coordinate
         //All elements to be displayed on the map need to be placed in this array
-        var locations = [startCoord!, destCoord!]
+        let locations = [startCoord!, destCoord!]
         
         
         
-        var region = self.dataProcessor.findRegion(locations)
+        let region = self.dataProcessor.findRegion(locations)
         
         //Currently calls sendFourSquare request on
         self.map.setRegion(region, animated: true)
@@ -309,7 +307,7 @@ class RouteViewController: UIViewController, CLLocationManagerDelegate, MKMapVie
     
     func makeAnnotation (coord: CLLocationCoordinate2D, imageName: String) -> CustomAnnotation {
         let annotation = CustomAnnotation()
-        println(imageName)
+        print(imageName)
         annotation.coordinate = coord
         annotation.imageName = imageName
         return annotation

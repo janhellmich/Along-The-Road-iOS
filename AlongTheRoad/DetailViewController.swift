@@ -17,18 +17,18 @@ class DetailViewController: UIViewController {
     var restaurantData = RestaurantDataModel.sharedInstance
     
     @IBAction func getDirections(sender: AnyObject) {
-        var restaurant = self.restaurantData.selectedRestaurant
-        var coord = restaurant.location
+        let restaurant = self.restaurantData.selectedRestaurant
+        let coord = restaurant.location
         
-        var street = restaurant.streetAddress
-        var city = restaurant.city
-        var state = restaurant.state
-        var ZIP = restaurant.postalCode
+        let street = restaurant.streetAddress
+        let city = restaurant.city
+        let state = restaurant.state
+        let ZIP = restaurant.postalCode
         let addressDict =
-        [kABPersonAddressStreetKey as NSString: street,
-            kABPersonAddressCityKey: city,
-            kABPersonAddressStateKey: state,
-            kABPersonAddressZIPKey: ZIP]
+        [kABPersonAddressStreetKey as String: street,
+            kABPersonAddressCityKey as String: city,
+            kABPersonAddressStateKey as String: state,
+            kABPersonAddressZIPKey as String: ZIP]
         
         
         let place = MKPlacemark(coordinate: coord,
@@ -41,7 +41,6 @@ class DetailViewController: UIViewController {
         
         mapItem.openInMapsWithLaunchOptions(options)
 
-        
     }
     
     @IBOutlet var containerView : UIView! = nil
@@ -56,14 +55,14 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        var restaurant = self.restaurantData.selectedRestaurant
+        let restaurant = self.restaurantData.selectedRestaurant
 
 
         
-        var url = NSURL(string: restaurant.url)
+        let url = NSURL(string: restaurant.url)
         
         if url != nil {
-            var req = NSURLRequest(URL:url!)
+            let req = NSURLRequest(URL:url!)
             self.webView!.loadRequest(req)
         }
 

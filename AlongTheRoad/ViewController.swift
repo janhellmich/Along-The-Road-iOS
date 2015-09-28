@@ -18,7 +18,7 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
     @IBOutlet weak var destination: UITextField!
     
     var coreLocationManager = CLLocationManager()
-    var locationManager:LocationManager!
+    //var locationManager:LocationManager!
     var currentLocation:CLLocationCoordinate2D!
     
     let routeData = RouteDataModel.sharedInstance
@@ -30,7 +30,7 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
     }
     
     @IBAction func selectedSegment(sender: UISegmentedControl) {
-        println(sender.selectedSegmentIndex)
+        print(sender.selectedSegmentIndex)
         switch sender.selectedSegmentIndex {
         case 0:
             routeData.modeOfTravel = MKDirectionsTransportType.Automobile
@@ -67,7 +67,7 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
         performSegueWithIdentifier("autocomplete", sender: nil)
     }
 
-    override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         self.view.endEditing(true)
     }
     
@@ -93,29 +93,20 @@ class ViewController: UIViewController, UITextFieldDelegate, CLLocationManagerDe
     
     override func viewDidAppear(animated: Bool) {
         
-        var nav = navigationController?.navigationBar
+        let nav = navigationController?.navigationBar
         nav?.barTintColor = UIColor(red: 102/255, green: 205/255, blue: 170/255, alpha: 0.1)
         nav?.tintColor = UIColor.whiteColor()
         nav?.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.whiteColor()]
 
-        
-//        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 40, height: 20))
-//        imageView.contentMode = UIViewContentMode.ScaleAspectFit
-//        
-//        let image = UIImage(named: "logo-white")
-//        imageView.image = image
-//        navigationItem.titleView = imageView
-        
-        
     }
     
     
-    func locationManager(manager: CLLocationManager!, didUpdateLocations locations: [AnyObject]!) {
-        var location = locations.last as! CLLocation
+    func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let location = locations.last!
         
         routeData.currentLocation = location
-        println(location.coordinate.latitude)
-        println(location.coordinate.longitude)
+        print(location.coordinate.latitude)
+        print(location.coordinate.longitude)
         
         coreLocationManager.stopUpdatingLocation()
     }
